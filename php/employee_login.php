@@ -1,12 +1,8 @@
 <?php
-// Start output buffering
-ob_start();
-
-// Start session only if not already started
+// Start session only if it is not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 
 require_once "../configuration/config.php"; // Ensure no output or whitespace
 require_once "../application/SystemLog.php"; // Logging system
