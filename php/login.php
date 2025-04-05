@@ -1,11 +1,10 @@
 <?php
-
+// Start the session at the top of the file
 session_start();
 
+// Ensure no output before session_start(), including whitespace in the files being included
 require_once "../configuration/config.php"; // Ensure this file does not have whitespace or output
 require_once "../application/SystemLog.php";
-
- 
 
 // Registration Handler
 if (isset($_POST['btn_register'])) {
