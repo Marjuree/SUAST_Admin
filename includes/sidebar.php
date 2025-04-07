@@ -13,9 +13,9 @@ function secure_output($data) {
     return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
+// Get the current script name to determine the active menu
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
-
- 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -28,17 +28,14 @@ function secure_output($data) {
             </div>
         </div>
 
-
-
         <ul class="sidebar-menu">
             <?php
             // Define role-based menu items
             $menu_items = [
                 "SUAST" => [
                     ["link" => "../AdminSUAST/AdminSUAST.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
-                    ["link" => "../applicant/applicant.php", "icon" => "fa-users", "label" => "Applicants Detail's"],
-                    ["link" => "../AdminSUAST/exam_schedule.php", "icon" => "fa-calendar", "label" => "Manage Classroom"],
-                    ["link" => "../AdminSUAST/manage_reservations.php", "icon" => "fa-book", "label" => "Manage Reservation"],
+                    ["link" => "../AdminSUAST/exam_schedule.php", "icon" => "fa-calendar", "label" => "Manage Schedule"],
+                    ["link" => "../AdminSUAST/manage_reservations.php", "icon" => "fa-book", "label" => "Request List"],
                     ["link" => "../AdminSUAST/contact.php", "icon" => "fa-envelope", "label" => "Manage Contact"],
                     ["link" => "../AdminSUAST/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
                     ["link" => "../logs/logs.php", "icon" => "fa-history", "label" => "Login History"],
@@ -82,14 +79,9 @@ function secure_output($data) {
                     $link = secure_output($item['link']);
                     $icon = secure_output($item['icon']);
                     $label = secure_output($item['label']);
+                    $is_active = (basename($link) == $current_page) ? "active" : ""; // Check if the menu item is active
                     
-                    if (isset($item['class'])) {
-                        echo "<li><a href='$link' class='{$item['class']}' data-target='{$item['data']}'><i class='fa $icon'></i> <span>$label</span></a></li>";
-                    } elseif (isset($item['toggle'])) {
-                        echo "<li><a href='$link' data-toggle='{$item['toggle']}' data-target='{$item['target']}'><i class='fa $icon'></i> <span>$label</span></a></li>";
-                    } else {
-                        echo "<li><a href='$link'><i class='fa $icon'></i> <span>$label</span></a></li>";
-                    }
+                    echo "<li class='$is_active'><a href='$link'><i class='fa $icon'></i> <span>$label</span></a></li>";
                 }
             }
             ?>
@@ -99,5 +91,15 @@ function secure_output($data) {
         </ul>
     </section>
 </aside>
-</body>
-</html>
+
+<style>
+    /* Highlight the active menu */
+    .sidebar-menu li.active {
+        background-color: #007bff !important;
+        color: #fff;
+    }
+    .sidebar-menu li.active a {
+        color: #fff;
+    }
+    
+</style>
