@@ -1,15 +1,34 @@
+
 <?php
-$host = "bwygtvcqnww3bwtcc8mw-mysql.services.clever-cloud.com";
-$user = "uwfbf1jptm3pg6p0";  // Updated username (lowercase "y" at the end)
-$password = "mjLQ9V30EsAOUNyr3u1G";  // Updated password (zero instead of 'O')
+$dbhost = "bwygtvcqnww3bwtcc8mw-mysql.services.clever-cloud.com";
+$dbusername = "uwfbf1jptm3pg6p0";
+$dbpassword = "mjLQ9V30EsAOUNyr3u1G";
 $dbname = "bwygtvcqnww3bwtcc8mw";
-$port = 3306;
+$dbport = 3306; // Explicitly specify the port
 
-// Create MySQL connection
-$conn = new mysqli($host, $user, $password, $dbname, $port);
+try {
+    $con = new mysqli($dbhost, $dbusername, $dbpassword, $dbname, $dbport);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    if ($con->connect_error) {
+        error_log("Database connection failed: " . $con->connect_error);
+        die("Database connection failed."); // Optional: Stop execution if DB connection fails
+    }
+} catch (\Throwable $th) {
+    error_log("Exception in DB connection: " . $th->getMessage());
+    header("location: ErrorPage.php?error=500");
+    exit();
 }
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
