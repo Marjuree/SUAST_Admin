@@ -33,6 +33,7 @@ ob_start();
             </section>
 
             <section class="content">
+                
                 <div class="box">
                     <div class="box-header d-flex justify-content-between align-items-center">
                     
@@ -86,8 +87,8 @@ ob_start();
                                             <td>{$row['id']}</td>
                                             <td>{$row['exam_name']}</td>
                                             <td>{$row['exam_date']}</td>
-                                            <td>{$row['exam_time']}</td>
-                                            <td>{$row['subject']}</td>
+                                            <td>{$row['exam_time']}</td> <!-- Exam time displayed as string -->
+                                            <td>{$row['venue']}</td>
                                             <td>{$row['room']}</td>
                                             <td>
                                                 <button class='btn btn-warning btn-edit' 
@@ -95,7 +96,7 @@ ob_start();
                                                     data-name='{$row['exam_name']}' 
                                                     data-date='{$row['exam_date']}' 
                                                     data-time='{$row['exam_time']}' 
-                                                    data-subject='{$row['subject']}' 
+                                                    data-venue='{$row['venue']}' 
                                                     data-room='{$row['room']}' 
                                                     data-toggle='modal' 
                                                     data-target='#editScheduleModal'>Edit</button>
@@ -135,11 +136,11 @@ ob_start();
                         </div>
                         <div class="form-group">
                             <label>Exam Time</label>
-                            <input type="time" name="exam_time" class="form-control" required>
+                            <input type="text" name="exam_time" class="form-control" required> <!-- Change to text input for string -->
                         </div>
                         <div class="form-group">
                             <label>EXAM VENUE</label>
-                            <input type="text" name="subject" class="form-control" required>
+                            <input type="text" name="venue" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Room</label>
@@ -175,11 +176,11 @@ ob_start();
                         </div>
                         <div class="form-group">
                             <label>Exam Time</label>
-                            <input type="time" name="exam_time" id="edit_time" class="form-control" required>
+                            <input type="text" name="exam_time" id="edit_time" class="form-control" required> <!-- Change to text input for string -->
                         </div>
                         <div class="form-group">
                             <label>EXAM VENUE</label>
-                            <input type="text" name="subject" id="edit_subject" class="form-control" required>
+                            <input type="text" name="venue" id="edit_subject" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Room</label>
@@ -194,86 +195,82 @@ ob_start();
  
  
     <script>
-        $(document).ready(function() {
-            // Populate Edit Modal
-            $(".btn-edit").click(function() {
-                $("#edit_id").val($(this).data("id"));
-                $("#edit_name").val($(this).data("name"));
-                $("#edit_date").val($(this).data("date"));
-                $("#edit_time").val($(this).data("time"));
-                $("#edit_subject").val($(this).data("subject"));
-                $("#edit_room").val($(this).data("room"));
-            });
+    $(document).ready(function() {
+        // Populate Edit Modal
+        $(".btn-edit").click(function() {
+            $("#edit_id").val($(this).data("id"));
+            $("#edit_name").val($(this).data("name"));
+            $("#edit_date").val($(this).data("date"));
+            $("#edit_time").val($(this).data("time"));
+            $("#edit_subject").val($(this).data("venue"));
+            $("#edit_room").val($(this).data("room"));
+        });
 
-
-            // Handle Delete
-            $(".btn-delete").click(function() {
-                let id = $(this).data("id");
-                if (confirm("Are you sure you want to delete this exam schedule?")) {
-                    $.post("function.php", { action: "delete", id: id }, function(response) {
-                        alert(response);
-                        location.reload();
-                    });
-                }
-            });
-
-            // Submit Edit Form
-            $("#editScheduleForm").submit(function(e) {
-                e.preventDefault();
-                $.post("edit.php", $(this).serialize() + "&action=edit", function(response) {
+        // Handle Delete
+        $(".btn-delete").click(function() {
+            let id = $(this).data("id");
+            if (confirm("Are you sure you want to delete this exam schedule?")) {
+                $.post("function.php", { action: "delete", id: id }, function(response) {
                     alert(response);
                     location.reload();
                 });
+            }
+        });
+
+        // Submit Edit Form
+        $("#editScheduleForm").submit(function(e) {
+            e.preventDefault();
+            $.post("edit.php", $(this).serialize() + "&action=edit", function(response) {
+                alert(response);
+                location.reload();
             });
         });
-        </script>
+    });
+</script>
 
+<script>
+    $(document).ready(function() {
+        let unavailableDates = [];
 
-  
+        // Fetch unavailable dates from the database
+        $.ajax({
+            url: "fetch_unavailable_dates.php",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                unavailableDates = data;
+            }
+        });
 
+        $("#exam_date").on("change", function() {
+            let selectedDate = $(this).val();
+            if (unavailableDates.includes(selectedDate)) {
+                $("#date-warning").show();
+                $(this).val("");
+            } else {
+                $("#date-warning").hide();
+            }
+        });
 
-    <script>
-        $(document).ready(function() {
-            let unavailableDates = [];
-
-            // Fetch unavailable dates from the database
+        $("#addScheduleForm").submit(function(e) {
+            e.preventDefault();
+            
             $.ajax({
-                url: "fetch_unavailable_dates.php",
-                method: "GET",
-                dataType: "json",
-                success: function(data) {
-                    unavailableDates = data;
+                type: "POST",
+                url: "add_exam.php",
+                data: $(this).serialize(),
+                success: function(response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("AJAX Error: " + error);
                 }
-            });
-
-            $("#exam_date").on("change", function() {
-                let selectedDate = $(this).val();
-                if (unavailableDates.includes(selectedDate)) {
-                    $("#date-warning").show();
-                    $(this).val("");
-                } else {
-                    $("#date-warning").hide();
-                }
-            });
-
-            $("#addScheduleForm").submit(function(e) {
-                e.preventDefault();
-                
-                $.ajax({
-                    type: "POST",
-                    url: "add_exam.php",
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response);
-                        location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        alert("AJAX Error: " + error);
-                    }
-                });
             });
         });
-    </script>
+    });
+</script>
+
 
 
 <?php require_once "../../includes/footer.php"; ?>
@@ -288,7 +285,3 @@ ob_start();
     </script>
 </body>
 </html>
-
-
-
- 

@@ -9,9 +9,9 @@ ob_start();
 include "../../configuration/config.php";
 
 // Fetch data from database
-$takers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tblapplicants"));
+$takers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applicants"));
 $availableSlots = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_exam_schedule"));
-$registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tblapplicant_registration"));
+$registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applicant_registration"));
 ?>
 
 <!DOCTYPE html>
