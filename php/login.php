@@ -11,7 +11,6 @@ require_once "../application/SystemLog.php";
 if (isset($_POST['btn_register'])) {
     $reg_name = mysqli_real_escape_string($con, $_POST['reg_name']);
     $reg_email = mysqli_real_escape_string($con, $_POST['reg_email']);
-    $reg_school_id = mysqli_real_escape_string($con, $_POST['reg_school_id']);
     $reg_username = mysqli_real_escape_string($con, $_POST['reg_username']);
     $reg_password = mysqli_real_escape_string($con, $_POST['reg_password']);
     $confirm_password = mysqli_real_escape_string($con, $_POST['confirm_password']);
@@ -23,8 +22,8 @@ if (isset($_POST['btn_register'])) {
         $hashed_password = password_hash($reg_password, PASSWORD_DEFAULT);
 
         // Insert query
-        $query = "INSERT INTO tbl_users_management (name, email, school_id, username, password, role) 
-                  VALUES ('$reg_name', '$reg_email', '$reg_school_id', '$reg_username', '$hashed_password', '$reg_role')";
+        $query = "INSERT INTO tbl_users_management (name, email,  username, password, role) 
+                  VALUES ('$reg_name', '$reg_email',  '$reg_username', '$hashed_password', '$reg_role')";
 
         if (mysqli_query($con, $query)) {
             echo "<script>alert('Registration successful!'); window.location.href='success.html';</script>";
