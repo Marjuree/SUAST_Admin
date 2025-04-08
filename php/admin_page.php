@@ -154,8 +154,11 @@ require_once "../configuration/config.php";
                             <label>Email</label>
                             <input type="email" class="form-control" name="reg_email" required>
                         </div>
-                       
-                        <div class="form-group">
+                        <!-- <div class="form-group">
+                            <label>School ID</label>
+                            <input type="text" class="form-control" name="reg_school_id" required>
+                        </div> -->
+                        <div class="form-group">    
                             <label>Username</label>
                             <input type="text" class="form-control" name="reg_username" required>
                         </div>
