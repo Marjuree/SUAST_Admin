@@ -46,7 +46,7 @@ ob_start();
 
         <aside class="right-side">
             <section class="content-header">
-                <h1>Request Clearance | Dashboard</h1>
+                <h1>Student Balance | Dashboard</h1>
             </section>
 
             <section class="content">
@@ -54,7 +54,7 @@ ob_start();
                     <div class="box">
                         <div class="box-body">
                             <hr>
-                            <h3>Clearance Requests</h3>
+                            <h3>Student Records</h3>
 
                             <table class="table table-bordered table-striped">
                                 <thead>
