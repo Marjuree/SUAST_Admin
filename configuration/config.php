@@ -1,4 +1,3 @@
-
 <?php
 $dbhost = "bwygtvcqnww3bwtcc8mw-mysql.services.clever-cloud.com";
 $dbusername = "uwfbf1jptm3pg6p0";
@@ -19,16 +18,3 @@ try {
     exit();
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
