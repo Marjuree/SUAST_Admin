@@ -53,7 +53,7 @@ $username = $_SESSION['username'] ?? 'Guest';
                 <div class="modal-body">
                     <?php
                     if ($userid > 0) {
-                        $stmt = $con->prepare("SELECT name, email, school_id, username FROM tbl_users_management WHERE id = ?");
+                        $stmt = $con->prepare("SELECT name, email,  username FROM tbl_users_management WHERE id = ?");
                         $stmt->bind_param("i", $userid);
                         $stmt->execute();
                         $result = $stmt->get_result();
@@ -67,10 +67,7 @@ $username = $_SESSION['username'] ?? 'Guest';
                                 <label>Email:</label>
                                 <input name="txt_email" class="form-control" type="email" value="<?php echo htmlspecialchars($row['email']); ?>" required />
                             </div>
-                            <div class="form-group">
-                                <label>School ID:</label>
-                                <input name="txt_schoolid" class="form-control" type="text" value="<?php echo htmlspecialchars($row['school_id']); ?>" required />
-                            </div>
+                           
                             <div class="form-group">
                                 <label>Username:</label>
                                 <input name="txt_username" class="form-control" type="text" value="<?php echo htmlspecialchars($row['username']); ?>" required />
@@ -108,18 +105,17 @@ $username = $_SESSION['username'] ?? 'Guest';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_saveeditProfile']) && $userid > 0) {
     $name = trim($_POST['txt_name']);
     $email = trim($_POST['txt_email']);
-    $school_id = trim($_POST['txt_schoolid']);
     $username = trim($_POST['txt_username']);
     $password = trim($_POST['txt_password']);
 
-    if (!empty($name) && !empty($email) && !empty($school_id) && !empty($username)) {
+    if (!empty($name) && !empty($email)  && !empty($username)) {
         if (!empty($password)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $con->prepare("UPDATE tbl_users_management SET name = ?, email = ?, school_id = ?, username = ?, password = ? WHERE id = ?");
-            $stmt->bind_param("sssssi", $name, $email, $school_id, $username, $hashed_password, $userid);
+            $stmt = $con->prepare("UPDATE tbl_users_management SET name = ?, email = ?, username = ?, password = ? WHERE id = ?");
+            $stmt->bind_param("sssssi", $name, $email, $username, $hashed_password, $userid);
         } else {
-            $stmt = $con->prepare("UPDATE tbl_users_management SET name = ?, email = ?, school_id = ?, username = ? WHERE id = ?");
-            $stmt->bind_param("ssssi", $name, $email, $school_id, $username, $userid);
+            $stmt = $con->prepare("UPDATE tbl_users_management SET name = ?, email = ?, username = ? WHERE id = ?");
+            $stmt->bind_param("ssssi", $name, $email, $username, $userid);
         }
 
         if ($stmt->execute()) {
