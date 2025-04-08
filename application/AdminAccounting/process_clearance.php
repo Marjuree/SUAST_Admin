@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     if (isset($_POST['approve'])) {
         $status = "Approved";
     } elseif (isset($_POST['disapprove'])) {
-        $status = "Rejected"; // ✅ Fixed: Changed from 'Disapproved' to 'Rejected'
+        $status = "Rejected"; // ✅ Changed 'Disapproved' to 'Rejected'
     } else {
         error_log("Invalid action received for ID: " . $id);
         header("Location: dashboard.php?error=Invalid action");
@@ -24,25 +24,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     // Debugging: Log the status update attempt
     error_log("Updating ID $id to status: $status");
 
-    // Update the status in the database
-    $query = "UPDATE tbl_clearance_requests SET status = ? WHERE id = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("si", $status, $id);
+    // Start a transaction to ensure both updates are done together
+    $con->begin_transaction();
 
-    if ($stmt->execute()) {
+    try {
+        // Update the status in tbl_clearance_requests
+        $query = "UPDATE tbl_clearance_requests SET status = ? WHERE id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("si", $status, $id);
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to update clearance request status: " . $stmt->error);
+        }
+
+        // Retrieve the student_id from tbl_clearance_requests for the given request
+        $query = "SELECT student_id FROM tbl_clearance_requests WHERE id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $student_data = $result->fetch_assoc();
+
+        if ($student_data) {
+            $student_id = $student_data['student_id'];
+
+            // Update the status in tbl_student_users (existing status column)
+            $query = "UPDATE tbl_student_users SET status = ? WHERE school_id = ?";
+            $stmt = $con->prepare($query);
+
+            // Since both student_id and school_id are strings (CHAR and VARCHAR), use "ss" for bind_param
+            $stmt->bind_param("ss", $status, $student_id);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Failed to update student status: " . $stmt->error);
+            }
+        } else {
+            throw new Exception("Student ID not found for clearance request ID: $id");
+        }
+
+        // Commit the transaction if both updates succeed
+        $con->commit();
         error_log("Update successful for ID: $id");
-        header("Location: AccountingDashboard.php?success=Status updated successfully");
+
+        // Redirect back with a success message
+        header("Location: AccountingDashboard.php?success=Status updated successfully to $status");
         exit();
-    } else {
-        error_log("Update failed for ID $id: " . $stmt->error);
-        header("Location: dashboard.php?error=Failed to update status");
+
+    } catch (Exception $e) {
+        // Rollback the transaction if any error occurs
+        $con->rollback();
+        error_log("Error updating status: " . $e->getMessage());
+        header("Location: dashboard.php?error=" . urlencode($e->getMessage()));
         exit();
+    } finally {
+        // Close the statement and connection
+        $stmt->close();
+        $con->close();
     }
 
-    $stmt->close();
-    $con->close();
 } else {
     error_log("Invalid request detected");
     header("Location: dashboard.php?error=Invalid request");
     exit();
 }
+?>
