@@ -3,7 +3,7 @@
 ob_start();
 
 // Include necessary PHP files
-require_once __DIR__ . '/../configuration/config.php';
+require_once "../configuration/config.php";
 ?>
 
 <!DOCTYPE html>
@@ -125,6 +125,12 @@ require_once __DIR__ . '/../configuration/config.php';
     .title {
         color: white !important;
         text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    }
+    .modal-body input{
+        border-radius: 30px !important;
+    }
+    .form-control{
+        border-radius: 30px !important;
     }
     </style>
 
