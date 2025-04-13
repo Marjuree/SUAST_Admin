@@ -3,7 +3,7 @@
 ob_start();
 
 // Include necessary PHP files
-require_once "../configuration/config.php";
+require_once __DIR__ . '/../configuration/config.php';
 ?>
 
 <!DOCTYPE html>
