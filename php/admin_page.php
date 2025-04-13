@@ -142,7 +142,7 @@ require_once "../configuration/config.php";
         <!-- Welcome Section -->
         <div class="welcome-container">
             <img src="../img/logo1.png" alt="SUAST Logo" class="logo">
-            <p class="title"><strong>WELCOME TO THE ADMIN OFFICE SITE</strong></p>
+            <p class="title"><strong>Welcome to the Admin Office Site</strong></p>
         </div>
 
         <div class="buttons-container">
