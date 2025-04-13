@@ -82,10 +82,10 @@ require_once "../configuration/config.php";
 
     .button {
         font-size: 1.1em;
-        background-color: #00bcd4;
+        background-color: #02457A;
         color: white;
         padding: 14px 28px;
-        border: none;
+        border: 3px solid white;
         border-radius: 50px;
         transition: all 0.3s ease-in-out;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -98,7 +98,7 @@ require_once "../configuration/config.php";
     }
 
     .button:hover {
-        background-color: #0097a7;
+        background-color: #018ABE;
         transform: translateY(-2px);
         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
     }
