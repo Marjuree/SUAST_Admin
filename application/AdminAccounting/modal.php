@@ -72,52 +72,7 @@
     </div>
 
 
-    <!-- Student Record and Balances Modal -->
-<div class="modal fade" id="studentBalanceModal" tabindex="-1" role="dialog" aria-labelledby="studentBalanceLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="studentBalanceLabel">Student Record and Balances</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Student Records Table -->
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Student ID</th>
-                            <th>Name</th>
-                            <th>Course</th>
-                            <th>Balance</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        // Fetch student balances from the database
-                        $query = "SELECT student_id, CONCAT(first_name, ' ', last_name) AS name, course, balance FROM tbl_students";
-                        $result = mysqli_query($con, $query);
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<tr>
-                                    <td>{$row['student_id']}</td>
-                                    <td>{$row['name']}</td>
-                                    <td>{$row['course']}</td>
-                                    <td>₱{$row['balance']}</td>
-                                    <td><button class='btn btn-primary btn-sm'>View</button></td>
-                                  </tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+    
 
 
 
