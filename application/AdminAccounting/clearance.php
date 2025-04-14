@@ -48,10 +48,10 @@ ob_start();
 
 <body class="skin-blue">
     <?php 
-    require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php'); 
+        require_once('../../includes/header.php');
+        require_once('../../includes/head_css.php');
     ?>
-
+    
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <?php require_once('../../includes/sidebar.php'); ?>
 
