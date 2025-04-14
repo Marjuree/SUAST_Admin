@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// Check if the session role is set, otherwise redirect
 if (!isset($_SESSION['role'])) {
     header("Location: ../../php/error.php?welcome=Please login to access this page");
     exit();
@@ -7,7 +9,7 @@ if (!isset($_SESSION['role'])) {
 
 require_once "../../configuration/config.php"; // Ensure database connection
 
-ob_start();
+ob_start(); // Start output buffering to avoid "headers already sent" errors
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +20,7 @@ ob_start();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Clearance Requests | Dashboard</title>
 
+    <!-- Include FontAwesome and other necessary CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
@@ -26,32 +29,33 @@ ob_start();
     <link rel="shortcut icon" href="../../img/favicon.png" />
 
     <style>
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .table th,
-    .table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    @media (max-width: 768px) {
         .table-responsive {
-            margin-bottom: 15px;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
-    }
+
+        .table th,
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                margin-bottom: 15px;
+            }
+        }
     </style>
 </head>
 
 <body class="skin-blue">
     <?php 
+        // Include the header and CSS for the page
         require_once('../../includes/header.php');
         require_once('../../includes/head_css.php');
     ?>
-    
+
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <?php require_once('../../includes/sidebar.php'); ?>
 
@@ -140,14 +144,17 @@ ob_start();
         </aside>
     </div>
 
-
-
     <?php require_once "modal.php"; ?>
     <?php require_once "../../includes/footer.php"; ?>
 
+    <!-- Include necessary JS files -->
     <script src="../../vendors/js/vendor.bundle.base.js"></script>
     <script src="../../js/off-canvas.js"></script>
     <script src="../../js/hoverable-collapse.js"></script>
 </body>
 
 </html>
+
+<?php
+ob_end_flush(); // End output buffering
+?>
