@@ -53,7 +53,6 @@ ob_start(); // Start output buffering to avoid "headers already sent" errors
     <?php 
         // Include the header and CSS for the page
         require_once('../../includes/header.php');
-        require_once('../../includes/head_css.php');
     ?>
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
