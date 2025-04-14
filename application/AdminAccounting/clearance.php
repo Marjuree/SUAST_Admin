@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// Check if the session role is set, otherwise redirect
 if (!isset($_SESSION['role'])) {
     header("Location: ../../php/error.php?welcome=Please login to access this page");
     exit();
@@ -9,18 +7,16 @@ if (!isset($_SESSION['role'])) {
 
 require_once "../../configuration/config.php"; // Ensure database connection
 
-ob_start(); // Start output buffering to avoid "headers already sent" errors
+ob_start();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Clearance Requests | Dashboard</title>
-
-    <!-- Include FontAwesome and other necessary CSS -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
@@ -29,40 +25,25 @@ ob_start(); // Start output buffering to avoid "headers already sent" errors
     <link rel="shortcut icon" href="../../img/favicon.png" />
 
     <style>
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .table th,
-        .table td {
-            text-align: center;
+        .table th, .table td {
+            text-align: center; /* Center table content */
             vertical-align: middle;
-        }
-
-        @media (max-width: 768px) {
-            .table-responsive {
-                margin-bottom: 15px;
-            }
         }
     </style>
 </head>
-
 <body class="skin-blue">
     <?php 
-        // Include the header and CSS for the page
-        require_once('../../includes/header.php');
+    require_once('../../includes/header.php');
     ?>
-
+    
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <?php require_once('../../includes/sidebar.php'); ?>
-
+        
         <aside class="right-side">
             <section class="content-header">
                 <h1>Request Clearance | Dashboard</h1>
             </section>
-
+            
             <section class="content">
                 <div class="row">
                     <div class="box">
@@ -70,21 +51,19 @@ ob_start(); // Start output buffering to avoid "headers already sent" errors
                             <hr>
                             <h3>Clearance Requests</h3>
 
-                            <!-- Make the table responsive to small screen sizes -->
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Student ID</th>
-                                            <th>Student Name</th>
-                                            <th>Status</th>
-                                            <th>Date Requested</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Student ID</th>
+                                        <th>Student Name</th>
+                                        <th>Status</th>
+                                        <th>Date Requested</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
                                     $query = "
                                         SELECT cr.id, cr.student_id, 
                                                COALESCE(su.full_name, 'Unknown Student') AS full_name, 
@@ -110,32 +89,26 @@ ob_start(); // Start output buffering to avoid "headers already sent" errors
                                             <td><?= htmlspecialchars($row['date_requested']) ?></td>
                                             <td>
                                                 <?php if ($status === "Pending") : ?>
-                                                <form method="POST" action="process_clearance.php">
-                                                    <input type="hidden" name="id"
-                                                        value="<?= htmlspecialchars($row['id']) ?>">
-                                                    <button type="submit" name="approve"
-                                                        class="btn btn-success">Approve</button>
-                                                    <button type="submit" name="disapprove"
-                                                        class="btn btn-danger">Disapprove</button>
-                                                </form>
+                                                    <form method="POST" action="process_clearance.php">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                                                        <button type="submit" name="approve" class="btn btn-success">Approve</button>
+                                                        <button type="submit" name="disapprove" class="btn btn-danger">Disapprove</button>
+                                                    </form>
+                                                <?php elseif ($status === "Approved") : ?>
+                                                    <form method="POST" action="generate_clearance.php" target="_blank">
+                                                        <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                                                        <button type="submit" name="generate_clearance" class="btn btn-primary">
+                                                            <i class="fas fa-file-alt"></i> Generate Clearance
+                                                        </button>
+                                                    </form>
                                                 <?php else: ?>
-                                                <!-- For Approved and Disapproved, the buttons will still appear -->
-                                                <form method="POST" action="process_clearance.php">
-                                                    <input type="hidden" name="id"
-                                                        value="<?= htmlspecialchars($row['id']) ?>">
-                                                    <button type="submit" name="approve"
-                                                        class="btn btn-success">Approve</button>
-                                                    <button type="submit" name="disapprove"
-                                                        class="btn btn-danger">Disapprove</button>
-                                                </form>
+                                                    <span class="text-muted">No actions available</span>
                                                 <?php endif; ?>
                                             </td>
-
                                         </tr>
-                                        <?php endwhile; ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -143,17 +116,12 @@ ob_start(); // Start output buffering to avoid "headers already sent" errors
         </aside>
     </div>
 
+
     <?php require_once "modal.php"; ?>
     <?php require_once "../../includes/footer.php"; ?>
-
-    <!-- Include necessary JS files -->
+    
     <script src="../../vendors/js/vendor.bundle.base.js"></script>
     <script src="../../js/off-canvas.js"></script>
     <script src="../../js/hoverable-collapse.js"></script>
 </body>
-
 </html>
-
-<?php
-ob_end_flush(); // End output buffering
-?>
