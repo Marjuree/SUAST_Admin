@@ -17,22 +17,65 @@
     <link rel="shortcut icon" href="../../img/favicon.png" />
     
     <style>
-        .chat-container {
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #f9f9f9;
+        body {
+            background: linear-gradient(to right, #eef2f3, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .chat-message {
-            background-color: #d1e7dd;
-            padding: 8px;
-            border-radius: 5px;
-            margin-bottom: 5px;
+
+        .announcement-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        .chat-meta {
-            font-size: 12px;
-            color: gray;
+
+        .announcement-container img {
+            width: 80px;
+            margin-bottom: 15px;
+        }
+
+        .announcement-container h1 {
+            font-size: 36px;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .announcement-container p {
+            font-size: 16px;
+            color: #444;
+            margin: 10px 0 20px;
+        }
+
+        .notice-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #2196f3;
+            color: #fff;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .notice-btn:hover {
+            background: #1769aa;
+        }
+
+        .announcement-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .announcement-footer strong {
+            display: block;
+            color: #111;
         }
     </style>
 </head>
@@ -59,7 +102,7 @@
                             <button class="btn btn-primary" data-toggle="modal" data-target="#announcementModal">
                                 New Announcement
                             </button>
-
+                            <hr>
                             
                             
                             <div class="chat-container mt-3" id="announcementList">
@@ -100,7 +143,7 @@
                     <div class="form-group">
                         <label for="roleInput">Office of:</label>
                         <select id="roleInput" class="form-control">
-                            <option value="SUAST">SUAST</option>
+                            <option value="Accounting">Accounting</option>
                         </select>
                     </div>
                 </div>
@@ -132,58 +175,58 @@
         }
         
         function sendMessage() {
-    let adminName = document.getElementById("adminName").value.trim();
-    let messageText = document.getElementById("messageInput").value.trim();
-    let status = document.getElementById("statusInput").value;
-    let role = document.getElementById("roleInput").value;
+        let adminName = document.getElementById("adminName").value.trim();
+        let messageText = document.getElementById("messageInput").value.trim();
+        let status = document.getElementById("statusInput").value;
+        let role = document.getElementById("roleInput").value;
 
-    if (adminName !== "" && messageText !== "") {
-        let formData = new URLSearchParams();
-        formData.append("admin_name", adminName);
-        formData.append("message", messageText);
-        formData.append("status", status);
-        formData.append("role", role);
+        if (adminName !== "" && messageText !== "") {
+            let formData = new URLSearchParams();
+            formData.append("admin_name", adminName);
+            formData.append("message", messageText);
+            formData.append("status", status);
+            formData.append("role", role);
 
-        fetch("announcement_post.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: formData.toString()
-        })
-        .then(response => response.text())
-        .then(data => {
-            if (data.includes("success")) {
-                // Clear fields
-                document.getElementById("adminName").value = "";
-                document.getElementById("messageInput").value = "";
+            fetch("announcement_post.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: formData.toString()
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.includes("success")) {
+                    // Clear fields
+                    document.getElementById("adminName").value = "";
+                    document.getElementById("messageInput").value = "";
 
-                // Refresh announcements
-                fetchAnnouncements();
+                    // Refresh announcements
+                    fetchAnnouncements();
 
-                // Close the modal (for Bootstrap 4)
-                $('#announcementModal').modal('hide');
-            } else {
-                alert("Failed to send: " + data);
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    } else {
-        alert("Please fill in all fields.");
+                    // Close the modal (for Bootstrap 4)
+                    $('#announcementModal').modal('hide');
+                } else {
+                    alert("Failed to send: " + data);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        } else {
+            alert("Please fill in all fields.");
+        }
     }
-}
 
-    </script>
+        </script>
+        
+        <?php include "../../includes/footer.php"; ?>
+        
     
-    <?php include "../../includes/footer.php"; ?>
-    
- 
-    
-    <script type="text/javascript">
-        $(function() {
-            $("#table").dataTable({
-                "aoColumnDefs": [{ "bSortable": false, "aTargets": [0, 5] }],
-                "aaSorting": []
+        
+        <script type="text/javascript">
+            $(function() {
+                $("#table").dataTable({
+                    "aoColumnDefs": [{ "bSortable": false, "aTargets": [0, 5] }],
+                    "aaSorting": []
+                });
             });
-        });
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+    </html>
