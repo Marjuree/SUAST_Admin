@@ -142,23 +142,12 @@ ob_start();
 
 
 
-  <?php require_once "modal.php"; ?>
-<?php require_once "../../includes/footer.php"; ?>
+    <?php require_once "modal.php"; ?>
+    <?php require_once "../../includes/footer.php"; ?>
 
-<!-- Load jQuery BEFORE other scripts that depend on it -->
-<script src="../../js/jquery-1.12.3.js"></script>
-
-<!-- Bootstrap JS (depends on jQuery) -->
-<script src="../../js/bootstrap.min.js"></script>
-
-<!-- AdminLTE App (required for sidebar toggle) -->
-<script src="../../js/AdminLTE/app.js"></script> <!-- Make sure this path is correct -->
-
-<!-- Optional scripts (only if you're using them) -->
-<script src="../../vendors/js/vendor.bundle.base.js"></script>
-<script src="../../js/off-canvas.js"></script>
-<script src="../../js/hoverable-collapse.js"></script>
+    <script src="../../vendors/js/vendor.bundle.base.js"></script>
+    <script src="../../js/off-canvas.js"></script>
+    <script src="../../js/hoverable-collapse.js"></script>
 </body>
-
 
 </html>
