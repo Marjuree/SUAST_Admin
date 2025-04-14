@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['role'])) {
+    header("Location: ../../php/error.php?welcome=Please login to access this page");
+    exit();
+}
+
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
