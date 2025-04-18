@@ -193,9 +193,9 @@ ob_start();
                                     if ($result && mysqli_num_rows($result) > 0) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                    <td>" . htmlspecialchars($row['name']) . "</td>
+                                                    <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['exam_date']) . "</td>
-                                                    <td>" . htmlspecialchars($row['exam_time']) . "</td>
+                                                    <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['room']) . "</td>
                                                     <td>" . htmlspecialchars($row['venue']) . "</td>
                                                     <td class='text-center'>
@@ -209,7 +209,7 @@ ob_start();
                                                             <input type='hidden' name='status' value='rejected'>
                                                             <button type='submit' class='btn btn-warning btn-sm'>Reject</button>
                                                         </form>
-                                                        <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status']) . "</small></div>
+                                                        <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
                                                     </td>
                                                     <td>
                                                         <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#setScheduleModal' data-id='{$row['id']}'>Set Schedule</button>
