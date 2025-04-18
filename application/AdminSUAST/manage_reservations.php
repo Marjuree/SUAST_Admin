@@ -195,6 +195,7 @@ ob_start();
                                             echo "<tr>
                                                     <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
+                                                    <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['room']) . "</td>
                                                     <td>" . htmlspecialchars($row['venue']) . "</td>
                                                     <td class='text-center'>
