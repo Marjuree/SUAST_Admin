@@ -108,7 +108,7 @@ ob_start();
                                                     <button type="submit" name="approve"
                                                         class="btn btn-success">Approve</button>
                                                     <button type="submit" name="disapprove"
-                                                        class="btn btn-danger">Disapprove</button>
+                                                        class="btn btn-danger">Rejected</button>
                                                 </form>
                                                 <?php else: ?>
                                                 <!-- For Approved and Disapproved, the buttons will still appear -->
@@ -118,7 +118,7 @@ ob_start();
                                                     <button type="submit" name="approve"
                                                         class="btn btn-success">Approve</button>
                                                     <button type="submit" name="disapprove"
-                                                        class="btn btn-danger">Disapprove</button>
+                                                        class="btn btn-danger">Rejected</button>
                                                 </form>
                                                 <?php endif; ?>
                                             </td>
