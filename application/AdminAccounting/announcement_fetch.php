@@ -4,7 +4,7 @@ require_once "../../configuration/config.php";
 // Fetch only announcements where role is 'SUAST'
 $sql = "SELECT admin_name, message, status, role, created_at 
         FROM tbl_announcement 
-        WHERE role = 'SUAST' 
+        WHERE role = 'Accounting' 
         ORDER BY created_at DESC";
 
 $result = $con->query($sql);
