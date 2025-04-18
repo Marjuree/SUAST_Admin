@@ -194,7 +194,6 @@ ob_start();
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                     <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
-                                                    <td>" . htmlspecialchars($row['exam_date']) . "</td>
                                                     <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['room']) . "</td>
                                                     <td>" . htmlspecialchars($row['venue']) . "</td>
