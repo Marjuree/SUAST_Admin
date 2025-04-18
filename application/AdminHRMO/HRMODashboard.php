@@ -52,10 +52,11 @@ $username = $_SESSION['first_name'] ?? 'User';
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <title>HRMO | Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>HRMO | Dash</title>
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <script src="../../assets/chart.js"></script>
     <style>
@@ -85,16 +86,18 @@ $username = $_SESSION['first_name'] ?? 'User';
         }
     </style>
 </head>
+
 <body class="skin-blue">
-<?php 
-    require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php'); 
-?>
+    <?php 
+       require_once('../../includes/header.php');
+       require_once('../../includes/head_css.php'); 
 
-<div class="wrapper row-offcanvas row-offcanvas-left">
-    <?php require_once('../../includes/sidebar.php'); ?>
-
-    <aside class="right-side">
+    ?>
+    
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <?php require_once('../../includes/sidebar.php'); ?>
+        
+        <aside class="right-side">
         <section class="content-header">
             <h1>Dashboard</h1>
             <p>Welcome, <strong><?php echo htmlspecialchars($username); ?></strong></p>
@@ -190,9 +193,9 @@ $username = $_SESSION['first_name'] ?? 'User';
             </div>
         </section>
     </aside>
-</div>
-
-<script>
+    </div>
+    
+    <script>
     // Chart configs
     const options = {
         responsive: true,
@@ -270,5 +273,6 @@ $username = $_SESSION['first_name'] ?? 'User';
     });
 </script>
 
+    <?php require_once "../../includes/footer.php"; ?>
 </body>
 </html>
