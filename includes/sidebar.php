@@ -95,7 +95,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!-- Sidebar Styles -->
 <style>
 .custom-sidebar {
-    width: 240px;
+    width: 220px;
     background-color: #002B5B;
     color: #fff;
     height: 100vh;
