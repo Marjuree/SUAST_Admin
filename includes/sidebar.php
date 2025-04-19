@@ -17,18 +17,19 @@ function secure_output($data) {
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<!-- Font Awesome (icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<aside  class="left-side sidebar-offcanvas">
-    <section class="sidebar">
+<!-- Sidebar (Styled) -->
+<aside class="custom-sidebar" id="sidebar">
+    <section class="sidebar-content">
         <div class="user-panel">
-            <div class="pull-left info" style="margin-top:70px;">
+            <div class="user-info">
                 <h4>Hello <?php echo htmlspecialchars($role); ?></h4>
             </div>
         </div>
 
-        <ul  class="sidebar-menu">
+        <ul class="custom-sidebar-menu">
             <?php
             // Define role-based menu items
             $menu_items = [
@@ -41,7 +42,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     ["link" => "../AdminSUAST/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
                 ],
                 "Accounting" => [
-                    ["link" => "../AdminAccounting/Accountingdashboard.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
+                    ["link" => "../AdminAccounting/AccountingDashboard.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
                     ["link" => "../AdminAccounting/clearance.php", "icon" => "fa-clipboard-check", "label" => "Clearance Request"],
                     ["link" => "../AdminAccounting/student_balances.php", "icon" => "fa-book", "label" => "Student Record"],
                     ["link" => "../AdminAccounting/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
@@ -58,9 +59,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     ["link" => "#", "icon" => "fa-file-alt", "label" => "Request Clearance", "class" => "toggle-table", "data" => "requestClearance"],
                     ["link" => "#", "icon" => "fa-file", "label" => "Request Permit", "class" => "toggle-table", "data" => "requestPermit"],
                 ],
-                
                 "Applicant" => [
-                    ["link" => "../Applicant Users/dashboard.php", "icon" => "fas fa-tachometer-alt", "label" => "Dashboard"],
+                    ["link" => "../Applicant Users/dashboard.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
                     ["link" => "../Applicant Users/exam_schedule.php", "icon" => "fa-calendar-check", "label" => "Slot Reservation"],
                     ["link" => "../Applicant Users/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
                     ["link" => "../Applicant Users/contact.php", "icon" => "fa-envelope", "label" => "Contact Us"],
@@ -73,9 +73,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     $link = secure_output($item['link']);
                     $icon = secure_output($item['icon']);
                     $label = secure_output($item['label']);
-                    $is_active = (basename($link) == $current_page) ? "active" : ""; // Check if the menu item is active
-                    
-                    echo "<li class='$is_active'><a href='$link'><i class='fa $icon'></i> <span>$label</span></a></li>";
+                    $is_active = (basename($link) == $current_page) ? "active" : "";
+
+                    echo "<li class='$is_active'>
+                            <a href='$link'>
+                                <i class='fa $icon'></i>
+                                <span>$label</span>
+                            </a>
+                          </li>";
                 }
             }
             ?>
@@ -86,14 +91,77 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </section>
 </aside>
 
+
+<!-- Sidebar Styles -->
 <style>
-/* Highlight the active menu */
-.sidebar-menu li.active {
-    background-color: #007bff !important;
+.custom-sidebar {
+    width: 240px;
+    background-color: #002B5B;
     color: #fff;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease;
 }
 
-.sidebar-menu li.active a {
-    color: #fff;
+.custom-sidebar.sidebar-collapsed {
+    transform: translateX(-100%); /* Sidebar is hidden by default when collapsed */
 }
+
+.custom-sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-sidebar-menu li {
+    transition: background 0.3s;
+}
+
+.custom-sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    border-left: 4px solid transparent;
+}
+
+.custom-sidebar-menu li a i {
+    margin-right: 12px;
+    font-size: 18px;
+    width: 25px;
+    text-align: center;
+}
+
+.custom-sidebar-menu li:hover,
+.custom-sidebar-menu li.active {
+    background-color: #0056b3;
+}
+
+.custom-sidebar-menu li.active a {
+    font-weight: bold;
+    border-left: 4px solid #FFD700;
+}
+
+@media (max-width: 768px) {
+    .custom-sidebar {
+        transform: translateX(-100%); 
+    }
+
+    .custom-sidebar.active {
+        transform: translateX(0); 
+    }
+
+    /* Show sidebar when active */
+    .custom-sidebar.sidebar-collapsed {
+        transform: translateX(0); 
+    }
+}
+
 </style>
