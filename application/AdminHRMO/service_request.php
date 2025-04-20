@@ -19,6 +19,9 @@ ob_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body class="skin-blue">
@@ -49,7 +52,6 @@ ob_start();
                                 <br>
                                 <div class="box-body">
                                     <?php
-                                    // Fetch all service requests
                                     $query = "SELECT id, request_type, date_request, name, faculty, reason, request_status, created_at 
                                               FROM tbl_service_requests ORDER BY created_at DESC";
                                     $stmt = $con->prepare($query);
@@ -87,13 +89,10 @@ ob_start();
                                                     </td>
                                                     <td><?= htmlspecialchars($row['created_at']) ?></td>
                                                     <td>
-                                                        <form method="POST" action="update_service.php">
-                                                            <input type="hidden" name="request_id"
-                                                                value="<?= htmlspecialchars($row['id']) ?>">
-                                                            <button type="submit" name="approve"
-                                                                class="btn btn-success btn-sm">Approve</button>
-                                                            <button type="submit" name="disapprove"
-                                                                class="btn btn-danger btn-sm">Disapprove</button>
+                                                        <form method="POST" action="update_service.php" class="action-form">
+                                                            <input type="hidden" name="request_id" value="<?= htmlspecialchars($row['id']) ?>">
+                                                            <button type="button" class="btn btn-success btn-sm approve-btn">Approve</button>
+                                                            <button type="button" class="btn btn-danger btn-sm disapprove-btn">Disapprove</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -113,10 +112,61 @@ ob_start();
 
     <?php require_once "../../includes/footer.php"; ?>
 
-
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/off-canvas.js"></script>
     <script src="../../js/hoverable-collapse.js"></script>
     <script src="../../js/chart.js"></script>
+
+    <script>
+        document.querySelectorAll('.approve-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Approve Request?',
+                    text: "This action will approve the service request.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Approve'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'approve';
+                        form.appendChild(input);
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.disapprove-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Disapprove Request?',
+                    text: "This action will disapprove the service request.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, Disapprove'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'disapprove';
+                        form.appendChild(input);
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
