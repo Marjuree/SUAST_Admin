@@ -12,9 +12,12 @@ ob_start();
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exam Reservation</title>
     <link rel="stylesheet" href="../../css/exam_schedule.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
 </head>
 <style>
 /* Default: Hide header */
@@ -99,10 +102,10 @@ ob_start();
 </style>
 
 <body class="skin-blue">
-    <?php 
+    <?php
     require_once "../../configuration/config.php";
     require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php'); 
+    require_once('../../includes/head_css.php');
     ?>
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -117,7 +120,6 @@ ob_start();
                 <div class="box">
                     <div class="box-header d-flex justify-content-between align-items-center">
                         <form action="" method="GET">
-                            <!-- Changed POST to GET for filtering -->
                             <label for="nameFilter">Find by Name:</label>
                             <input type="text" name="nameFilter" id="nameFilter" class="form-control"
                                 style="width: 200px; display: inline-block;" placeholder="Enter Name"
@@ -196,6 +198,7 @@ ob_start();
                                                     <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
+
                                                     <td>" . htmlspecialchars($row['room']) . "</td>
                                                     <td>" . htmlspecialchars($row['venue']) . "</td>
                                                     <td class='text-center'>
@@ -325,17 +328,25 @@ ob_start();
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-                    alert(response);
-                    location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response,
+                    }).then(() => {
+                        location.reload();
+                    });
                 },
                 error: function() {
-                    alert("❌ Error updating the schedule.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Error updating the schedule.',
+                    });
                 }
             });
-
         });
     });
     </script>
 </body>
 
-</html>
+</html
