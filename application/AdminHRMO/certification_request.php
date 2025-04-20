@@ -25,6 +25,9 @@ ob_start();
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="../../img/favicon.png" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="skin-blue">
@@ -96,11 +99,8 @@ ob_start();
                                                         </td>
                                                         <td><?= htmlspecialchars($row['created_at']) ?></td>
                                                         <td>
-                                                            <form action="update_cert.php" method="POST">
-                                                                <input type="hidden" name="request_id" value="<?= $row['id'] ?>">
-                                                                <button type="submit" name="approve" class="btn btn-success btn-sm">Approve</button>
-                                                                <button type="submit" name="disapprove" class="btn btn-danger btn-sm">Disapprove</button>
-                                                            </form>
+                                                            <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['id'] ?>">Approve</button>
+                                                            <button class="btn btn-danger btn-sm disapprove-btn" data-id="<?= $row['id'] ?>">Disapprove</button>
                                                         </td>
                                                     </tr>
                                                 <?php endwhile; ?>
@@ -126,13 +126,42 @@ ob_start();
     <script src="../../js/chart.js"></script>
 
     <script type="text/javascript">
-        $(function() {
-            $("#table").dataTable({
-                "aoColumnDefs": [{
-                    "bSortable": false,
-                    "aTargets": [0, 5]
-                }],
-                "aaSorting": []
+        // SweetAlert2 for approve and disapprove buttons
+        document.querySelectorAll('.approve-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const requestId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to approve this request.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, approve it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `update_cert.php?request_id=${requestId}&approve=true`;
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.disapprove-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const requestId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to disapprove this request.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, disapprove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `update_cert.php?request_id=${requestId}&disapprove=true`;
+                    }
+                });
             });
         });
     </script>
