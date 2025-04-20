@@ -15,7 +15,7 @@ ob_start();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>HRMO | Dash</title>
 
-    <!-- For Unauthorize Icon -->
+    <!-- For Unauthorized Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Base CSS -->
@@ -23,6 +23,9 @@ ob_start();
     <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="skin-blue">
@@ -50,17 +53,7 @@ ob_start();
                                 </div>
                                 <br>
                                 
-                                <?php 
-                                // Display session messages for success or error
-                                if (isset($_SESSION['message'])) {
-                                    echo '<div class="alert alert-success">' . $_SESSION['message'] . '</div>';
-                                    unset($_SESSION['message']);
-                                }
-                                if (isset($_SESSION['error'])) {
-                                    echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
-                                    unset($_SESSION['error']);
-                                }
-                                ?>
+                                
 
                                 <div class="box-body">
                                     <?php
@@ -109,11 +102,8 @@ ob_start();
                                                         <td><span class="badge bg-info"><?= htmlspecialchars($row['request_status']) ?></span></td>
                                                         <td><?= htmlspecialchars($row['created_at']) ?></td>
                                                         <td>
-                                                            <form action="update_status.php" method="POST">
-                                                                <input type="hidden" name="request_id" value="<?= $row['id'] ?>">
-                                                                <button type="submit" name="approve" class="btn btn-success btn-sm">Approve</button>
-                                                                <button type="submit" name="disapprove" class="btn btn-danger btn-sm">Disapprove</button>
-                                                            </form>
+                                                            <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['id'] ?>">Approve</button>
+                                                            <button class="btn btn-danger btn-sm disapprove-btn" data-id="<?= $row['id'] ?>">Disapprove</button>
                                                         </td>
                                                     </tr>
                                                 <?php endwhile; ?>
@@ -140,15 +130,45 @@ ob_start();
     <script src="../../js/chart.js"></script>
     
     <script type="text/javascript">
-        $(function() {
-            $("#table").dataTable({
-                "aoColumnDefs": [{
-                    "bSortable": false,
-                    "aTargets": [0, 5]
-                }],
-                "aaSorting": []
+        // SweetAlert2 for approve and disapprove buttons
+        document.querySelectorAll('.approve-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const requestId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to approve this leave request.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, approve it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `update_status.php?request_id=${requestId}&approve=true`;
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.disapprove-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const requestId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to disapprove this leave request.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, disapprove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `update_status.php?request_id=${requestId}&disapprove=true`;
+                    }
+                });
             });
         });
     </script>
 </body>
+
 </html>
