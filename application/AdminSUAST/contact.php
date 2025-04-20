@@ -1,12 +1,11 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['role'])) {
-        header("Location: ../../php/error.php?welcome=Please login to access this page");
-        exit();
-    }
-    ob_start();
-    
-    ?>
+session_start();
+if (!isset($_SESSION['role'])) {
+    header("Location: ../../php/error.php?welcome=Please login to access this page");
+    exit();
+}
+ob_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,12 +15,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../../css/exam_schedule.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="skin-blue">
     <?php 
-         require_once('../../includes/header.php');
-         require_once('../../includes/head_css.php');
+        require_once('../../includes/header.php');
+        require_once('../../includes/head_css.php');
     ?>
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -44,19 +45,25 @@
                                 </div>
                                 <div class="contact-container mt-3 table-responsive" id="contactList">
                                     <?php
-                        $query = "SELECT * FROM tbl_contact";
-                        $result = mysqli_query($con, $query);
-                        if (mysqli_num_rows($result) > 0) {
-                            echo "<table class='table table-bordered table-striped'>";
-                            echo "<thead class='thead-dark'><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody>";
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<tr><td>{$row['name']}</td><td>{$row['email']}</td><td>{$row['phone']}</td></tr>";
-                            }
-                            echo "</tbody></table>";
-                        } else {
-                            echo "<p class='text-muted'>No contact details found.</p>";
-                        }
-                        ?>
+                                    // Fetch the contacts from the database
+                                    $query = "SELECT * FROM tbl_contact";
+                                    $result = mysqli_query($con, $query);
+                                    if (mysqli_num_rows($result) > 0) {
+                                        echo "<table class='table table-bordered table-striped'>";
+                                        echo "<thead class='thead-dark'><tr><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr></thead><tbody>";
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<tr>
+                                                    <td>{$row['name']}</td>
+                                                    <td>{$row['email']}</td>
+                                                    <td>{$row['phone']}</td>
+                                                    <td><button class='btn btn-danger delete-btn' data-id='{$row['id']}'>Delete</button></td>
+                                                  </tr>";
+                                        }
+                                        echo "</tbody></table>";
+                                    } else {
+                                        echo "<p class='text-muted'>No contact details found.</p>";
+                                    }
+                                    ?>
                                 </div>
 
                                 <!-- Add Contact Modal -->
@@ -105,6 +112,32 @@
     </div>
 
     <?php require_once "../../includes/footer.php"; ?>
+
+    <!-- Script to handle delete action -->
+    <script>
+        // Add event listener for all delete buttons
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const contactId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Send the delete request to PHP via AJAX
+                        window.location.href = `delete_contact.php?id=${contactId}`;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
