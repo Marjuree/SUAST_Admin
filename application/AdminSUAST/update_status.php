@@ -14,14 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
     // Execute the statement and check if it is successful
     if ($stmt->execute()) {
         $message = "✅ Status updated successfully.";
+        $alertType = 'success';  // SweetAlert2 Success
     } else {
         $message = "❌ Error updating status.";
+        $alertType = 'error';    // SweetAlert2 Error
     }
 
     // Close the statement
     $stmt->close();
 } else {
     $message = "❌ Invalid request.";
+    $alertType = 'error';  // SweetAlert2 Error
 }
 ?>
 
@@ -30,10 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
 <head>
     <meta charset="UTF-8">
     <title>Processing...</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 CDN -->
     <script>
-        setTimeout(function () {
-            window.location.href = "manage_reservations.php"; 
-        }, 2000); // Delay for 2 seconds
+        window.onload = function() {
+            Swal.fire({
+                icon: '<?php echo $alertType; ?>',
+                title: '<?php echo htmlspecialchars($message); ?>',
+                showConfirmButton: false,
+                timer: 2000 // Close the alert after 2 seconds
+            }).then(function() {
+                window.location.href = "manage_reservations.php"; // Redirect after alert
+            });
+        };
     </script>
     <style>
         body {
@@ -41,19 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
             text-align: center;
             margin-top: 100px;
         }
-        .message-box {
-            display: inline-block;
-            padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
     </style>
 </head>
 <body>
-    <div class="message-box">
-        <h2><?php echo htmlspecialchars($message); ?></h2>
-        <p>Redirecting to reservation list...</p>
-    </div>
+    <!-- The body will not display anything as the alert is shown via SweetAlert2 -->
 </body>
 </html>
