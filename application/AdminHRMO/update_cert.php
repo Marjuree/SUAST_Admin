@@ -7,21 +7,23 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['request_id'])) {
-    $request_id = $_POST['request_id'];
-    $status = isset($_POST['approve']) ? 'Approved' : 'Disapproved';
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['request_id'])) {
+    $request_id = $_GET['request_id'];
+    $status = isset($_GET['approve']) ? 'Approved' : (isset($_GET['disapprove']) ? 'Disapproved' : null);
 
-    $query = "UPDATE tbl_certification_requests SET request_status = ? WHERE id = ?";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("si", $status, $request_id);
+    if ($status) {
+        $query = "UPDATE tbl_certification_requests SET request_status = ? WHERE id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("si", $status, $request_id);
 
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "Certification request has been $status successfully.";
-    } else {
-        $_SESSION['error'] = "Failed to update certification request.";
+        if ($stmt->execute()) {
+            $_SESSION['message'] = "Certification request has been $status successfully.";
+        } else {
+            $_SESSION['error'] = "Failed to update certification request.";
+        }
+
+        $stmt->close();
     }
-
-    $stmt->close();
     $con->close();
 }
 
