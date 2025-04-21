@@ -27,12 +27,17 @@ ob_start();
         -webkit-overflow-scrolling: touch;
     }
 
-    .table th,
+    
     .table td {
         text-align: center;
         vertical-align: middle;
     }
-
+ .table th{
+            text-align: center;
+            background-color: #343A40;
+            color: white;
+            vertical-align: middle;
+        }
     @media (max-width: 768px) {
         .table-responsive {
             margin-bottom: 15px;
