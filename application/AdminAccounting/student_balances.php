@@ -23,8 +23,12 @@ ob_start();
     <link rel="shortcut icon" href="../../img/favicon.png" />
 
    <style>
-        .table th,
+        
         .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .table th{
             text-align: center;
             background-color: #343A40;
             color: white;
