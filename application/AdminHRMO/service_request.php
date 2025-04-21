@@ -58,7 +58,7 @@ ob_start();
                                     $stmt->execute();
                                     $result = $stmt->get_result();
                                     ?>
-                                    <h3>Service Requests</h3>
+                                    <h3>Service Record Requests</h3>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <thead>
