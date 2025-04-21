@@ -35,4 +35,48 @@ if ($_POST['action'] === "toggle_status") {
     echo "Status updated to '$status'";
     exit();
 }
+// Bulk disable exam schedules
+if ($_POST['action'] === "bulk_disable") {
+    $ids = $_POST['ids'];
+
+    if (is_array($ids) && count($ids) > 0) {
+        // Sanitize and create comma-separated string of IDs
+        $safeIds = array_map(function($id) use ($con) {
+            return "'" . mysqli_real_escape_string($con, $id) . "'";
+        }, $ids);
+        $idList = implode(",", $safeIds);
+
+        // Update all selected schedules
+        $query = "UPDATE tbl_exam_schedule SET status='disabled' WHERE id IN ($idList)";
+        mysqli_query($con, $query);
+
+        echo "Selected schedules have been disabled!";
+    } else {
+        echo "No schedules selected.";
+    }
+    exit();
+}
+
+// Bulk enable exam schedules
+if ($_POST['action'] === "bulk_enable") {
+    $ids = $_POST['ids'];
+
+    if (is_array($ids) && count($ids) > 0) {
+        // Sanitize and create comma-separated string of IDs
+        $safeIds = array_map(function($id) use ($con) {
+            return "'" . mysqli_real_escape_string($con, $id) . "'";
+        }, $ids);
+        $idList = implode(",", $safeIds);
+
+        // Update all selected schedules
+        $query = "UPDATE tbl_exam_schedule SET status='active' WHERE id IN ($idList)";
+        mysqli_query($con, $query);
+
+        echo "Selected schedules have been enabled!";
+    } else {
+        echo "No schedules selected.";
+    }
+    exit();
+}
+
 ?>
