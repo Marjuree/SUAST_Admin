@@ -22,11 +22,12 @@ ob_start();
     <link href="../../css/landing.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../../img/favicon.png" />
 
-    <style>
+   <style>
         .table th,
         .table td {
             text-align: center;
-            /* Center table content */
+            background-color: #343A40;
+            color: white;
             vertical-align: middle;
         }
     </style>
