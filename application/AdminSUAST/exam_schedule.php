@@ -56,14 +56,15 @@ require_once('../../includes/head_css.php');
                 </div>
 
                 <div class="box-body table-responsive">
-                    <table id="examTable" class="table table-bordered table-striped">
-                        <thead class="thead-dark">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                             <tr class="text-center">
                                 <th>SUAST</th>
                                 <th>Exam Date</th>
                                 <th>Exam Time</th>
                                 <th>EXAM VENUE</th>
                                 <th>Room</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -77,25 +78,36 @@ require_once('../../includes/head_css.php');
                             $query = mysqli_query($con, $sql);
 
                             while ($row = mysqli_fetch_assoc($query)) {
+                                $status = $row['status'];
+                                $statusLabel = $status === 'active' ? 'Disable' : 'Enable';
+                                $statusBtnClass = $status === 'active' ? 'btn-secondary' : 'btn-success';
+                                $badgeClass = $status === 'active' ? 'badge-success' : 'badge-danger';
+
                                 echo "<tr class='text-center'>
-                                        <td>{$row['exam_name']}</td>
-                                        <td>{$row['exam_date']}</td>
-                                        <td>{$row['exam_time']}</td>
-                                        <td>{$row['venue']}</td>
-                                        <td>{$row['room']}</td>
-                                        <td>
-                                            <button class='btn btn-warning btn-edit' 
-                                                data-id='{$row['id']}' 
-                                                data-name='{$row['exam_name']}' 
-                                                data-date='{$row['exam_date']}' 
-                                                data-time='{$row['exam_time']}' 
-                                                data-venue='{$row['venue']}' 
-                                                data-room='{$row['room']}' 
-                                                data-toggle='modal' 
-                                                data-target='#editScheduleModal'>Edit</button>
-                                            <button class='btn btn-danger btn-delete' data-id='{$row['id']}'>Delete</button>
-                                        </td>
-                                      </tr>";
+                                    <td>{$row['exam_name']}</td>
+                                    <td>{$row['exam_date']}</td>
+                                    <td>{$row['exam_time']}</td>
+                                    <td>{$row['venue']}</td>
+                                    <td>{$row['room']}</td>
+                                    <td><span class='badge $badgeClass'>$status</span></td>
+                                    <td>
+                                        <button class='btn btn-warning btn-edit' 
+                                            data-id='{$row['id']}'
+                                            data-name='{$row['exam_name']}'
+                                            data-date='{$row['exam_date']}'
+                                            data-time='{$row['exam_time']}'
+                                            data-venue='{$row['venue']}'
+                                            data-room='{$row['room']}'
+                                            data-toggle='modal'
+                                            data-target='#editScheduleModal'>Edit</button>
+
+                                        <button class='btn btn-danger btn-delete' data-id='{$row['id']}'>Delete</button>
+
+                                        <button class='btn $statusBtnClass btn-toggle-status' 
+                                            data-id='{$row['id']}' 
+                                            data-status='$status'>$statusLabel</button>
+                                    </td>
+                                </tr>";
                             }
                             ?>
                         </tbody>
@@ -190,6 +202,24 @@ require_once('../../includes/head_css.php');
 
 <script>
 $(document).ready(function () {
+
+     // Toggle Schedule Status
+     $(".btn-toggle-status").click(function () {
+        const id = $(this).data("id");
+        const currentStatus = $(this).data("status");
+        const newStatus = currentStatus === "active" ? "disabled" : "active";
+
+        $.post("function.php", {
+            action: "toggle_status",
+            id: id,
+            status: newStatus
+        }, function (response) {
+            Swal.fire("Updated!", response, "success").then(() => {
+                location.reload();
+            });
+        });
+    });
+    
     // Populate edit modal
     $(".btn-edit").click(function () {
         $("#edit_id").val($(this).data("id"));
@@ -280,6 +310,7 @@ $(document).ready(function () {
             }
         });
     });
+    
 });
 </script>
 </body>
