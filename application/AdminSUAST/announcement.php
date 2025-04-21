@@ -143,7 +143,7 @@
                     <div class="form-group">
                         <label for="roleInput">Office of:</label>
                         <select id="roleInput" class="form-control">
-                            <option value="Accounting">Accounting</option>
+                            <option value="Accounting">Suast</option>
                         </select>
                     </div>
                 </div>
@@ -227,6 +227,49 @@
                     "aaSorting": []
                 });
             });
+            
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function deleteAnnouncement(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This announcement will be permanently deleted.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e74c3c',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("announcement_delete.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ id: id })
+                })
+                .then(res => res.text())
+                .then(response => {
+                    if (response.trim() === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted!',
+                            text: 'Announcement has been deleted.',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+
+                        // Remove the deleted announcement from the DOM
+                        const deletedDiv = document.getElementById(`announcement-${id}`);
+                        if (deletedDiv) deletedDiv.remove();
+                    } else {
+                        Swal.fire('Error!', 'Something went wrong.', 'error');
+                    }
+                });
+            }
+        });
+    }
+</script>
+
     </body>
     </html>
