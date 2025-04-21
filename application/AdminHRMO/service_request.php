@@ -23,7 +23,14 @@ ob_start();
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
-
+<style>
+        .table th{
+            text-align: center;
+            background-color: #343A40;
+            color: white;
+            vertical-align: middle;
+        }
+    </style>
 <body class="skin-blue">
     <?php 
     require_once "../../configuration/config.php";
