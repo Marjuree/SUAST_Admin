@@ -27,7 +27,14 @@ ob_start();
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
+<style>
+        .table th{
+            text-align: center;
+            background-color: #343A40;
+            color: white;
+            vertical-align: middle;
+        }
+    </style>
 <body class="skin-blue">
     <?php 
     require_once "../../configuration/config.php";
