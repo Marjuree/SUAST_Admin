@@ -6,20 +6,26 @@ if (!isset($_SESSION['role'])) {
 }
 require_once "../../configuration/config.php";
 
-// Get applicant ID
+// Get applicant_id from query string
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("Invalid applicant ID.");
 }
 
-$id = intval($_GET['id']);
-$query = mysqli_query($con, "SELECT * FROM tbl_applicants WHERE id = $id");
+$applicant_id = intval($_GET['id']);
 
-if (mysqli_num_rows($query) == 0) {
+// Use applicant_id (foreign key), not id (primary key)
+$stmt = mysqli_prepare($con, "SELECT * FROM tbl_applicants WHERE applicant_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $applicant_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) == 0) {
     die("Applicant not found.");
 }
 
-$app = mysqli_fetch_assoc($query);
+$app = mysqli_fetch_assoc($result);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -170,7 +176,7 @@ $app = mysqli_fetch_assoc($query);
         </div>
 
         <div class="back-btn">
-            <a href="applicantData.php">← Back to Applicant List</a>
+            <a href="manage_reservations.php">← Back to Applicant List</a>
         </div>
     </div>
 
