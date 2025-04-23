@@ -35,7 +35,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             $menu_items = [
                 "SUAST" => [
                     ["link" => "../AdminSUAST/AdminSUAST.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
-                    ["link" => "../AdminSUAST/applicantData.php", "icon" => "fa-calendar", "label" => "Applicant Data"],
                     ["link" => "../AdminSUAST/exam_schedule.php", "icon" => "fa-calendar", "label" => "Manage Schedule"],
                     ["link" => "../AdminSUAST/manage_reservations.php", "icon" => "fa-book", "label" => "Manage Request"],
                     ["link" => "../AdminSUAST/contact.php", "icon" => "fa-envelope", "label" => "Manage Contact"],
