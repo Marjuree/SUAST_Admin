@@ -5,8 +5,7 @@ if (!isset($_SESSION['role'])) {
     exit();
 }
 
-require_once "../../configuration/config.php"; // Ensure database connection
-
+require_once "../../configuration/config.php"; // DB connection
 ob_start();
 ?>
 
@@ -15,33 +14,20 @@ ob_start();
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clearance Requests | Dashboard</title>
 
-   
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <style>
     .table-responsive {
         width: 100%;
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
     }
-
-    
-    .table td {
+    .table th, .table td {
         text-align: center;
         vertical-align: middle;
-    }
- .table th{
-            text-align: center;
-            background-color: #343A40;
-            color: white;
-            vertical-align: middle;
-        }
-    @media (max-width: 768px) {
-        .table-responsive {
-            margin-bottom: 15px;
-        }
     }
     </style>
 </head>
@@ -67,7 +53,6 @@ ob_start();
                             <hr>
                             <h3>Clearance Requests</h3>
 
-                            <!-- Make the table responsive to small screen sizes -->
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped">
                                     <thead>
@@ -75,6 +60,7 @@ ob_start();
                                             <th>#</th>
                                             <th>Student ID</th>
                                             <th>Student Name</th>
+                                            <th>Balance</th>
                                             <th>Status</th>
                                             <th>Date Requested</th>
                                             <th>Actions</th>
@@ -82,52 +68,41 @@ ob_start();
                                     </thead>
                                     <tbody>
                                         <?php
-                                    $query = "
-                                        SELECT cr.id, cr.student_id, 
-                                               COALESCE(su.full_name, 'Unknown Student') AS full_name, 
-                                               cr.status, cr.date_requested 
-                                        FROM tbl_clearance_requests cr
-                                        LEFT JOIN tbl_student_users su ON cr.student_id = su.school_id
-                                        ORDER BY cr.date_requested DESC";
-                                    
-                                    $result = $con->query($query);
-                                    while ($row = $result->fetch_assoc()): 
-                                        $status = !empty($row['status']) ? htmlspecialchars($row['status']) : "Pending";
-                                        $badgeClass = ($status == 'Approved') ? 'success' : (($status == 'Disapproved') ? 'danger' : 'info');
-                                    ?>
+                                        $query = "
+                                            SELECT cr.id, cr.student_id, 
+                                                   COALESCE(su.full_name, 'Unknown Student') AS full_name, 
+                                                   cr.status, cr.date_requested, cr.balance 
+                                            FROM tbl_clearance_requests cr
+                                            LEFT JOIN tbl_student_users su ON cr.student_id = su.school_id
+                                            ORDER BY cr.date_requested DESC";
+                                        
+                                        $result = $con->query($query);
+                                        while ($row = $result->fetch_assoc()): 
+                                            $status = !empty($row['status']) ? htmlspecialchars($row['status']) : "Pending";
+                                            $labelClass = ($status == 'Approved') ? 'label-success' : (($status == 'Disapproved') ? 'label-danger' : 'label-info');
+                                        ?>
                                         <tr>
                                             <td><?= htmlspecialchars($row['id']) ?></td>
                                             <td><?= htmlspecialchars($row['student_id']) ?></td>
                                             <td><?= htmlspecialchars($row['full_name']) ?></td>
-                                            <td>
-                                                <span class="badge bg-<?= $badgeClass ?>">
-                                                    <?= $status ?>
-                                                </span>
-                                            </td>
+                                            <td><?= htmlspecialchars($row['balance']) ?></td>
+                                            <td><span class="label <?= $labelClass ?>"><?= $status ?></span></td>
                                             <td><?= htmlspecialchars($row['date_requested']) ?></td>
                                             <td>
-                                                <?php if ($status === "Pending") : ?>
-                                                <form method="POST" action="process_clearance.php">
-                                                    <input type="hidden" name="id"
-                                                        value="<?= htmlspecialchars($row['id']) ?>">
-                                                    <button type="submit" name="approve"
-                                                        class="btn btn-success">Approve</button>
-                                                    <button type="submit" name="disapprove"
-                                                        class="btn btn-danger">Rejected</button>
+                                                <form method="POST" action="process_clearance.php" class="form-inline" style="display:inline-block;">
+                                                    <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+                                                    <button type="submit" name="approve" class="btn btn-success btn-xs">Approve</button>
+                                                    <button type="submit" name="disapprove" class="btn btn-danger btn-xs">Disapprove</button>
                                                 </form>
-                                                <?php else: ?>
-                                                <!-- For Approved and Disapproved, the buttons will still appear -->
-                                                <form method="POST" action="process_clearance.php">
-                                                    <input type="hidden" name="id"
-                                                        value="<?= htmlspecialchars($row['id']) ?>">
-                                                    <button type="submit" name="approve"
-                                                        class="btn btn-success">Approve</button>
-                                                    <button type="submit" name="disapprove"
-                                                        class="btn btn-danger">Rejected</button>
-                                                </form>
-                                                <?php endif; ?>
+                                                <button 
+                                                    class="btn btn-warning btn-xs open-balance-modal"
+                                                    data-toggle="modal"
+                                                    data-target="#balanceModal"
+                                                    data-id="<?= htmlspecialchars($row['id']) ?>"
+                                                    data-name="<?= htmlspecialchars($row['full_name']) ?>"
+                                                    data-balance="<?= htmlspecialchars($row['balance']) ?>"
+                                                >Balance</button>
                                             </td>
-
                                         </tr>
                                         <?php endwhile; ?>
                                     </tbody>
@@ -140,14 +115,66 @@ ob_start();
         </aside>
     </div>
 
-
+    <!-- BALANCE MODAL (Bootstrap 3) -->
+    <div id="balanceModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel">
+      <div class="modal-dialog" role="document">
+        <form method="POST" action="add_balance.php">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" id="balanceModalLabel">Update Student Balance</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="clearance_id" id="modalClearanceId">
+              <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" class="form-control" id="studentName" readonly>
+              </div>
+              <div class="form-group">
+                <label for="balanceAmount">New Balance</label>
+                <input type="number" name="balance" class="form-control" id="balanceAmount" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" name="add_balance" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <?php require_once "modal.php"; ?>
     <?php require_once "../../includes/footer.php"; ?>
 
-    <script src="../../vendors/js/vendor.bundle.base.js"></script>
-    <script src="../../js/off-canvas.js"></script>
-    <script src="../../js/hoverable-collapse.js"></script>
-</body>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+    $(document).ready(function() {
+        $('.open-balance-modal').on('click', function () {
+            var button = $(this);
+            $('#modalClearanceId').val(button.data('id'));
+            $('#studentName').val(button.data('name'));
+            $('#balanceAmount').val(button.data('balance'));
+        });
+    });
+    </script>
+
+    <?php if (isset($_SESSION['swal'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: '<?= $_SESSION['swal']['type'] ?>',
+                title: '<?= $_SESSION['swal']['message'] ?>',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>
+    <?php unset($_SESSION['swal']); endif; ?>
+
+
+</body>
 </html>
