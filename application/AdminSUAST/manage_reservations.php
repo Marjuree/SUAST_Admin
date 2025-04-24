@@ -206,11 +206,8 @@ ob_start();
                                                                 <input type='hidden' name='status' value='approved'>
                                                                 <button type='submit' class='btn btn-success btn-sm'>Approve</button>
                                                             </form>
-                                                            <form action='update_status.php' method='POST' style='display:inline-block;'>
-                                                                <input type='hidden' name='id' value='{$row['id']}'>
-                                                                <input type='hidden' name='status' value='rejected'>
-                                                                <button type='submit' class='btn btn-warning btn-sm'>Reject</button>
-                                                            </form>
+                                                            <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
+
                                                             <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
                                                         </td>
                                                         <td class='text-center'>
@@ -233,8 +230,41 @@ ob_start();
             </section>
         </aside>
     </div>
+    <!-- Reject Reason Modal -->
+    <div class="modal fade" id="rejectReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectReasonModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="rejectReasonForm" method="POST" action="update_status.php">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rejectReasonModalLabel">Reject Reservation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="rejectReservationId">
+                        <input type="hidden" name="status" value="rejected">
+                        <div class="form-group">
+                            <label for="rejectReason">Reason for Rejection</label>
+                            <textarea class="form-control" name="reason" id="rejectReason" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning">Submit Rejection</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
+    function openRejectModal(id) {
+        $('#rejectReservationId').val(id);
+        $('#rejectReason').val('');
+        $('#rejectReasonModal').modal('show');
+    }
+
     function printReservations() {
         window.print();
     }
