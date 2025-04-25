@@ -7,24 +7,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
     $id = intval($_POST['id']);
     $status = $_POST['status'];
 
-    // Prepare the SQL statement to update the status
-    $stmt = $con->prepare("UPDATE tbl_reservation SET status = ? WHERE id = ?");
-    $stmt->bind_param("si", $status, $id);
+    if ($status === 'rejected' && isset($_POST['reason'])) {
+        $reason = trim($_POST['reason']);
+
+        // Update with reason
+        $stmt = $con->prepare("UPDATE tbl_reservation SET status = ?, reason = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $status, $reason, $id);
+    } else {
+        // Update without reason
+        $stmt = $con->prepare("UPDATE tbl_reservation SET status = ? WHERE id = ?");
+        $stmt->bind_param("si", $status, $id);
+    }
 
     // Execute the statement and check if it is successful
     if ($stmt->execute()) {
         $message = "✅ Status updated successfully.";
-        $alertType = 'success';  // SweetAlert2 Success
+        $alertType = 'success';
     } else {
         $message = "❌ Error updating status.";
-        $alertType = 'error';    // SweetAlert2 Error
+        $alertType = 'error';
     }
 
-    // Close the statement
     $stmt->close();
 } else {
     $message = "❌ Invalid request.";
-    $alertType = 'error';  // SweetAlert2 Error
+    $alertType = 'error';
 }
 ?>
 
@@ -33,16 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
 <head>
     <meta charset="UTF-8">
     <title>Processing...</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.onload = function() {
             Swal.fire({
                 icon: '<?php echo $alertType; ?>',
                 title: '<?php echo htmlspecialchars($message); ?>',
                 showConfirmButton: false,
-                timer: 2000 // Close the alert after 2 seconds
+                timer: 2000
             }).then(function() {
-                window.location.href = "manage_reservations.php"; // Redirect after alert
+                window.location.href = "manage_reservations.php";
             });
         };
     </script>
@@ -55,6 +62,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
     </style>
 </head>
 <body>
-    <!-- The body will not display anything as the alert is shown via SweetAlert2 -->
 </body>
 </html>
