@@ -175,7 +175,8 @@ ob_start();
                                         <th>Room</th>
                                         <th>Venue</th>
                                         <th>Status</th>
-                                        <th>Details</th> <!-- Removed the "Action" column here -->
+                                        <th>User Update</th>
+                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -194,33 +195,39 @@ ob_start();
                                         $result = mysqli_query($con, $query);
                                         if ($result && mysqli_num_rows($result) > 0) {
                                             while ($row = mysqli_fetch_assoc($result)) {
-                                                echo "<tr>
-                                                        <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
-                                                        <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
-                                                        <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
-                                                        <td>" . htmlspecialchars($row['room']) . "</td>
-                                                        <td>" . htmlspecialchars($row['venue']) . "</td>
-                                                        <td class='text-center'>
-                                                            <form action='update_status.php' method='POST' style='display:inline-block; margin-bottom: 5px;'>
-                                                                <input type='hidden' name='id' value='{$row['id']}'>
-                                                                <input type='hidden' name='status' value='approved'>
-                                                                <button type='submit' class='btn btn-success btn-sm'>Approve</button>
-                                                            </form>
-                                                            <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
+                                                $userUpdateLabel = $row['user_requested_update'] == 1 ? 'Updated' : 'Pending';
+                                                $userUpdateClass = $row['user_requested_update'] == 1 ? 'label label-success' : 'label label-warning';
 
-                                                            <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
-                                                        </td>
-                                                        <td class='text-center'>
-                                                            <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm'>View</a>
-                                                        </td>
-                                                    </tr>";
+                                                echo "<tr>
+                                                    <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
+                                                    <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
+                                                    <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
+                                                    <td>" . htmlspecialchars($row['room']) . "</td>
+                                                    <td>" . htmlspecialchars($row['venue']) . "</td>
+                                                    <td class='text-center'>
+                                                        <form action='update_status.php' method='POST' style='display:inline-block; margin-bottom: 5px;'>
+                                                            <input type='hidden' name='id' value='{$row['id']}'>
+                                                            <input type='hidden' name='status' value='approved'>
+                                                            <button type='submit' class='btn btn-success btn-sm'>Approve</button>
+                                                        </form>
+                                                        <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
+                                                        <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
+                                                    </td>
+                                                    <td class='text-center'>
+                                                        <span class='$userUpdateClass'>$userUpdateLabel</span>
+                                                    </td>
+                                                    <td class='text-center'>
+                                                        <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm'>View</a>
+                                                    </td>
+                                                </tr>";
                                             }
                                         } else {
-                                            echo "<tr><td colspan='7' class='text-center'>No reservations found</td></tr>";
+                                            echo "<tr><td colspan='8' class='text-center'>No reservations found</td></tr>";
                                         }
                                     ?>
                                 </tbody>
                             </table>
+
 
 
                         </div>
