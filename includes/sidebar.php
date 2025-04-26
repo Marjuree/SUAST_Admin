@@ -114,8 +114,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 .custom-sidebar-menu {
     list-style: none;
     padding: 0;
-    margin-top: 100px;
-}
+margin-top: 100px;}
 
 .custom-sidebar-menu li {
     transition: background 0.3s;
