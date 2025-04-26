@@ -7,21 +7,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
     $id = intval($_POST['id']);
     $status = $_POST['status'];
 
-    // Prepare the SQL statement to update the status
-    $stmt = $con->prepare("UPDATE tbl_reservation SET status = ? WHERE id = ?");
-    $stmt->bind_param("si", $status, $id);
+    if ($status === 'rejected' && isset($_POST['reason'])) {
+        $reason = trim($_POST['reason']);
+
+        // Update with reason
+        $stmt = $con->prepare("UPDATE tbl_reservation SET status = ?, reason = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $status, $reason, $id);
+    } else {
+        // Update without reason
+        $stmt = $con->prepare("UPDATE tbl_reservation SET status = ? WHERE id = ?");
+        $stmt->bind_param("si", $status, $id);
+    }
 
     // Execute the statement and check if it is successful
     if ($stmt->execute()) {
         $message = "✅ Status updated successfully.";
+        $alertType = 'success';
     } else {
         $message = "❌ Error updating status.";
+        $alertType = 'error';
     }
 
-    // Close the statement
     $stmt->close();
 } else {
     $message = "❌ Invalid request.";
+    $alertType = 'error';
 }
 ?>
 
@@ -30,10 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
 <head>
     <meta charset="UTF-8">
     <title>Processing...</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        setTimeout(function () {
-            window.location.href = "manage_reservations.php"; 
-        }, 2000); // Delay for 2 seconds
+        window.onload = function() {
+            Swal.fire({
+                icon: '<?php echo $alertType; ?>',
+                title: '<?php echo htmlspecialchars($message); ?>',
+                showConfirmButton: false,
+                timer: 2000
+            }).then(function() {
+                window.location.href = "manage_reservations.php";
+            });
+        };
     </script>
     <style>
         body {
@@ -41,19 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST[
             text-align: center;
             margin-top: 100px;
         }
-        .message-box {
-            display: inline-block;
-            padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
     </style>
 </head>
 <body>
-    <div class="message-box">
-        <h2><?php echo htmlspecialchars($message); ?></h2>
-        <p>Redirecting to reservation list...</p>
-    </div>
 </body>
 </html>

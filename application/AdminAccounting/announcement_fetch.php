@@ -1,10 +1,10 @@
 <?php
 require_once "../../configuration/config.php";
 
-// Fetch only announcements where role is 'SUAST'
-$sql = "SELECT admin_name, message, status, role, created_at 
+// Fetch only announcements where role is 'Accounting'
+$sql = "SELECT admin_name, message, status, role, created_at, id
         FROM tbl_announcement 
-        WHERE role = 'SUAST' 
+        WHERE role = 'Accounting' 
         ORDER BY created_at DESC";
 
 $result = $con->query($sql);
@@ -16,23 +16,14 @@ if ($result->num_rows > 0) {
         $status = htmlspecialchars($row["status"]);
         $role = htmlspecialchars($row["role"]);
         $created_at = date("F d, Y h:i A", strtotime($row["created_at"]));
+        $announcement_id = $row["id"];
 
         // Status badge color
         $statusColor = $status === 'Active' ? '#4CAF50' : '#F44336';
 
         echo '
-        <div style="
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.07);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        ">
-            <img src=\'https://cdn-icons-png.flaticon.com/512/3039/3039396.png\' alt=\'icon\' width=\'60\' style=\'margin-bottom: 15px;\'>
+        <div id="announcement-' . $announcement_id . '" style="background: #ffffff; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.07); max-width: 700px; margin-left: auto; margin-right: auto; text-align: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/3039/3039396.png" alt="icon" width="60" style="margin-bottom: 15px;">
             <h2 style="color: #003366; font-weight: bold; margin-bottom: 10px;">NOTICE</h2>
             <p style="font-size: 16px; color: #333; margin-bottom: 20px;">' . $message . '</p>
 
@@ -42,6 +33,11 @@ if ($result->num_rows > 0) {
                 <div><strong>Role:</strong> ' . $role . '</div>
                 <div><strong>Date:</strong> ' . $created_at . '</div>
             </div>
+
+            <button onclick="deleteAnnouncement(' . $announcement_id . ')" 
+                    style="margin-top: 20px; padding: 8px 15px; background: #e74c3c; color: white; border: none; border-radius: 5px;">
+                Delete
+            </button>
         </div>';
     }
 } else {

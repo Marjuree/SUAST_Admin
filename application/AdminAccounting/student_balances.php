@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['role'])) {
+    header("Location: ../../php/error.php?welcome=Please login to access this page");
+    exit();
+}
+
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,11 +22,16 @@
     <link href="../../css/landing.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="../../img/favicon.png" />
 
-    <style>
-        .table th,
+   <style>
+        
         .table td {
             text-align: center;
-            /* Center table content */
+            vertical-align: middle;
+        }
+        .table th{
+            text-align: center;
+            background-color: #343A40;
+            color: white;
             vertical-align: middle;
         }
     </style>

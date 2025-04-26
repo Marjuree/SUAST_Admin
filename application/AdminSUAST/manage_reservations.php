@@ -12,9 +12,12 @@ ob_start();
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exam Reservation</title>
     <link rel="stylesheet" href="../../css/exam_schedule.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
 </head>
 <style>
 /* Default: Hide header */
@@ -99,10 +102,10 @@ ob_start();
 </style>
 
 <body class="skin-blue">
-    <?php 
+    <?php
     require_once "../../configuration/config.php";
     require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php'); 
+    require_once('../../includes/head_css.php');
     ?>
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -117,7 +120,6 @@ ob_start();
                 <div class="box">
                     <div class="box-header d-flex justify-content-between align-items-center">
                         <form action="" method="GET">
-                            <!-- Changed POST to GET for filtering -->
                             <label for="nameFilter">Find by Name:</label>
                             <input type="text" name="nameFilter" id="nameFilter" class="form-control"
                                 style="width: 200px; display: inline-block;" placeholder="Enter Name"
@@ -173,29 +175,33 @@ ob_start();
                                         <th>Room</th>
                                         <th>Venue</th>
                                         <th>Status</th>
-                                        <th>Action</th>
+                                        <th>User Update</th>
+                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM tbl_reservation WHERE 1";
-                                    if (isset($_GET['nameFilter']) && !empty($_GET['nameFilter'])) {
-                                        $nameFilter = mysqli_real_escape_string($con, $_GET['nameFilter']);
-                                        $query .= " AND name LIKE '%$nameFilter%'";
-                                    }
-                                    if (isset($_GET['roomFilter']) && !empty($_GET['roomFilter'])) {
-                                        $roomFilter = mysqli_real_escape_string($con, $_GET['roomFilter']);
-                                        $query .= " AND room = '$roomFilter'";
-                                    }
-                                    $query .= " ORDER BY exam_time ASC";
+                                        $query = "SELECT * FROM tbl_reservation WHERE 1";
+                                        if (isset($_GET['nameFilter']) && !empty($_GET['nameFilter'])) {
+                                            $nameFilter = mysqli_real_escape_string($con, $_GET['nameFilter']);
+                                            $query .= " AND name LIKE '%$nameFilter%'";
+                                        }
+                                        if (isset($_GET['roomFilter']) && !empty($_GET['roomFilter'])) {
+                                            $roomFilter = mysqli_real_escape_string($con, $_GET['roomFilter']);
+                                            $query .= " AND room = '$roomFilter'";
+                                        }
+                                        $query .= " ORDER BY exam_time ASC";
 
-                                    $result = mysqli_query($con, $query);
-                                    if ($result && mysqli_num_rows($result) > 0) {
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>
-                                                    <td>" . htmlspecialchars($row['name']) . "</td>
-                                                    <td>" . htmlspecialchars($row['exam_date']) . "</td>
-                                                    <td>" . htmlspecialchars($row['exam_time']) . "</td>
+                                        $result = mysqli_query($con, $query);
+                                        if ($result && mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $userUpdateLabel = $row['user_requested_update'] == 1 ? 'Updated' : 'Pending';
+                                                $userUpdateClass = $row['user_requested_update'] == 1 ? 'label label-success' : 'label label-warning';
+
+                                                echo "<tr>
+                                                    <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
+                                                    <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
+                                                    <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
                                                     <td>" . htmlspecialchars($row['room']) . "</td>
                                                     <td>" . htmlspecialchars($row['venue']) . "</td>
                                                     <td class='text-center'>
@@ -204,88 +210,68 @@ ob_start();
                                                             <input type='hidden' name='status' value='approved'>
                                                             <button type='submit' class='btn btn-success btn-sm'>Approve</button>
                                                         </form>
-                                                        <form action='update_status.php' method='POST' style='display:inline-block;'>
-                                                            <input type='hidden' name='id' value='{$row['id']}'>
-                                                            <input type='hidden' name='status' value='rejected'>
-                                                            <button type='submit' class='btn btn-warning btn-sm'>Reject</button>
-                                                        </form>
-                                                        <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status']) . "</small></div>
+                                                        <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
+                                                        <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
                                                     </td>
-                                                    <td>
-                                                        <button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#setScheduleModal' data-id='{$row['id']}'>Set Schedule</button>
+                                                    <td class='text-center'>
+                                                        <span class='$userUpdateClass'>$userUpdateLabel</span>
                                                     </td>
-                                                  </tr>";
+                                                    <td class='text-center'>
+                                                        <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm'>View</a>
+                                                    </td>
+                                                </tr>";
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='8' class='text-center'>No reservations found</td></tr>";
                                         }
-                                    } else {
-                                        echo "<tr><td colspan='6' class='text-center'>No reservations found</td></tr>";
-                                    }
                                     ?>
                                 </tbody>
                             </table>
+
+
+
                         </div>
                     </div>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="setScheduleModal" tabindex="-1" role="dialog"
-                        aria-labelledby="setScheduleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="setScheduleModalLabel">Set Exam Schedule</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="setScheduleForm">
-                                        <input type="hidden" name="id" id="reservationId">
-
-                                        <!-- Exam Date Dropdown -->
-                                        <div class="form-group">
-                                            <label for="examDate">Select Exam Date:</label>
-                                            <select class="form-control" name="examDate" id="examDate" required>
-                                                <option value="">Select Exam Date</option>
-                                                <?php
-                            // Populate exam dates from tbl_exam_schedule
-                            $result_dates = mysqli_query($con, "SELECT DISTINCT exam_date FROM tbl_exam_schedule WHERE exam_date IS NOT NULL ORDER BY exam_date ASC");
-                            while ($row = mysqli_fetch_assoc($result_dates)) {
-                                $formatted = date('F j, Y', strtotime($row['exam_date']));
-                                echo "<option value='{$row['exam_date']}'>{$formatted}</option>";
-                            }
-                            ?>
-                                            </select>
-                                        </div>
-
-                                        <!-- Exam Time Dropdown -->
-                                        <div class="form-group">
-                                            <label for="examTime">Select Exam Time:</label>
-                                            <select class="form-control" name="examTime" id="examTime" required>
-                                                <option value="">Select Exam Time</option>
-                                                <?php
-                            // Populate exam times from tbl_exam_schedule
-                            $result_times = mysqli_query($con, "SELECT DISTINCT exam_time FROM tbl_exam_schedule WHERE exam_time IS NOT NULL ORDER BY exam_time ASC");
-                            while ($row = mysqli_fetch_assoc($result_times)) {
-                                echo "<option value='{$row['exam_time']}'>{$row['exam_time']}</option>";
-                            }
-                            ?>
-                                            </select>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary">Set Exam Schedule</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                     <?php require_once "../../includes/footer.php"; ?>
                 </div>
             </section>
         </aside>
     </div>
+    <!-- Reject Reason Modal -->
+    <div class="modal fade" id="rejectReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectReasonModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="rejectReasonForm" method="POST" action="update_status.php">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rejectReasonModalLabel">Reject Reservation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="rejectReservationId">
+                        <input type="hidden" name="status" value="rejected">
+                        <div class="form-group">
+                            <label for="rejectReason">Reason for Rejection</label>
+                            <textarea class="form-control" name="reason" id="rejectReason" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning">Submit Rejection</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
+    function openRejectModal(id) {
+        $('#rejectReservationId').val(id);
+        $('#rejectReason').val('');
+        $('#rejectReasonModal').modal('show');
+    }
+
     function printReservations() {
         window.print();
     }
@@ -325,17 +311,25 @@ ob_start();
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-                    alert(response);
-                    location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response,
+                    }).then(() => {
+                        location.reload();
+                    });
                 },
                 error: function() {
-                    alert("❌ Error updating the schedule.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Error updating the schedule.',
+                    });
                 }
             });
-
         });
     });
     </script>
 </body>
 
-</html>
+</html

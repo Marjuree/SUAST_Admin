@@ -1,58 +1,47 @@
 <?php
 require_once "../../configuration/config.php";
-
-// ✅ Environment-based error display (for safety)
-if ($_SERVER['SERVER_NAME'] === 'localhost') {
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', 0);
-    error_reporting(0);
-}
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // ✅ Sanitize inputs
-    $exam_name = mysqli_real_escape_string($con, $_POST['exam_name']);
-    $exam_date = mysqli_real_escape_string($con, $_POST['exam_date']);
-    $exam_time = mysqli_real_escape_string($con, $_POST['exam_time']);
-    $venue     = mysqli_real_escape_string($con, $_POST['venue']);
-    $room      = mysqli_real_escape_string($con, $_POST['room']);
+    $exam_name = $_POST['exam_name'];
+    $exam_date = $_POST['exam_date'];
+    $exam_time = $_POST['exam_time'];
+    $venue = $_POST['venue'];
+    $room = $_POST['room'];
 
-    // ✅ Check slot capacity
-    $checkSlotsQuery = "
-        SELECT COUNT(*) AS total_slots 
-        FROM tbl_exam_schedule 
-        WHERE room = '$room' AND exam_date = '$exam_date'
-    ";
-    $result = mysqli_query($con, $checkSlotsQuery);
-    $data = mysqli_fetch_assoc($result);
+    // Check if room already has 30 exams on that date
+    $checkQuery = "SELECT COUNT(*) as total FROM tbl_exam_schedule WHERE room = ? AND exam_date = ?";
+    $stmt = $con->prepare($checkQuery);
+    $stmt->bind_param("ss", $room, $exam_date);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
 
-    if ($data['total_slots'] >= 30) {
+    if ($count >= 30) {
         echo json_encode([
             "status" => "error",
-            "message" => "❌ This room already has 30 exams scheduled on this date."
+            "message" => "This room already has 30 exams on this date."
         ]);
-        exit();
+        exit;
     }
 
-    // ✅ Insert into DB
-    $insertQuery = "
-        INSERT INTO tbl_exam_schedule (exam_name, exam_date, exam_time, venue, room) 
-        VALUES ('$exam_name', '$exam_date', '$exam_time', '$venue', '$room')
-    ";
+    // Insert new exam schedule
+    $insertQuery = "INSERT INTO tbl_exam_schedule (exam_name, exam_date, exam_time, venue, room) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $con->prepare($insertQuery);
+    $stmt->bind_param("sssss", $exam_name, $exam_date, $exam_time, $venue, $room);
 
-    if (mysqli_query($con, $insertQuery)) {
+    if ($stmt->execute()) {
         echo json_encode([
             "status" => "success",
-            "message" => "✅ Exam schedule successfully added!"
+            "message" => "Exam schedule added successfully."
         ]);
     } else {
         echo json_encode([
             "status" => "error",
-            "message" => "❌ Database error: " . mysqli_error($con)
+            "message" => "Database error: " . $stmt->error
         ]);
     }
-
-    mysqli_close($con);
+    exit;
 }
 ?>
