@@ -213,12 +213,8 @@
 
                                                     while ($row = $result->fetch_assoc()): 
                                                         $stages = [
-                                                            'Fill out Form',
-                                                            'Pay Cashier',
                                                             'Present Request',
                                                             'Prepare Service Record',
-                                                            'HR Director Signs',
-                                                            'Record in Logbook',
                                                             'For Releasing',
                                                             'Completed'
                                                         ];
@@ -318,11 +314,12 @@
                                                             <input type="hidden" name="completion_status"
                                                                 value="<?= $row['completion_status'] === 'done' ? 'pending' : 'done' ?>">
                                                             <button type="submit"
-                                                                class="btn btn-sm <?= $row['completion_status'] === 'done' ? 'btn-success' : 'btn-warning' ?>">
+                                                                class="btn btn-sm <?= $row['completion_status'] === 'done' ? 'btn-success' : 'btn-danger' ?>">
                                                                 <?= ucfirst($row['completion_status']) ?>
                                                             </button>
                                                         </form>
                                                     </td>
+
                                                 </tr>
                                                 <?php endwhile; ?>
                                             </tbody>
@@ -413,14 +410,12 @@
             stageSelect.val(currentStage);
 
             const fieldsMap = {
-                'Fill out Form': ['issuance_submitted', 'issuance_received'],
-                'Pay Cashier': ['cashier_submitted', 'cashier_received'],
+
                 'Present Request': ['present_request_submitted', 'present_request_received'],
                 'Prepare Service Record': ['prepare_service_record_submitted',
                     'prepare_service_record_received'
                 ],
-                'HR Director Signs': ['hr_director_signs_submitted', 'hr_director_signs_received'],
-                'Record in Logbook': ['logbook_submitted', 'logbook_received'],
+
                 'For Releasing': ['for_releasing_submitted', 'for_releasing_received'],
                 'Completed': ['completed_date']
             };
