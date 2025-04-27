@@ -79,7 +79,7 @@ ob_start();
                                         $result = $con->query($query);
                                         while ($row = $result->fetch_assoc()): 
                                             $status = !empty($row['status']) ? htmlspecialchars($row['status']) : "Pending";
-                                            $labelClass = ($status == 'Approved') ? 'label-success' : (($status == 'Disapproved') ? 'label-danger' : 'label-info');
+                                            $labelClass = ($status == 'Approved') ? 'label-success' : (($status == 'Rejected') ? 'label-danger' : 'label-info');
                                         ?>
                                         <tr>
                                             <td><?= htmlspecialchars($row['id']) ?></td>
