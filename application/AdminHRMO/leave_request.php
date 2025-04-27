@@ -282,23 +282,21 @@
                                                         </form>
                                                     </td>
 
+                                                    <!-- Approval Status Form -->
                                                     <td>
                                                         <form method="POST" action="update_status.php">
                                                             <input type="hidden" name="request_id"
                                                                 value="<?= $row['id'] ?>">
-                                                            <input type="hidden" name="completion_status"
-                                                                value="<?= empty($row['completion_status']) ? 'Pending' : ($row['completion_status'] === 'Done' ? 'Pending' : 'Done') ?>">
+                                                            <input type="hidden" name="approval_status"
+                                                                value="<?= empty($row['approval_status']) ? 'Pending' : ($row['approval_status'] === 'Approved' ? 'Disapproved' : 'Approved') ?>">
 
-                                                            <button type="submit" class="btn btn-sm 
-                                                            <?= empty($row['completion_status']) ? 'btn-warning' : 
-                                                                ($row['completion_status'] === 'Done' ? 'btn-success' : 'btn-warning') ?>">
-                                                                <?= empty($row['completion_status']) ? 'Pending' : ucfirst($row['completion_status']) ?>
+                                                            <button type="submit"
+                                                                class="btn btn-sm 
+                                                               <?= empty($row['approval_status']) ? 'btn-warning' : ($row['approval_status'] === 'Approved' ? 'btn-success' : 'btn-danger') ?>">
+                                                                <?= empty($row['approval_status']) ? 'Pending' : ucfirst($row['approval_status']) ?>
                                                             </button>
                                                         </form>
                                                     </td>
-
-
-
 
                                                     <!-- Completion Status Form -->
                                                     <td>
@@ -532,6 +530,12 @@
 
     });
     </script>
+
+
+
+</body>
+
+</html>
 
 
 
