@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    window.location.href = 'service_request.php'; // Redirect to service_request.php
+                    window.location.href = 'leave_request.php.php'; // Redirect to service_request.php
                 });
             </script>";
         } else {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     title: 'Update Failed',
                     text: 'Error updating status: " . addslashes($stmt->error) . "' 
                 }).then(() => {
-                    window.location.href = 'service_request.php'; // Redirect to service_request.php in case of failure
+                    window.location.href = 'leave_request.php.php'; // Redirect to service_request.php in case of failure
                 });
             </script>";
         }
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 title: 'Missing Data',
                 text: 'Request ID or status not found.'
             }).then(() => {
-                window.location.href = 'service_request.php'; // Redirect to service_request.php in case of missing data
+                window.location.href = 'leave_request.php.php'; // Redirect to service_request.php in case of missing data
             });
         </script>";
     }
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             title: 'Invalid Request',
             text: 'Only POST requests are allowed.'
         }).then(() => {
-            window.location.href = 'service_request.php'; // Redirect to service_request.php in case of invalid request method
+            window.location.href = 'leave_request.php.php'; // Redirect to service_request.php in case of invalid request method
         });
     </script>";
 }
