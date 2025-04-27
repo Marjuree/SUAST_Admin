@@ -209,14 +209,9 @@
                                             <tbody>
                                                 <?php while ($row = $result->fetch_assoc()):
                                                 $stages = [
-                                                    'Fill out Form',
-                                                    'Pay Cashier',
                                                     'Present Request',
                                                     'Prepare Service Record',
-                                                    'HR Director Signs',
-                                                    'Record in Logbook',
                                                     'For Releasing',
-                                                    'Completed'
                                                 ];
                                 
                                     
@@ -246,16 +241,11 @@
                                                     <td>
                                                         <div class="progress" style="height: 20px;">
                                                             <?php 
-                                                                    // Define the stages
-                                                                    $stages = [
-                                                                        'Fill out Form',
-                                                                        'Pay Cashier',
-                                                                        'Present Request',
-                                                                        'Prepare Service Record',
-                                                                        'HR Director Signs',
-                                                                        'Record in Logbook',
-                                                                        'For Releasing',
-                                                                    ];
+                                                                   $stages = [
+                                                                    'Present Request',
+                                                                    'Prepare Service Record',
+                                                                    'For Releasing',
+                                                                ];
 
                                                                 // Get the current stage index
                                                                 $currentStageIndex = array_search($currentStage, $stages);
@@ -320,11 +310,12 @@
                                                                 value="<?= empty($row['request_status']) ? 'Pending' : ($row['request_status'] === 'Approved' ? 'Disapproved' : 'Approved') ?>">
 
                                                             <button type="submit"
-                                                                class="btn btn-sm <?= empty($row['request_status']) ? 'btn-warning' : ($row['request_status'] === 'Approved' ? 'btn-success' : 'btn-danger') ?>">
+                                                                class="btn btn-sm <?= empty($row['request_status']) ? 'btn-info' : ($row['request_status'] === 'Approved' ? 'btn-success' : 'btn-danger') ?>">
                                                                 <?= empty($row['request_status']) ? 'Pending' : ucfirst($row['request_status']) ?>
                                                             </button>
                                                         </form>
                                                     </td>
+
 
 
                                                     <td>
@@ -425,24 +416,15 @@
 
             const stageSelect = $('#currentStageSelect');
             stageSelect.val(currentStage);
-
             const fieldsMap = {
-                'Fill out Form': ['issuance_submitted', 'issuance_received'],
-                'Pay Cashier': ['cashier_submitted', 'cashier_received'],
-                'Present Request': ['present_request_submitted',
-                    'present_request_received'
-                ],
+
+                'Present Request': ['present_request_submitted', 'present_request_received'],
                 'Prepare Service Record': ['prepare_service_record_submitted',
                     'prepare_service_record_received'
                 ],
-                'HR Director Signs': ['hr_director_signs_submitted',
-                    'hr_director_signs_received'
-                ],
-                'Record in Logbook': ['logbook_submitted', 'logbook_received'],
-                'For Releasing': ['for_releasing_submitted', 'for_releasing_received'],
-                'Completed': ['completed_date']
-            };
 
+                'For Releasing': ['for_releasing_submitted', 'for_releasing_received'],
+            };
 
             let fields = fieldsMap[currentStage] || [];
             let dynamicFieldsHtml = '';
@@ -505,11 +487,6 @@
 
     });
     </script>
-
-
-
-
-
 </body>
 
 </html>
