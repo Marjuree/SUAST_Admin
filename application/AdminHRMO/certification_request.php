@@ -25,13 +25,7 @@
 
 
     <style>
-    .table th {
-        text-align: center;
-        background-color: #343A40;
-        color: white;
-        vertical-align: middle;
-    }
-
+ 
     .progress-bar.bg-light {
         background-color: #e0e0e0 !important;
     }
@@ -129,10 +123,9 @@
         transform: translateY(-2px);
     }
 
-    .table thead th {
-        background-color: #343a40 !important;
+     table thead {
+        background-color: #343a40;
         color: #fff;
-        text-align: center;
     }
 
     .table tbody tr td {
