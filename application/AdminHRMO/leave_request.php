@@ -41,6 +41,41 @@
     }
 
     .modal-header {
+        background-color: #343A40;<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>HRMO | Dash</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="shortcut icon" href="../../img/favicon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+    <style>
+    .table th {
+        text-align: center;
+        background-color: #343A40;
+        color: white;
+        vertical-align: middle;
+    }
+
+    .progress-bar.bg-light {
+        background-color: #e0e0e0 !important;
+    }
+
+    .progress-bar {
+        transition: none !important;
+    }
+
+    .modal-header {
         background-color: #343A40;
         color: white;
     }
@@ -300,7 +335,7 @@
 
                                                     <!-- Completion Status Form -->
                                                     <td>
-                                                        <form method="POST" action="update_completion_status.php">
+                                                        <form method="POST" action="update_leave_status.php">
                                                             <input type="hidden" name="request_id"
                                                                 value="<?= $row['id'] ?>">
                                                             <input type="hidden" name="status"
@@ -530,12 +565,6 @@
 
     });
     </script>
-
-
-
-</body>
-
-</html>
 
 
 
