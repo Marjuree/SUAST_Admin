@@ -215,8 +215,7 @@
                                                         $stages = [
                                                             'Present Request',
                                                             'Prepare Service Record',
-                                                            'For Releasing',
-                                                            'Completed'
+                                                            'For Releasing'
                                                         ];
 
                                                         $currentStage = $row['current_stage'];
@@ -417,7 +416,6 @@
                 ],
 
                 'For Releasing': ['for_releasing_submitted', 'for_releasing_received'],
-                'Completed': ['completed_date']
             };
 
             let fields = fieldsMap[currentStage] || [];
