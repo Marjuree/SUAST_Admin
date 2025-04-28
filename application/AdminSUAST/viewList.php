@@ -182,15 +182,25 @@ ob_start();
                                         </div>
                                         <div class="text-center" style="border: 1px solid #000; padding: 10px;">
                                             <?php
-                                            $rawDate = $students[0]['exam_date'];
-                                            $rawTime = $students[0]['exam_time'];
-                                            
-                                            $formattedDate = !empty($rawDate) ? date('F d, Y', strtotime($rawDate)) : 'Date not set';
-                                            $formattedTime = !empty($rawTime) ? date('g:i a', strtotime($rawTime)) : 'Time not set';
-                                            ?>
+                                                $rawDate = $students[0]['exam_date'];
+                                                $rawTime = $students[0]['exam_time'];
+
+                                                $formattedDate = !empty($rawDate) ? date('F d, Y', strtotime($rawDate)) : 'Date not set';
+
+                                                // Split the exam time into start and end times
+                                                if (!empty($rawTime)) {
+                                                    $timeParts = explode('-', $rawTime);
+                                                    $startTime = isset($timeParts[0]) ? date('g:i A', strtotime(trim($timeParts[0]))) : '';
+                                                    $endTime = isset($timeParts[1]) ? date('g:i A', strtotime(trim($timeParts[1]))) : '';
+                                                    $formattedTime = $startTime && $endTime ? "$startTime - $endTime" : 'Time not set';
+                                                } else {
+                                                    $formattedTime = 'Time not set';
+                                                }
+                                                ?>
                                             <h5><strong><?= $formattedDate ?></strong></h5>
                                             <h5>Time: <?= $formattedTime ?></h5>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
