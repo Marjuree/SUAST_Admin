@@ -24,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Determine the correct column name
-        $column = ($stage === 'completed') ? 'completed_date'
-                 : ($stage === 'date_of') ? 'date_of_submitted'
-                 : ($stage === 'date') ? 'date_received'
-                 : "{$stage}_{$type}";
+        // Determine the correct column name with clear ternary nesting
+        $column = ($stage === 'completed') ? 'completed_date' :
+                  (($stage === 'date_of') ? 'date_of_submitted' :
+                  (($stage === 'date') ? 'date_received' :
+                  "{$stage}_{$type}"));
 
         // Ensure datetime format
         if (strpos($newDate, ':') === false) {
