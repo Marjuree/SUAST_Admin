@@ -101,7 +101,7 @@ ob_start();
                                                         <button type="submit" name="approve"
                                                             class="btn btn-success btn-xs">Approve</button>
                                                         <button type="submit" name="disapprove"
-                                                            class="btn btn-danger btn-xs">Disapprove</button>
+                                                            class="btn btn-danger btn-xs">Rejected</button>
                                                     </form>
                                                     <button class="btn btn-warning btn-xs open-balance-modal"
                                                         data-toggle="modal" data-target="#balanceModal"
