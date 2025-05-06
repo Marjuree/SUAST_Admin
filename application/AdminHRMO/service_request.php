@@ -314,7 +314,7 @@
                                                                 value="<?= $row['completion_status'] === 'done' ? 'pending' : 'done' ?>">
                                                             <button type="submit"
                                                                 class="btn btn-sm <?= $row['completion_status'] === 'done' ? 'btn-success' : 'btn-danger' ?>">
-                                                                <?= ucfirst($row['completion_status']) ?>
+                                                                <?= ucfirst((string) $row['completion_status']) ?>
                                                             </button>
                                                         </form>
                                                     </td>
