@@ -116,7 +116,7 @@ $username = $_SESSION['first_name'] ?? 'User';
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa fa-tasks"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">Service Requests</span>
+                            <span class="info-box-text">Service Record Requests</span>
                             <span
                                 class="info-box-number"><?php echo $serviceCount; ?></span>
                         </div>
