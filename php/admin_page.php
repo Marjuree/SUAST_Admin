@@ -98,7 +98,7 @@ require_once "../configuration/config.php";
         }
 
         .button:hover {
-            background-color: #018ABE;
+            background-color: #002B5B;
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
         }
