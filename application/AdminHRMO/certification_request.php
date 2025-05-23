@@ -1,11 +1,3 @@
-<?php
-    session_start();
-    if (!isset($_SESSION['role'])) {
-        header("Location: ../../php/error.php?welcome=Please login to access this page");
-        exit();
-    }
-    ob_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +17,13 @@
 
 
     <style>
- 
+    .table th {
+        text-align: center;
+        background-color: #343A40;
+        color: white;
+        vertical-align: middle;
+    }
+
     .progress-bar.bg-light {
         background-color: #e0e0e0 !important;
     }
@@ -123,9 +121,10 @@
         transform: translateY(-2px);
     }
 
-     table thead {
-        background-color: #343a40;
+    .table thead th {
+        background-color: #343a40 !important;
         color: #fff;
+        text-align: center;
     }
 
     .table tbody tr td {
@@ -203,7 +202,7 @@
                                                 <?php while ($row = $result->fetch_assoc()):
                                                 $stages = [
                                                     'Present Request',
-                                                    'Prepare Service Record',
+                                                    'Preparing Certification Record',
                                                     'For Releasing',
                                                 ];
                                 
@@ -236,7 +235,7 @@
                                                             <?php 
                                                                    $stages = [
                                                                     'Present Request',
-                                                                    'Prepare Service Record',
+                                                                    'Preparing Certification Record',
                                                                     'For Releasing',
                                                                 ];
 
@@ -412,7 +411,7 @@
             const fieldsMap = {
 
                 'Present Request': ['present_request_submitted', 'present_request_received'],
-                'Prepare Service Record': ['prepare_service_record_submitted',
+                'Preparing Certification Record': ['prepare_service_record_submitted',
                     'prepare_service_record_received'
                 ],
 
@@ -480,6 +479,11 @@
 
     });
     </script>
+
+
+
+
+
 </body>
 
 </html>
