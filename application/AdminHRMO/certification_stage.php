@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Define allowed stages based on faculty value (adjust if certification has specific stages)
     if (strtolower($faculty) === 'faculty') {
-        $allowed_stages = ['Fill out Form', 'Pay Cashier', 'Present Request', 'Prepare Service Record', 'HR Director Signs', 'Record in Logbook', 'For Releasing', 'Completed'];
+        $allowed_stages = ['Fill out Form', 'Pay Cashier', 'Present Request', 'Preparing Certification Record', 'HR Director Signs', 'Record in Logbook', 'For Releasing', 'Completed'];
     } else {
-        $allowed_stages = ['Fill out Form', 'Pay Cashier', 'Present Request', 'Prepare Service Record', 'HR Director Signs', 'Record in Logbook', 'For Releasing', 'Completed'];
+        $allowed_stages = ['Fill out Form', 'Pay Cashier', 'Present Request', 'Preparing Certification Record', 'HR Director Signs', 'Record in Logbook', 'For Releasing', 'Completed'];
     }
 
     // Validate the selected stage
