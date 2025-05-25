@@ -1,11 +1,7 @@
 <?php
-
 session_start();
 
 require_once "../configuration/config.php"; // Ensure this file does not have whitespace or output
-require_once "../application/SystemLog.php";
-
- 
 
 // Registration Handler
 if (isset($_POST['btn_register'])) {
@@ -22,22 +18,21 @@ if (isset($_POST['btn_register'])) {
         $hashed_password = password_hash($reg_password, PASSWORD_DEFAULT);
 
         // Insert query
-        $query = "INSERT INTO tbl_users_management (name, email,  username, password, role) 
-                  VALUES ('$reg_name', '$reg_email',  '$reg_username', '$hashed_password', '$reg_role')";
+        $query = "INSERT INTO tbl_users_management (name, email, username, password, role) 
+                  VALUES ('$reg_name', '$reg_email', '$reg_username', '$hashed_password', '$reg_role')";
 
         if (mysqli_query($con, $query)) {
             echo "<script>window.location.href='success.html';</script>";
         } else {
-            echo "<script>('Error: Could not register user.');</script>";
+            echo "<script>alert('Error: Could not register user.');</script>";
         }
     } else {
-        echo "<script>('Passwords do not match.');</script>";
+        echo "<script>alert('Passwords do not match.');</script>";
     }
 }
 
-
 // Login Handler
-if (isset($_POST['btn_login'])) { 
+if (isset($_POST['btn_login'])) {
     $username = mysqli_real_escape_string($con, $_POST['txt_username']);
     $password = $_POST['txt_password']; // Do not escape passwords, we'll verify them later
     $role = mysqli_real_escape_string($con, $_POST['select_role']);
@@ -56,41 +51,27 @@ if (isset($_POST['btn_login'])) {
             $_SESSION['role'] = $row['role'];
             $_SESSION['userid'] = $row['id'];
             $_SESSION['username'] = $row['username'];
-             // ✅ Log successful login
-            logMessage("INFO", "Login Success", "Admin '$username' logged in successfully.");
 
             // Redirect based on role
             switch ($row['role']) {
                 case "SUAST":
                     header("location: ../application/AdminSUAST/AdminSUAST.php?success=login");
-                    
                     break;
                 case "Accounting":
                     header("location: ../application/AdminAccounting/Accountingdashboard.php?success=login");
                     break;
-                    
                 case "HRMO":
                     header("location: ../application/AdminHRMO/HRMODashboard.php?success=login");
                     break;
                 default:
                     header("location: invalid.html?error=invalid_role");
-            }   
+            }
             exit;
         } else {
-             // ❌ Log failed login attempt
-            logMessage("WARNING", "Login Failed", "Admin Office Failed login attempt for user '$username'.");
-            echo "<script>('Invalid Password!'); window.location.href='invalid.html';</script>";
+            echo "<script>alert('Invalid Password!'); window.location.href='invalid.html';</script>";
         }
     } else {
-         // ❌ Log failed login attempt
-         logMessage("WARNING", "Login Failed", "Admin Invalid Role Please Select OFFICE!  '$username'.");
-        echo "<script>('Invalid Role Please Select OFFICE! '); window.location.href='invalid.html';</script>";
+        echo "<script>alert('Invalid Role. Please select the correct office.'); window.location.href='invalid.html';</script>";
     }
 }
-
 ?>
-
-
-
-
- 
