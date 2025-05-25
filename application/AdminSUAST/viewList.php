@@ -22,74 +22,191 @@ ob_start();
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <style>
-    .horizontal-scroll {
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .scroll-box {
-        display: inline-block;
-        min-width: 600px;
-        vertical-align: top;
-        margin-right: 20px;
-        background: #fff;
-        padding: 20px;
-        border: 1px solid #000;
-        border-radius: 10px;
-    }
-
-
-    .responsive-divider {
-        border-bottom: 6px solid #003399;
-        width: 80%;
-        max-width: 325px;
-    }
-
-    @media (max-width: 480px) {
-        .responsive-divider span {
-            font-size: 0.875rem;
+        .horizontal-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
-        .text-right img {
-            margin-left: -50px !important;
+        .scroll-box {
+            display: inline-block;
+            min-width: 600px;
+            vertical-align: top;
+            margin-right: 20px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #000;
+            border-radius: 10px;
         }
-    }
+
+        .responsive-divider {
+            border-bottom: 6px solid #003399;
+            width: 80%;
+            max-width: 325px;
+        }
+
+        @media (max-width: 767px) {
+            .scroll-box .row {
+                display: flex;
+                flex-direction: row !important;
+                flex-wrap: nowrap;
+            }
+
+            .scroll-box .col-sm-7,
+            .scroll-box .col-sm-5 {
+                width: 50% !important;
+                float: none;
+            }
+
+            /* Optional: Add scroll if the box overflows */
+            .scroll-box {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .responsive-divider span {
+                font-size: 0.875rem;
+            }
+
+            .text-right img {
+                margin-left: -50px !important;
+            }
+        }
+
+        @media print {
+
+            /* Hide everything by default */
+            body * {
+                visibility: hidden !important;
+            }
+
+            /* Show only the print area */
+            aside.right-side,
+            aside.right-side * {
+                visibility: visible !important;
+            }
+
+            /* Full width print layout */
+            aside.right-side {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 60%;
+            }
+
+            .modal-content {
+                border: none;
+            }
+
+            /* Hide print button */
+            .btn-primary {
+                display: none !important;
+            }
+
+            .scroll-box table {
+                width: 100% !important;
+                /* or any desired value like 80% */
+            }
+
+            /* Fix scroll-box layout 11*/
+            .scroll-box {
+                display: block !important;
+                width: 60% !important;
+                page-break-inside: avoid;
+                margin-top: -800px !important;
+            }
+
+            .horizontal-scroll {
+                overflow: visible !important;
+                white-space: normal !important;
+            }
+
+            .red {
+                color: red !important;
+            }
+        }
+
+
+
+        /* Fixed A4-width scroll box */
+        .scroll-box {
+            display: inline-block;
+            width: 794px;
+            vertical-align: top;
+            margin-right: 20px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #000;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Disable responsive behavior for small screens */
+        @media (max-width: 1024px) {
+
+            body,
+            .container-fluid,
+            .modal-dialog,
+            .scroll-box {
+                width: 794px !important;
+                min-width: 794px !important;
+            }
+
+            .scroll-box,
+            .horizontal-scroll {
+                overflow-x: visible !important;
+            }
+
+            .col-xs-9,
+            .col-xs-3,
+            .col-sm-7,
+            .col-sm-5 {
+                float: none;
+                width: auto;
+            }
+
+            .text-right img {
+                margin-left: 0 !important;
+            }
+        }
     </style>
 </head>
 
 <body class="skin-blue">
 
-    <?php 
-  require_once('../../includes/header.php');
-  require_once('../../includes/head_css.php'); 
-?>
+    <?php
+    require_once('../../includes/header.php');
+    require_once('../../includes/head_css.php');
+    ?>
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <?php require_once('../../includes/sidebar.php'); ?>
 
-        <aside class="right-side">
+        <aside style="font-style: italic;" class="right-side">
+            <div class="modal-dialog" style="width: 70%;">
+                <div class="modal-content"
+                    style="padding: 20px; border-radius: 15px; font-family: Arial, sans-serif; border: none;">
 
-
-            <div class="modal-dialog" style="width: 90%;">
-                <div class="modal-content" style="padding: 20px; border-radius: 15px; font-family: Arial, sans-serif;">
+                    <!-- Print Button -->
+                    <div class="text-right" style="margin-bottom: 10px;">
+                        <button onclick="window.print()" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-print"></span> Print
+                        </button>
+                    </div>
 
                     <!-- Header Layout -->
                     <div class="container-fluid" style="padding-bottom: 15px; border-bottom: 1px solid #ccc;">
                         <div class="row">
                             <div class="col-xs-9">
                                 <h6>Republic of the Philippines</h6>
-                                <div class="responsive-divider">
-                                </div>
-
+                                <div class="responsive-divider"></div>
                                 <h3 style="color: #003399; font-weight: bold;">DAVAO ORIENTAL <br> STATE UNIVERSITY</h3>
                                 <p style="font-style: italic; font-size: 14px;">"A university of excellence, innovation,
                                     and inclusion"</p>
-                                <div class="responsive-divider">
-                                </div>
-
+                                <div class="responsive-divider"></div>
                             </div>
                             <div class="col-xs-3 text-right">
-                                <img src="../../php/image/logo1.png" alt="University Seal" style="height: 120px;">
+                                <img src="../../img/logo1.png" alt="University Seal" style="height: 120px;">
                             </div>
                         </div>
 
@@ -99,27 +216,6 @@ ob_start();
                             <p style="font-weight: bold; text-decoration: underline; font-size: 14px;">State University
                                 Aptitude and Scholarship Test</p>
                         </div>
-                    </div>
-
-                    <!-- Reminders -->
-                    <div class="panel panel-danger" style="margin-top: 20px;">
-                        <div class="panel-heading text-center">
-                            <strong>REMINDERS</strong>
-                        </div>
-                        <div class="panel-body text-center">
-                            <ul style="list-style: disc; display: inline-block; text-align: left; padding-left: 20px;">
-                                <li><strong>Bring your OWN pencil, ball pen, and eraser. Strictly no borrowing.</strong>
-                                </li>
-                                <li><strong>Prepare the EXACT Testing Fee Payment of Php. 150.00</strong></li>
-                                <li><strong>Arrive 30 minutes before your examination schedule.</strong></li>
-                                <li><strong>Wear appropriate attire.</strong></li>
-                                <li><strong>You may bring snacks but observe the University’s no single-use plastic
-                                        policy.</strong></li>
-                                <li><strong>Wear face-mask and observe safety protocols.</strong></li>
-                                <li><strong>Wear white polo shirt.</strong></li>
-                            </ul>
-                        </div>
-
                     </div>
 
                     <!-- Room and Schedule Info -->
@@ -138,22 +234,16 @@ ob_start();
                         }
                         ?>
 
-                        <div class="horizontal-scroll" style="padding: 15px 0;">
+                        <div class="horizontal-scroll" style="padding: 15px 0; border: none;">
                             <?php foreach ($rooms as $room => $students): ?>
-                            <div class="scroll-box">
-                                <div class="row">
-                                    <div class="col-sm-7">
-                                        <h5 style="font-weight: bold;">
-                                            <?= htmlspecialchars($students[0]['venue']) ?>
-                                        </h5>
-                                        <h5>Date and Venue</h5>
+                                <div class="scroll-box">
+                                    <div class="row">
+                                        <!-- Left side: student table -->
+                                        <div class="col-sm-7">
+                                            <h5 style="font-weight: bold;"><?= htmlspecialchars($students[0]['venue']) ?>
+                                            </h5>
+                                            <h5>Date and Venue</h5>
 
-                                        <?php
-                                                // Conditionally apply scroll style
-                                                $scrollStyle = count($students) >= 5 ? 'style="max-height: 300px; overflow-y: auto;"' : '';
-                                            ?>
-
-                                        <div <?= $scrollStyle ?>>
                                             <table class="table table-bordered table-striped mb-0">
                                                 <thead class="thead-dark">
                                                     <tr>
@@ -163,31 +253,34 @@ ob_start();
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($students as $index => $student): ?>
-                                                    <?php if ($student['status'] === 'approved'): // Check if the status is approved ?>
-                                                    <tr>
-                                                        <td><?= $index + 1 ?></td>
-                                                        <td><?= htmlspecialchars($student['name']) ?></td>
-                                                    </tr>
-                                                    <?php endif; ?>
+                                                        <?php if ($student['status'] === 'approved'): ?>
+                                                            <tr>
+                                                                <td><?= $index + 1 ?></td>
+                                                                <td><?= htmlspecialchars($student['name']) ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
 
-                                    <div class="col-sm-5">
-                                        <div class="text-center"
-                                            style="border: 1px solid #000; padding: 10px; margin-bottom: 15px;">
-                                            <h5><strong><?= htmlspecialchars($room) ?></strong></h5>
-                                        </div>
-                                        <div class="text-center" style="border: 1px solid #000; padding: 10px;">
-                                            <?php
+                                        <!-- Right side: room/date + reminders -->
+                                        <div class="col-sm-5">
+                                            <!-- Room -->
+                                            <div class="text-center"
+                                                style="border: 1px solid #000; padding: 10px; margin-bottom: 15px;">
+                                                <h5><strong><?= htmlspecialchars($room) ?></strong></h5>
+                                            </div>
+
+                                            <!-- Date & Time -->
+                                            <div class="text-center"
+                                                style="border: 1px solid #000; padding: 10px; margin-bottom: 15px;">
+                                                <?php
                                                 $rawDate = $students[0]['exam_date'];
                                                 $rawTime = $students[0]['exam_time'];
 
                                                 $formattedDate = !empty($rawDate) ? date('F d, Y', strtotime($rawDate)) : 'Date not set';
 
-                                                // Split the exam time into start and end times
                                                 if (!empty($rawTime)) {
                                                     $timeParts = explode('-', $rawTime);
                                                     $startTime = isset($timeParts[0]) ? date('g:i A', strtotime(trim($timeParts[0]))) : '';
@@ -197,22 +290,32 @@ ob_start();
                                                     $formattedTime = 'Time not set';
                                                 }
                                                 ?>
-                                            <h5><strong><?= $formattedDate ?></strong></h5>
-                                            <h5>Time: <?= $formattedTime ?></h5>
-                                        </div>
+                                                <h5><strong><?= $formattedDate ?></strong></h5>
+                                                <h5>Time: <?= $formattedTime ?></h5>
+                                            </div>
 
+                                            <!-- Reminders -->
+                                            <div style="border: 1px solid #000; padding: 10px;">
+                                                <strong class="red"
+                                                    style="color: red; font-size: 20px; display: block; text-align: center;">Reminders:</strong>
+                                                <ul style="padding-left: 20px; margin: 10px 0 0; ">
+                                                    <li>Arrive 30 minutes before schedule.</li>
+                                                    <li>Bring valid school/government ID.</li>
+                                                    <li>No electronic gadgets inside.</li>
+                                                    <li>Follow proctors' instructions.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php endforeach; ?>
                         </div>
-
                     </div>
-
 
                 </div>
             </div>
         </aside>
+
     </div>
 
     <?php require_once "../../includes/footer.php"; ?>
