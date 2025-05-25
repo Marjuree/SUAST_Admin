@@ -8,18 +8,15 @@ if (!isset($_SESSION['role'])) {
     exit();
 }
 
-// Only allow POST with ID
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
+// Only allow POST with ID and status
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && isset($_POST['status'])) {
     $id = intval($_POST['id']);
+    $status = trim($_POST['status']);
 
-    echo ".";
-    // Determine status
-    if (isset($_POST['approve'])) {
-        $status = "Approved";
-    } elseif (isset($_POST['disapprove'])) {
-        $status = "Rejected";
-    } else {
-        showSweetAlert('Invalid action received.', 'error', 'dashboard.php');
+    // Validate allowed statuses
+    $allowedStatuses = ["For Signature", "For Payment", "Cleared"];
+    if (!in_array($status, $allowedStatuses)) {
+        showSweetAlert('Invalid status received.', 'error', 'clearance.php');
         exit();
     }
 
@@ -59,19 +56,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 
         // Commit transaction
         $con->commit();
-        showSweetAlert("Status updated successfully to $status", 'success', 'clearance.php');
+        showSweetAlert("Status updated successfully to '$status'", 'success', 'clearance.php');
 
     } catch (Exception $e) {
         $con->rollback();
         error_log("Update error: " . $e->getMessage());
-        showSweetAlert("Error: " . $e->getMessage(), 'error', 'dashboard.php');
+        showSweetAlert("Error: " . $e->getMessage(), 'error', 'clearance.php');
     } finally {
         $stmt->close();
         $con->close();
     }
 
 } else {
-    showSweetAlert('Invalid request.', 'error', 'dashboard.php');
+    showSweetAlert('Invalid request.', 'error', 'clearance.php');
     exit();
 }
 
