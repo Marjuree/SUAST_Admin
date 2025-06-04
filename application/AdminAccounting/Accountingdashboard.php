@@ -68,8 +68,8 @@ require_once('../../includes/head_css.php');
         </span>
       </a>
       <div class="info-box-content" style="padding-left: 15px;">
-        <span class="info-box-text" style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Clearance</span>
-        <span class="info-box-number" style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $clearanceTotal ?></span>
+        <span class="info-box-text" style="font-weight: 600; font-size: 1.1rem; color: #000;">Clearance</span>
+        <span class="info-box-number" style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $clearanceTotal ?></span>
       </div>
     </div>
   </div>
