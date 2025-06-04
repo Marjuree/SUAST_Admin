@@ -73,11 +73,24 @@ ob_start();
             }
         }
 
+        .print-only {
+            display: none;
+        }
+
+
         @media print {
 
             /* Hide everything by default */
             body * {
                 visibility: hidden !important;
+            }
+
+            .print-only {
+                display: block !important;
+            }
+
+            .no-print {
+                display: none !important;
             }
 
             /* Show only the print area */
@@ -189,14 +202,16 @@ ob_start();
                     style="padding: 20px; border-radius: 15px; font-family: Arial, sans-serif; border: none;">
 
                     <!-- Print Button -->
-                    <div class="text-right" style="margin-bottom: 10px;">
+                    <!-- Print Button -->
+                    <div class="text-right no-print" style="margin-bottom: 10px;">
                         <button onclick="window.print()" class="btn btn-primary">
                             <span class="glyphicon glyphicon-print"></span> Print
                         </button>
                     </div>
 
                     <!-- Header Layout -->
-                    <div class="container-fluid" style="padding-bottom: 15px; border-bottom: 1px solid #ccc;">
+                    <div class="container-fluid print-only"
+                        style="padding-bottom: 15px; border-bottom: 1px solid #ccc;">
                         <div class="row">
                             <div class="col-xs-9">
                                 <h6>Republic of the Philippines</h6>
