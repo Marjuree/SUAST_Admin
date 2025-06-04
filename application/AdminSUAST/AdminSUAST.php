@@ -87,38 +87,65 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                 <!-- Info boxes -->
                 <div class="scrollable-container">
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
-                        <div class="info-box">
-                            <a href="../applicant/applicant.php">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
+                        <div class="info-box shadow-sm rounded"
+                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <span class="info-box-icon"
+                                    style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    <i class="fa fa-tasks"></i>
+                                </span>
                             </a>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Applicants</span>
-                                <span class="info-box-number"><?php echo $takers; ?></span>
+                            <div class="info-box-content" style="padding-left: 15px;">
+                                <span class="info-box-text"
+                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Applicants</span>
+                                <span class="info-box-number"
+                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $takers; ?></span>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
-                        <div class="info-box">
-                            <a href="#">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-tasks"></i></span>
+                        <div class="info-box shadow-sm rounded"
+                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <span class="info-box-icon"
+                                    style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    <i class="fa fa-file-alt"></i>
+                                </span>
                             </a>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Available Slots</span>
-                                <span class="info-box-number"><?php echo $availableSlots; ?></span>
+                            <div class="info-box-content" style="padding-left: 15px;">
+                                <span class="info-box-text"
+                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Available Slot</span>
+                                <span class="info-box-number"
+                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $availableSlots; ?></span>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
-                        <div class="info-box">
-                            <a href="#">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-file-alt"></i></span>
+                        <div class="info-box shadow-sm rounded"
+                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <span class="info-box-icon"
+                                    style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    <i class="fa fa-check-circle"></i>
+                                </span>
                             </a>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Registered Takers</span>
-                                <span class="info-box-number"><?php echo $registeredTakers; ?></span>
+                            <div class="info-box-content" style="padding-left: 15px;">
+                                <span class="info-box-text"
+                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Registered Takers
+                                    Requests</span>
+                                <span class="info-box-number"
+                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $registeredTakers; ?></span>
                             </div>
                         </div>
                     </div>
+
+                    <style>
+                        .info-box:hover {
+                            box-shadow: 0 8px 20px rgba(0, 43, 91, 0.4);
+                        }
+                    </style>
                 </div>
 
                 <!-- Charts section -->
@@ -170,7 +197,8 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
             plotOptions: {
                 bar: {
                     borderRadius: 6,
-                    columnWidth: '45%'
+                    columnWidth: '45%',
+                    distributed: true  // Enables different colors per bar
                 }
             },
             dataLabels: {
@@ -179,10 +207,20 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
             },
             tooltip: {
                 theme: 'light'
+            },
+            legend: {
+                show: true,
+                position: 'right',
+                verticalAlign: 'middle',
+                floating: false,
+                labels: { colors: '#333' },
+                markers: { radius: 12 }
             }
         };
+
         var chartBar = new ApexCharts(document.querySelector("#barChart"), optionsBar);
         chartBar.render();
+
 
         // Line Chart
         var optionsLine = {
