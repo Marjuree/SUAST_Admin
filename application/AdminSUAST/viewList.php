@@ -311,7 +311,7 @@ ob_start();
                                             </div>
 
                                             <!-- Reminders -->
-                                            <div style="border: 1px solid #000; padding: 10px;">
+                                            <div class="print-only" style="border: 1px solid #000; padding: 10px;">
                                                 <strong class="red"
                                                     style="color: red; font-size: 20px; display: block; text-align: center;">Reminders:</strong>
                                                 <ul style="padding-left: 20px; margin: 10px 0 0; ">
