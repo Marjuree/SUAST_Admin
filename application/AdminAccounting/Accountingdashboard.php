@@ -13,6 +13,8 @@ $clearanceForSignature = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_c
 $clearanceForPayment = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_clearance_requests WHERE status = 'For Payment'"));
 $clearanceCleared = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_clearance_requests WHERE status = 'Cleared'"));
 $clearanceTotal = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_clearance_requests"));
+
+$username = $_SESSION['first_name'] ?? 'User';
 ?>
 
 <!DOCTYPE html>
@@ -20,248 +22,187 @@ $clearanceTotal = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_clearanc
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Accounting | Dashboard</title>
     <link rel="shortcut icon" href="../../img/favicon.png" />
-    <script src="../../assets/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-        canvas {
-            max-height: 250px !important;
+        .card {
+            background: #f9fcff;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+            padding: 1rem;
+        }
+        .card-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .chart-container {
+            max-height: 250px;
         }
     </style>
 </head>
 
 <body class="skin-blue">
-    <?php
-    require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php');
-    ?>
+<?php
+require_once('../../includes/header.php');
+require_once('../../includes/head_css.php');
+?>
 
-    <div class="wrapper row-offcanvas row-offcanvas-left">
-        <?php require_once('../../includes/sidebar.php'); ?>
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <?php require_once('../../includes/sidebar.php'); ?>
 
-        <aside class="right-side">
-            <section class="content-header">
-                <h1>Dashboard</h1>
-                <p>Welcome, <strong><?php echo htmlspecialchars($username); ?></strong></p>
-            </section>
+    <aside class="right-side">
+        <section class="content-header">
+            <h1>Dashboard</h1>
+            <p>Welcome, <strong><?= htmlspecialchars($username) ?></strong></p>
+        </section>
 
-            <section class="content">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6 col-xs-12"><br>
-                        <div class="info-box">
-                            <a href="#">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span>
-                            </a>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Clearance</span>
-                                <span class="info-box-number"><?= $clearanceTotal ?></span>
-                            </div>
-                        </div>
+        <section class="content">
+           <div class="row">
+  <div class="col-md-3 col-sm-6 col-xs-12"><br>
+    <div class="info-box shadow-sm rounded" style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+      <a href="#" style="text-decoration: none; color: inherit;">
+        <span class="info-box-icon" style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+          <i class="fa fa-file"></i>
+        </span>
+      </a>
+      <div class="info-box-content" style="padding-left: 15px;">
+        <span class="info-box-text" style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Clearance</span>
+        <span class="info-box-number" style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $clearanceTotal ?></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .info-box:hover {
+    box-shadow: 0 8px 20px rgba(0, 43, 91, 0.4);
+  }
+</style>
+
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12"><br>
+                    <div class="card">
+                        <h4 class="card-title">Status Count</h4>
+                        <div id="barChart1" class="chart-container"></div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <?php
-                    $charts = [
-                        ["Status Count", "barChart1"],
-                        ["Request Overtime", "barChart2"]
-                    ];
-                    foreach ($charts as $chart) { ?>
-                        <div class="col-md-6 col-sm-12"><br>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title"><?= $chart[0] ?></h4>
-                                    <canvas id="<?= $chart[1] ?>"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
+                <div class="col-md-6 col-sm-12"><br>
+                    <div class="card">
+                        <h4 class="card-title">Request Overtime</h4>
+                        <div id="barChart2" class="chart-container"></div>
+                    </div>
                 </div>
-            </section>
-        </aside>
-    </div>
+            </div>
+        </section>
+    </aside>
+</div>
 
-    <script>
-        const clearancePending = <?= $clearancePending ?>;
-        const clearanceForSignature = <?= $clearanceForSignature ?>;
-        const clearanceForPayment = <?= $clearanceForPayment ?>;
-        const clearanceCleared = <?= $clearanceCleared ?>;
-        const clearanceTotal = <?= $clearanceTotal ?>;
+<script>
+ const clearanceData = {
+  pending: <?= $clearancePending ?>,
+  signature: <?= $clearanceForSignature ?>,
+  payment: <?= $clearanceForPayment ?>,
+  cleared: <?= $clearanceCleared ?>,
+  total: <?= $clearanceTotal ?>
+};
 
-        const ctx1 = document.getElementById('barChart1').getContext('2d');
-        const gradientOrange = ctx1.createLinearGradient(0, 0, 0, 200);
-        gradientOrange.addColorStop(0, '#ffb347');
-        gradientOrange.addColorStop(1, '#ffcc33');
-
-        const gradientGreen = ctx1.createLinearGradient(0, 0, 0, 200);
-        gradientGreen.addColorStop(0, '#66ff99');
-        gradientGreen.addColorStop(1, '#00cc66');
-
-        const gradientRed = ctx1.createLinearGradient(0, 0, 0, 200);
-        gradientRed.addColorStop(0, '#ff6666');
-        gradientRed.addColorStop(1, '#cc0000');
-
-        const gradientBlue = ctx1.createLinearGradient(0, 0, 0, 200);
-        gradientBlue.addColorStop(0, '#99ccff');
-        gradientBlue.addColorStop(1, '#3366ff');
-
-        new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: ['Clearance'],
-                datasets: [
-                    {
-                        label: 'Pending',
-                        data: [clearancePending],
-                        backgroundColor: gradientOrange,
-                        borderRadius: 10
-                    },
-                    {
-                        label: 'For Signature',
-                        data: [clearanceForSignature],
-                        backgroundColor: gradientGreen,
-                        borderRadius: 10
-                    },
-                    {
-                        label: 'For Payment',
-                        data: [clearanceForPayment],
-                        backgroundColor: gradientRed,
-                        borderRadius: 10
-                    },
-                    {
-                        label: 'Cleared',
-                        data: [clearanceCleared],
-                        backgroundColor: gradientBlue,
-                        borderRadius: 10
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 1200,
-                    easing: 'easeOutBounce'
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#333',
-                            font: {
-                                size: 14,
-                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: '#fff',
-                        titleColor: '#333',
-                        bodyColor: '#444',
-                        borderColor: '#ccc',
-                        borderWidth: 1
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#555',
-                            stepSize: 1
-                        },
-                        grid: {
-                            color: '#eee'
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: '#555'
-                        },
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 2 (Total Requests)
-        const ctx2 = document.getElementById('barChart2').getContext('2d');
-        const gradientTotal = ctx2.createLinearGradient(0, 0, 0, 200);
-        gradientTotal.addColorStop(0, '#99ccff');
-        gradientTotal.addColorStop(1, '#3366ff');
-
-        new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: ['Clearance'],
-                datasets: [{
-                    label: 'Total Requests',
-                    data: [clearanceTotal],
-                    backgroundColor: gradientTotal,
-                    borderRadius: 12
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuad'
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#333',
-                            font: {
-                                size: 14
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: '#fff',
-                        titleColor: '#333',
-                        bodyColor: '#444',
-                        borderColor: '#ccc',
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function (context) {
-                                return `${context.dataset.label}: ${Math.round(context.raw)}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#444',
-                            callback: function (value) {
-                                return Number.isInteger(value) ? value : '';
-                            },
-                            stepSize: 1
-                        },
-                        grid: {
-                            color: '#eee'
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: '#444'
-                        },
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    </script>
+// Chart 1: Status Count
+new ApexCharts(document.querySelector("#barChart1"), {
+  chart: {
+    type: 'bar',
+    height: 250,
+    animations: {
+      enabled: true,
+      easing: 'easeinout',
+      speed: 1000
+    }
+  },
+  series: [{
+    name: 'Requests',
+    data: [
+      clearanceData.pending,
+      clearanceData.signature,
+      clearanceData.payment,
+      clearanceData.cleared
+    ]
+  }],
+  xaxis: {
+    categories: ['Pending', 'For Signature', 'For Payment', 'Cleared'],
+    labels: {
+      style: { colors: ['#333', '#333', '#333', '#333'] }
+    }
+  },
+  colors: ['#ffb347', '#66ff99', '#ff6666', '#99ccff'],
+  plotOptions: {
+    bar: {
+      borderRadius: 8,
+      columnWidth: '50%',
+      distributed: true   // <-- this enables per-bar color and legend mapping
+    }
+  },
+  tooltip: {
+    theme: 'light'
+  },
+  dataLabels: {
+    enabled: true
+  },
+  legend: {
+    show: true,
+    position: 'right',
+    verticalAlign: 'middle',
+    floating: false,
+    labels: { colors: '#333' },
+    markers: { radius: 12 }
+  }
+}).render();
 
 
 
-    <?php require_once "../../includes/footer.php"; ?>
+  // Chart 2: Total Request
+  new ApexCharts(document.querySelector("#barChart2"), {
+      chart: {
+          type: 'bar',
+          height: 250,
+          animations: {
+              enabled: true,
+              easing: 'easeInOutQuad',
+              speed: 1000
+          }
+      },
+      series: [{
+          name: 'Total Requests',
+          data: [clearanceData.total]
+      }],
+      xaxis: {
+          categories: ['Clearance'],
+          labels: {
+              style: {
+                  colors: ['#444']
+              }
+          }
+      },
+      colors: ['#3366ff'],
+      plotOptions: {
+          bar: {
+              borderRadius: 12,
+              columnWidth: '50%'
+          }
+      },
+      tooltip: {
+          theme: 'light',
+          y: {
+              formatter: val => Math.round(val)
+          }
+      },
+      dataLabels: {
+          enabled: true
+      }
+  }).render();
+</script>
+
+<?php require_once "../../includes/footer.php"; ?>
 </body>
-
 </html>
