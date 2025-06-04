@@ -119,6 +119,7 @@ ob_start();
             .horizontal-scroll {
                 overflow: visible !important;
                 white-space: normal !important;
+                margin-top: -120px
             }
 
             .red {
