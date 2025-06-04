@@ -24,7 +24,6 @@ if ($result->num_rows > 0) {
         echo '
         <div id="announcement-' . $announcement_id . '" style="background: #ffffff; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.07); max-width: 700px; margin-left: auto; margin-right: auto; text-align: center;">
             <img src="https://cdn-icons-png.flaticon.com/512/3039/3039396.png" alt="icon" width="60" style="margin-bottom: 15px;">
-            <h2 style="color: #003366; font-weight: bold; margin-bottom: 10px;">NOTICE</h2>
             <p style="font-size: 16px; color: #333; margin-bottom: 20px;">' . $message . '</p>
 
             <div style="display: flex; justify-content: space-around; align-items: center; font-size: 14px; color: #666; flex-wrap: wrap;">
