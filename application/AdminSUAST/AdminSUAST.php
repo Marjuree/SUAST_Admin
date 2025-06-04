@@ -18,83 +18,73 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Admin | Dashboard</title>
     <link rel="shortcut icon" href="../../img/favicon.png" />
-    <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
-    <script src="../../assets/chart.js"></script>
+    <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css" />
+
     <style>
-        canvas {
-            max-height: 250px !important;
-        }
-
-        /* Make info boxes scrollable on small screens */
         .scrollable-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .info-box {
-            display: inline-block;
-            width: 23%; /* Adjust box size to fit 4 boxes per row */
-            margin: 10px;
-        }
 
-        /* Adjust for small screens */
-        @media (max-width: 767px) {
-            .info-box {
-                width: 45%; /* 2 boxes per row on small screens */
-            }
-        }
 
-        @media (max-width: 480px) {
-            .info-box {
-                width: 90%; /* 1 box per row on very small screens */
-            }
-        }
-
-        /* Ensure that chart section takes full width and is scrollable on small screens */
         .chart-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .chart-wrapper {
             display: flex;
-            flex-wrap: nowrap;
-            justify-content: space-around;
-            width: max-content;
+            flex-direction: column;
+            gap: 40px;
         }
 
         .card {
-            margin: 10px;
-            flex: 1;
-            max-width: 32%;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            border-radius: 8px;
+            background: #fff;
         }
 
+        .card h4 {
+            margin-bottom: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        /* Set fixed height for each chart */
+        .apexcharts-canvas {
+            max-height: 300px !important;
+        }
     </style>
 </head>
 
 <body class="skin-blue">
-    <?php 
+    <?php
     require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php'); 
+    require_once('../../includes/head_css.php');
     ?>
-    
+
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <?php require_once('../../includes/sidebar.php'); ?>
-        
+
         <aside class="right-side">
             <section class="content-header">
                 <h1>Dashboard</h1>
             </section>
-            
-            <section class="content">
-                <!-- Wrapper for info boxes with scroll functionality on small screens -->
+
+            <section class="content" style="max-height: 85vh; overflow-y: auto; padding-right: 10px;">
+                <!-- Info boxes -->
                 <div class="scrollable-container">
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box">
@@ -134,143 +124,125 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                 <!-- Charts section -->
                 <div class="chart-container">
                     <div class="chart-wrapper">
-                        <?php 
-                        $charts = [
-                            ["Bar Chart", "barChart"],
-                            ["Line Chart", "lineChart"],
-                            ["Pie Chart", "pieChart"]
-                        ];
-                        foreach ($charts as $chart) { ?>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title"><?= $chart[0] ?></h4>
-                                    <canvas id="<?= $chart[1] ?>"></canvas>
-                                </div>
-                            </div>
-                        <?php } ?>
+                        <div class="card">
+                            <h4>Bar Chart</h4>
+                            <div id="barChart"></div>
+                        </div>
+
+                        <div class="card">
+                            <h4>Line Chart</h4>
+                            <div id="lineChart"></div>
+                        </div>
+
+                        <div class="card">
+                            <h4>Pie Chart</h4>
+                            <div id="pieChart"></div>
+                        </div>
                     </div>
                 </div>
             </section>
         </aside>
     </div>
 
+    <!-- ApexCharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <script>
-    const labels = ['Takers', 'Available Slots', 'Registered Takers'];
-    const data = [<?= $takers ?>, <?= $availableSlots ?>, <?= $registeredTakers ?>];
+        const labels = ['Takers', 'Available Slots', 'Registered Takers'];
+        const data = [<?= $takers ?>, <?= $availableSlots ?>, <?= $registeredTakers ?>];
 
-    // Create canvas contexts
-    const ctxBar = document.getElementById('barChart').getContext('2d');
-    const ctxLine = document.getElementById('lineChart').getContext('2d');
-    const ctxPie = document.getElementById('pieChart').getContext('2d');
-
-    // Gradient colors for bar/line
-    const gradientBlue = ctxBar.createLinearGradient(0, 0, 0, 200);
-    gradientBlue.addColorStop(0, '#99ccff');
-    gradientBlue.addColorStop(1, '#3366ff');
-
-    const gradientGreen = ctxBar.createLinearGradient(0, 0, 0, 200);
-    gradientGreen.addColorStop(0, '#66ff99');
-    gradientGreen.addColorStop(1, '#00cc66');
-
-    const gradientRed = ctxBar.createLinearGradient(0, 0, 0, 200);
-    gradientRed.addColorStop(0, '#ff6666');
-    gradientRed.addColorStop(1, '#cc0000');
-
-    const gradients = [gradientBlue, gradientGreen, gradientRed];
-
-    const commonOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: {
-            duration: 1200,
-            easing: 'easeOutBounce'
-        },
-        plugins: {
-            legend: {
-                labels: {
-                    color: '#333',
-                    font: { size: 14, family: "'Segoe UI', Tahoma, sans-serif" }
+        // Bar Chart
+        var optionsBar = {
+            chart: {
+                type: 'bar',
+                height: 300,
+                toolbar: { show: false }
+            },
+            series: [{
+                name: 'Count',
+                data: data
+            }],
+            xaxis: {
+                categories: labels,
+                labels: { rotate: -45 }
+            },
+            colors: ['#3366ff', '#00cc66', '#cc0000'],
+            plotOptions: {
+                bar: {
+                    borderRadius: 6,
+                    columnWidth: '45%'
                 }
             },
-            tooltip: {
-                backgroundColor: '#fff',
-                titleColor: '#333',
-                bodyColor: '#444',
-                borderColor: '#ccc',
-                borderWidth: 1
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: { color: '#555', stepSize: 1 },
-                grid: { color: '#eee' }
+            dataLabels: {
+                enabled: true,
+                style: { fontSize: '12px' }
             },
-            x: {
-                ticks: { color: '#555' },
-                grid: { display: false }
+            tooltip: {
+                theme: 'light'
             }
-        }
-    };
+        };
+        var chartBar = new ApexCharts(document.querySelector("#barChart"), optionsBar);
+        chartBar.render();
 
-    // Bar Chart
-    new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Exam Stats',
-                data: data,
-                backgroundColor: gradients,
-                borderRadius: 10
-            }]
-        },
-        options: commonOptions
-    });
+        // Line Chart
+        var optionsLine = {
+            chart: {
+                type: 'line',
+                height: 300,
+                toolbar: { show: false }
+            },
+            series: [{
+                name: 'Count',
+                data: data
+            }],
+            xaxis: {
+                categories: labels
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            markers: {
+                size: 6,
+                colors: ['#3366ff'],
+                strokeColors: '#fff',
+                strokeWidth: 2,
+                hover: { size: 8 }
+            },
+            colors: ['#3366ff'],
+            tooltip: {
+                theme: 'light'
+            }
+        };
+        var chartLine = new ApexCharts(document.querySelector("#lineChart"), optionsLine);
+        chartLine.render();
 
-    // Line Chart
-    new Chart(ctxLine, {
-        type: 'line',
-        data: {
+        // Pie Chart
+        var optionsPie = {
+            chart: {
+                type: 'pie',
+                height: 300,
+            },
+            series: data,
             labels: labels,
-            datasets: [{
-                label: 'Exam Stats',
-                data: data,
-                borderColor: '#3366ff',
-                backgroundColor: 'rgba(51,102,255,0.2)',
-                fill: true,
-                tension: 0.3,
-                pointRadius: 5,
-                pointBackgroundColor: '#3366ff'
-            }]
-        },
-        options: commonOptions
-    });
-
-    // Pie Chart
-    new Chart(ctxPie, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Exam Stats',
-                data: data,
-                backgroundColor: [gradientBlue, gradientGreen, gradientRed]
-            }]
-        },
-        options: {
-            ...commonOptions,
-            scales: {} // Pie chart doesn't need x/y scales
-        }
-    });
-</script>
+            colors: ['#3366ff', '#00cc66', '#cc0000'],
+            legend: {
+                position: 'bottom'
+            },
+            tooltip: {
+                theme: 'light'
+            }
+        };
+        var chartPie = new ApexCharts(document.querySelector("#pieChart"), optionsPie);
+        chartPie.render();
+    </script>
 
     <?php require_once "../../includes/footer.php"; ?>
 
-  <script src="../../vendors/js/vendor.bundle.base.js"></script> 
-  <script src="../../js/off-canvas.js"></script>
-  <script src="../../js/hoverable-collapse.js"></script>
-  <script src="../../js/template.js"></script>
-  <script src="../../vendors/chart.js/Chart.min.js"></script>
+    <script src="../../vendors/js/vendor.bundle.base.js"></script>
+    <script src="../../js/off-canvas.js"></script>
+    <script src="../../js/hoverable-collapse.js"></script>
+    <script src="../../js/template.js"></script>
 </body>
+
 </html>
