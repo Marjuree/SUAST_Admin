@@ -52,15 +52,14 @@ $username = $_SESSION['first_name'] ?? 'User';
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>HRMO | Dash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../../img/favicon.png" />
-    <script src="../../assets/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <style>
-        canvas { max-height: 250px !important; }
         .card {
             background: #f4faff;
             border-radius: 1.5rem;
@@ -84,41 +83,39 @@ $username = $_SESSION['first_name'] ?? 'User';
         .info-box-content {
             padding: 0.5rem 1rem;
         }
+        .chart-container {
+            max-height: 250px;
+        }
     </style>
 </head>
 
 <body class="skin-blue">
-    <?php 
-       require_once('../../includes/header.php');
-       require_once('../../includes/head_css.php'); 
+<?php 
+    require_once('../../includes/header.php');
+    require_once('../../includes/head_css.php');
+?>
 
-    ?>
-    
-    <div class="wrapper row-offcanvas row-offcanvas-left">
-        <?php require_once('../../includes/sidebar.php'); ?>
-        
-        <aside class="right-side">
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <?php require_once('../../includes/sidebar.php'); ?>
+    <aside class="right-side">
         <section class="content-header">
             <h1>Dashboard</h1>
             <p>Welcome, <strong><?php echo htmlspecialchars($username); ?></strong></p>
         </section>
 
         <section class="content">
+            <?php
+            $serviceCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_service_requests"));
+            $leaveCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_leave_requests"));
+            $certificationCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_certification_requests"));
+            ?>
             <div class="row">
-                <!-- Info Boxes -->
-                <?php
-                $serviceCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_service_requests"));
-                $leaveCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_leave_requests"));
-                $certificationCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_certification_requests"));
-                ?>
-                <!-- Info Boxes -->
                 <div class="col-md-3 col-sm-6 col-xs-12"><br>
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa fa-tasks"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">Service Record Requests</span>
-                            <span
-                                class="info-box-number"><?php echo $serviceCount; ?></span>
+                            <span class="info-box-text">Service Requests</span>
+                            <span class="info-box-number"><?= $serviceCount; ?></span>
                         </div>
                     </div>
                 </div>
@@ -127,8 +124,7 @@ $username = $_SESSION['first_name'] ?? 'User';
                         <span class="info-box-icon bg-aqua"><i class="fa fa-file-alt"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Leave Requests</span>
-                            <span
-                                class="info-box-number"><?php echo $leaveCount; ?></span>
+                            <span class="info-box-number"><?= $leaveCount; ?></span>
                         </div>
                     </div>
                 </div>
@@ -137,142 +133,100 @@ $username = $_SESSION['first_name'] ?? 'User';
                         <span class="info-box-icon bg-aqua"><i class="fa fa-check-circle"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Certification Requests</span>
-                            <span
-                                class="info-box-number"><?php echo $certificationCount; ?></span>
+                            <span class="info-box-number"><?= $certificationCount; ?></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts -->
+            <!-- CHARTS -->
             <div class="row">
                 <div class="col-md-4 col-sm-12"><br>
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Leave Requests Over Time</h4>
-                            <canvas id="leaveLineChart"></canvas>
-                        </div>
+                        <h4 class="card-title">Leave Requests Over Time</h4>
+                        <div id="leaveLineChart" class="chart-container"></div>
                     </div>
                 </div>
 
                 <div class="col-md-4 col-sm-12"><br>
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Leave Requests by Faculty</h4>
-                            <canvas id="leaveBarChart"></canvas>
-                        </div>
+                        <h4 class="card-title">Leave Requests by Faculty</h4>
+                        <div id="leaveBarChart" class="chart-container"></div>
                     </div>
                 </div>
 
                 <div class="col-md-4 col-sm-12"><br>
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Leave Request Types</h4>
-                            <canvas id="leavePieChart"></canvas>
-                        </div>
+                        <h4 class="card-title">Leave Request Types</h4>
+                        <div id="leavePieChart" class="chart-container"></div>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-12"><br>
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Service Record by Faculty</h4>
-                            <canvas id="serviceBarChart"></canvas>
-                        </div>
+                        <h4 class="card-title">Service Record by Faculty</h4>
+                        <div id="serviceBarChart" class="chart-container"></div>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-sm-12"><br>
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Certification Request Status</h4>
-                            <canvas id="certificationPieChart"></canvas>
-                        </div>
+                        <h4 class="card-title">Certification Request Status</h4>
+                        <div id="certificationPieChart" class="chart-container"></div>
                     </div>
                 </div>
             </div>
         </section>
     </aside>
-    </div>
-    
-    <script>
-    // Chart configs
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false
-    };
+</div>
 
-    new Chart(document.getElementById('leaveLineChart'), {
-        type: 'line',
-        data: {
-            labels: <?= json_encode($leaveMonths); ?>,
-            datasets: [{
-                label: 'Leave Requests',
-                data: <?= json_encode($leaveCounts); ?>,
-                borderColor: '#ff5733', // Change color for the line
-                backgroundColor: 'rgba(255, 87, 51, 0.2)', // Change fill color
-                fill: true,
-                tension: 0.3
-            }]
-        },
-        options
-    });
+<!-- ApexCharts Initialization -->
+<script>
+    new ApexCharts(document.querySelector("#leaveLineChart"), {
+        chart: { type: 'line', height: 250 },
+        series: [{
+            name: 'Leave Requests',
+            data: <?= json_encode($leaveCounts); ?>
+        }],
+        xaxis: { categories: <?= json_encode($leaveMonths); ?> },
+        colors: ['#ff5733']
+    }).render();
 
-    new Chart(document.getElementById('leaveBarChart'), {
-        type: 'bar',
-        data: {
-            labels: <?= json_encode($facultyNames); ?>,
-            datasets: [{
-                label: 'Requests',
-                data: <?= json_encode($facultyCounts); ?>,
-                backgroundColor: [
-                    '#f39c12', '#8e44ad', '#3498db', '#2ecc71', '#e74c3c', '#95a5a6' // Different colors for each bar
-                ]
-            }]
-        },
-        options
-    });
+    new ApexCharts(document.querySelector("#leaveBarChart"), {
+        chart: { type: 'bar', height: 250 },
+        series: [{
+            name: 'Requests',
+            data: <?= json_encode($facultyCounts); ?>
+        }],
+        xaxis: { categories: <?= json_encode($facultyNames); ?> },
+        colors: ['#f39c12', '#8e44ad', '#3498db', '#2ecc71', '#e74c3c', '#95a5a6']
+    }).render();
 
-    new Chart(document.getElementById('leavePieChart'), {
-        type: 'pie',
-        data: {
-            labels: <?= json_encode($leaveTypeNames); ?>,
-            datasets: [{
-                data: <?= json_encode($leaveTypeCounts); ?>,
-                backgroundColor: ['#1abc9c', '#9b59b6', '#34495e', '#e67e22'] // Unique colors for each pie slice
-            }]
-        },
-        options
-    });
+    new ApexCharts(document.querySelector("#leavePieChart"), {
+        chart: { type: 'pie', height: 250 },
+        series: <?= json_encode($leaveTypeCounts); ?>,
+        labels: <?= json_encode($leaveTypeNames); ?>,
+        colors: ['#1abc9c', '#9b59b6', '#34495e', '#e67e22']
+    }).render();
 
-    new Chart(document.getElementById('serviceBarChart'), {
-        type: 'bar',
-        data: {
-            labels: <?= json_encode($serviceFaculties); ?>,
-            datasets: [{
-                label: 'Service Requests',
-                data: <?= json_encode($serviceCounts); ?>,
-                backgroundColor: [
-                    '#f39c12', '#8e44ad', '#3498db', '#2ecc71', '#e74c3c' // Diverse colors for each bar
-                ]
-            }]
-        },
-        options
-    });
+    new ApexCharts(document.querySelector("#serviceBarChart"), {
+        chart: { type: 'bar', height: 250 },
+        series: [{
+            name: 'Service Requests',
+            data: <?= json_encode($serviceCounts); ?>
+        }],
+        xaxis: { categories: <?= json_encode($serviceFaculties); ?> },
+        colors: ['#f39c12', '#8e44ad', '#3498db', '#2ecc71', '#e74c3c']
+    }).render();
 
-    new Chart(document.getElementById('certificationPieChart'), {
-        type: 'doughnut',
-        data: {
-            labels: <?= json_encode($certificationStatuses); ?>,
-            datasets: [{
-                data: <?= json_encode($certificationCounts); ?>,
-                backgroundColor: ['#ff6347', '#00bcd4', '#ffa500', '#28a745'] // Different colors for doughnut slices
-            }]
-        },
-        options
-    });
+    new ApexCharts(document.querySelector("#certificationPieChart"), {
+        chart: { type: 'donut', height: 250 },
+        series: <?= json_encode($certificationCounts); ?>,
+        labels: <?= json_encode($certificationStatuses); ?>,
+        colors: ['#ff6347', '#00bcd4', '#ffa500', '#28a745']
+    }).render();
 </script>
 
-    <?php require_once "../../includes/footer.php"; ?>
+<?php require_once "../../includes/footer.php"; ?>
 </body>
 </html>
