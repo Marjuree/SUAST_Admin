@@ -124,10 +124,10 @@ $username = $_SESSION['first_name'] ?? 'User';
 
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #d9534f; transition: box-shadow 0.3s ease;">
+                            style="background: #e6eaf0; border-left: 5px solid #cc0000; transition: box-shadow 0.3s ease;">
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <span class="info-box-icon"
-                                    style="background-color: #d9534f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    style="background-color: #cc0000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
                                     <i class="fa fa-check-circle"></i>
                                 </span>
                             </a>
