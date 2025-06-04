@@ -38,30 +38,22 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
 
         .chart-container {
             max-width: 900px;
-            margin: 0 auto;
         }
 
-    .chart-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 20px;
-  }
+        .chart-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: nowrap;
+        }
 
-  .card {
-    background: #fff;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-radius: 8px;
-  }
-
-  /* Make pie chart span both columns and center it */
-  .card.pie {
-    grid-column: 1 / span 2;
-    justify-self: center;
-    max-width: 400px; /* optional to limit width */
-    width: 100%;
-  }
+        .card {
+            flex: 1 1 0;
+            min-width: 400px;
+            background: #fff;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
 
         .card h4 {
             margin-bottom: 10px;
@@ -71,7 +63,7 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
 
         /* Set fixed height for each chart */
         .apexcharts-canvas {
-            max-height: 300px !important;
+            max-height: 250px !important;
         }
     </style>
 </head>
@@ -131,10 +123,10 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
 
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #d9534f; transition: box-shadow 0.3s ease;">
+                            style="background: #e6eaf0; border-left: 5px solid #cc0000; transition: box-shadow 0.3s ease;">
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <span class="info-box-icon"
-                                    style="background-color: #d9534f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    style="background-color: #cc0000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
                                     <i class="fa fa-check-circle"></i>
                                 </span>
                             </a>
@@ -168,7 +160,7 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                             <div id="lineChart"></div>
                         </div>
 
-                        <div class="card pie">
+                        <div class="card">
                             <h4>Pie Chart</h4>
                             <div id="pieChart"></div>
                         </div>
