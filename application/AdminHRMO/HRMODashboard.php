@@ -48,6 +48,14 @@ while ($row = mysqli_fetch_assoc($certificationData)) {
 }
 
 $username = $_SESSION['first_name'] ?? 'User';
+
+// Calculate overall totals for the combined pie chart
+$leaveTotal = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_leave_requests"));
+$serviceTotal = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_service_requests"));
+$certificationTotal = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_certification_requests"));
+
+$overallLabels = ['Leave Requests', 'Service Requests', 'Certification Requests'];
+$overallCounts = [$leaveTotal, $serviceTotal, $certificationTotal];
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +69,7 @@ $username = $_SESSION['first_name'] ?? 'User';
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <style>
-      
+
     </style>
 </head>
 
@@ -150,23 +158,24 @@ $username = $_SESSION['first_name'] ?? 'User';
 
 
 
-
-                <!-- CHARTS -->
+                <!-- EXISTING CHARTS -->
                 <div class="row">
-                    <div class="col-md-4 col-sm-12"><br>
+                    <div class="col-md-6 col-sm-12"><br>
                         <div class="card">
-                            <h4 class="card-title">Leave Requests Over Time</h4>
-                            <div id="leaveLineChart" class="chart-container"></div>
+                            <h4 class="card-title">Overall Requests Summary</h4>
+                            <div id="overallRequestsPieChart" class="chart-container"></div>
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-sm-12"><br>
+                    <div class="col-md-6 col-sm-12"><br>
                         <div class="card">
                             <h4 class="card-title">Leave Requests by Faculty</h4>
                             <div id="leaveBarChart" class="chart-container"></div>
                         </div>
                     </div>
+                </div>
 
+                <div class="row">
                     <div class="col-md-4 col-sm-12"><br>
                         <div class="card">
                             <h4 class="card-title">Leave Request Types</h4>
@@ -174,26 +183,41 @@ $username = $_SESSION['first_name'] ?? 'User';
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-sm-12"><br>
+                    <div class="col-md-4 col-sm-12"><br>
                         <div class="card">
                             <h4 class="card-title">Service Record by Faculty</h4>
                             <div id="serviceBarChart" class="chart-container"></div>
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-sm-12"><br>
+                    <div class="col-md-4 col-sm-12"><br>
                         <div class="card">
                             <h4 class="card-title">Certification Request Status</h4>
                             <div id="certificationPieChart" class="chart-container"></div>
                         </div>
                     </div>
                 </div>
+
             </section>
         </aside>
     </div>
 
     <!-- ApexCharts Initialization -->
     <script>
+        // Overall combined pie chart
+        new ApexCharts(document.querySelector("#overallRequestsPieChart"), {
+            chart: { type: 'pie', height: 300 },
+            series: <?= json_encode($overallCounts); ?>,
+            labels: <?= json_encode($overallLabels); ?>,
+            colors: ['#1abc9c', '#3498db', '#e74c3c'],
+            legend: { position: 'bottom' },
+            title: {
+                text: 'Overall Requests Breakdown',
+                align: 'center',
+                style: { fontSize: '16px', fontWeight: 'bold' }
+            }
+        }).render();
+
         new ApexCharts(document.querySelector("#leaveLineChart"), {
             chart: { type: 'line', height: 250 },
             series: [{
