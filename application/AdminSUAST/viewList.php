@@ -267,15 +267,20 @@ ob_start();
                                                         <th>NAME</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <?php foreach ($students as $index => $student): ?>
-                                                        <?php if ($student['status'] === 'approved'): ?>
+                                                 <tbody>
+                                                    <?php
+                                                    $counter = 1;
+                                                    foreach ($students as $student):
+                                                        if ($student['status'] === 'approved'):
+                                                            ?>
                                                             <tr>
-                                                                <td><?= $index + 1 ?></td>
+                                                                <td><?= $counter++ ?></td>
                                                                 <td><?= htmlspecialchars($student['name']) ?></td>
                                                             </tr>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
+                                                        <?php
+                                                        endif;
+                                                    endforeach;
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>
