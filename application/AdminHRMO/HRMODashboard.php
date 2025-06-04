@@ -61,37 +61,7 @@ $username = $_SESSION['first_name'] ?? 'User';
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <style>
-        .card {
-            background: #f4faff;
-            border-radius: 1.5rem;
-            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.1);
-            padding: 1rem;
-        }
-
-        .card-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .info-box {
-            border-radius: 1.5rem;
-            background: #e3f2fd;
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
-        }
-
-        .info-box-icon {
-            border-radius: 1.5rem 0 0 1.5rem;
-            background: #00bcd4 !important;
-        }
-
-        .info-box-content {
-            padding: 0.5rem 1rem;
-        }
-
-        .chart-container {
-            max-height: 250px;
-        }
+      
     </style>
 </head>
 
@@ -115,62 +85,70 @@ $username = $_SESSION['first_name'] ?? 'User';
                 $leaveCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_leave_requests"));
                 $certificationCount = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_certification_requests"));
                 ?>
-                <div class="row">
+                <div class="scrollable-container">
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
-                            <span class="info-box-icon"
-                                style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
-                                <i class="fa fa-tasks"></i>
-                            </span>
+                            style="background: #e6eaf0; border-left: 5px solid #0056b3; transition: box-shadow 0.3s ease;">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <span class="info-box-icon"
+                                    style="background-color: #0056b3; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    <i class="fa fa-tasks"></i>
+                                </span>
+                            </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Service Requests</span>
+                                    style="font-weight: 600; font-size: 1.1rem; color: #000;">Service Requests</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $serviceCount; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $serviceCount; ?></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
-                            <span class="info-box-icon"
-                                style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
-                                <i class="fa fa-file-alt"></i>
-                            </span>
+                            style="background: #e6eaf0; border-left: 5px solid #28a745; transition: box-shadow 0.3s ease;">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <span class="info-box-icon"
+                                    style="background-color: #28a745; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    <i class="fa fa-file-alt"></i>
+                                </span>
+                            </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Leave Requests</span>
+                                    style="font-weight: 600; font-size: 1.1rem; color: #000;">Leave Requests</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $leaveCount; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $leaveCount; ?></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
-                            <span class="info-box-icon"
-                                style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
-                                <i class="fa fa-check-circle"></i>
-                            </span>
+                            style="background: #e6eaf0; border-left: 5px solid #d9534f; transition: box-shadow 0.3s ease;">
+                            <a href="#" style="text-decoration: none; color: inherit;">
+                                <span class="info-box-icon"
+                                    style="background-color: #d9534f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    <i class="fa fa-check-circle"></i>
+                                </span>
+                            </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Certification
+                                    style="font-weight: 600; font-size: 1.1rem; color: #000;">Certification
                                     Requests</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $certificationCount; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $certificationCount; ?></span>
                             </div>
                         </div>
                     </div>
+
+                    <style>
+                        .info-box:hover {
+                            box-shadow: 0 8px 20px rgba(0, 43, 91, 0.4);
+                        }
+                    </style>
                 </div>
 
-                <style>
-                    .info-box:hover {
-                        box-shadow: 0 8px 20px rgba(0, 43, 91, 0.4);
-                    }
-                </style>
+
 
 
                 <!-- CHARTS -->
