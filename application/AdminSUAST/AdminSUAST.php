@@ -41,20 +41,27 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
             margin: 0 auto;
         }
 
-        .chart-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
+    .chart-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+  }
 
-        .card {
-            width: 100%;
-            margin: 0 auto;
-            padding: 10px;
-            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-            border-radius: 8px;
-            background: #fff;
-        }
+  .card {
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+  }
+
+  /* Make pie chart span both columns and center it */
+  .card.pie {
+    grid-column: 1 / span 2;
+    justify-self: center;
+    max-width: 400px; /* optional to limit width */
+    width: 100%;
+  }
 
         .card h4 {
             margin-bottom: 10px;
@@ -97,9 +104,9 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                             </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #0056b3;">Applicants</span>
+                                    style="font-weight: 600; font-size: 1.1rem; color: #000;">Applicants</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #003d80;"><?= $takers; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $takers; ?></span>
                             </div>
                         </div>
                     </div>
@@ -115,9 +122,9 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                             </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #28a745;">Available Slot</span>
+                                    style="font-weight: 600; font-size: 1.1rem; color: #000;">Available Slot</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #1c7c33;"><?= $availableSlots; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $availableSlots; ?></span>
                             </div>
                         </div>
                     </div>
@@ -133,10 +140,10 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                             </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #d9534f;">Registered Takers
+                                    style="font-weight: 600; font-size: 1.1rem; color: #000;">Registered Takers
                                     Requests</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #a43c3a;"><?= $registeredTakers; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #000;"><?= $registeredTakers; ?></span>
                             </div>
                         </div>
                     </div>
@@ -161,7 +168,7 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                             <div id="lineChart"></div>
                         </div>
 
-                        <div class="card">
+                        <div class="card pie">
                             <h4>Pie Chart</h4>
                             <div id="pieChart"></div>
                         </div>
