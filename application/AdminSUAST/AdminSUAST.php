@@ -88,55 +88,55 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
                 <div class="scrollable-container">
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+                            style="background: #e6eaf0; border-left: 5px solid #0056b3; transition: box-shadow 0.3s ease;">
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <span class="info-box-icon"
-                                    style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    style="background-color: #0056b3; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
                                     <i class="fa fa-tasks"></i>
                                 </span>
                             </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Applicants</span>
+                                    style="font-weight: 600; font-size: 1.1rem; color: #0056b3;">Applicants</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $takers; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #003d80;"><?= $takers; ?></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+                            style="background: #e6eaf0; border-left: 5px solid #28a745; transition: box-shadow 0.3s ease;">
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <span class="info-box-icon"
-                                    style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    style="background-color: #28a745; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
                                     <i class="fa fa-file-alt"></i>
                                 </span>
                             </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Available Slot</span>
+                                    style="font-weight: 600; font-size: 1.1rem; color: #28a745;">Available Slot</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $availableSlots; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #1c7c33;"><?= $availableSlots; ?></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6 col-xs-12"><br>
                         <div class="info-box shadow-sm rounded"
-                            style="background: #e6eaf0; border-left: 5px solid #002B5B; transition: box-shadow 0.3s ease;">
+                            style="background: #e6eaf0; border-left: 5px solid #d9534f; transition: box-shadow 0.3s ease;">
                             <a href="#" style="text-decoration: none; color: inherit;">
                                 <span class="info-box-icon"
-                                    style="background-color: #002B5B; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
+                                    style="background-color: #d9534f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; width: 60px; height: 60px; border-radius: 0.5rem;">
                                     <i class="fa fa-check-circle"></i>
                                 </span>
                             </a>
                             <div class="info-box-content" style="padding-left: 15px;">
                                 <span class="info-box-text"
-                                    style="font-weight: 600; font-size: 1.1rem; color: #002B5B;">Registered Takers
+                                    style="font-weight: 600; font-size: 1.1rem; color: #d9534f;">Registered Takers
                                     Requests</span>
                                 <span class="info-box-number"
-                                    style="font-weight: bold; font-size: 1.8rem; color: #001f40;"><?= $registeredTakers; ?></span>
+                                    style="font-weight: bold; font-size: 1.8rem; color: #a43c3a;"><?= $registeredTakers; ?></span>
                             </div>
                         </div>
                     </div>
