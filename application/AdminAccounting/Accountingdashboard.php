@@ -27,20 +27,121 @@ $username = $_SESSION['first_name'] ?? 'User';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
+        body {
+            background: linear-gradient(120deg, #f4f7fa 60%, #e6eaf0 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .content-header h1 {
+            color: #3366ff;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .content-header p {
+            color: #222;
+            font-size: 1.1rem;
+        }
+
+        .info-box {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 18px rgba(51, 102, 255, 0.08);
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 1.2rem 1.2rem 0.8rem;
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.3s;
+            border-left: 6px solid #3366ff;
+        }
+
+        .info-box:hover {
+            box-shadow: 0 8px 24px rgba(51, 102, 255, 0.18);
+        }
+
+        .info-box-icon {
+            background: #3366ff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 1rem;
+            margin-right: 1.2rem;
+            box-shadow: 0 2px 8px rgba(51, 102, 255, 0.09);
+        }
+
+        .info-box-content {
+            flex: 1;
+        }
+
+        .info-box-text {
+            font-weight: 600;
+            font-size: 1.08rem;
+            color: #222;
+        }
+
+        .info-box-number {
+            font-weight: bold;
+            font-size: 2.1rem;
+            color: #3366ff;
+        }
+
         .card {
-            background: #f9fcff;
+            background: #fff;
             border-radius: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
-            padding: 1rem;
+            box-shadow: 0 4px 18px rgba(51, 102, 255, 0.08);
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .card-title {
             font-weight: bold;
             font-size: 1.2rem;
+            color: #3366ff;
+            margin-bottom: 1rem;
         }
 
         .chart-container {
             max-height: 250px;
+        }
+
+        @media (max-width: 900px) {
+            .info-box,
+            .card {
+                padding: 1rem 0.7rem 1rem 0.7rem;
+            }
+
+            .info-box-icon {
+                font-size: 1.5rem;
+                width: 48px;
+                height: 48px;
+            }
+
+            .info-box-number {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .info-box,
+            .card {
+                border-radius: 0.7rem;
+                padding: 0.7rem 0.4rem 0.7rem 0.4rem;
+            }
+
+            .info-box-icon {
+                font-size: 1.2rem;
+                width: 38px;
+                height: 38px;
+                border-radius: 0.5rem;
+            }
+
+            .info-box-number {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
