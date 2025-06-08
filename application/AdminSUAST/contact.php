@@ -17,12 +17,131 @@ ob_start();
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fa;
+        }
+
+        .box {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+            padding: 24px 18px 18px 18px;
+            margin-bottom: 32px;
+        }
+
+        .box h2 {
+            color: #3366ff;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .btn-primary,
+        .btn-success,
+        .btn-danger {
+            border-radius: 6px !important;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(51, 102, 255, 0.07);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-primary {
+            background: #3366ff !important;
+            color: #fff !important;
+            border: none !important;
+        }
+
+        .btn-danger {
+            background: #cc0000 !important;
+            color: #fff !important;
+            border: none !important;
+        }
+
+        .btn-primary:hover,
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .table {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .table th {
+            background: #e6eaf0;
+            color: #222;
+            font-weight: 600;
+            font-size: 1.05rem;
+            border: none;
+        }
+
+        .table td {
+            vertical-align: middle !important;
+            text-align: center;
+            border: none;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background: #f8fafc;
+        }
+
+        .table-striped tbody tr:hover {
+            background: #e6eaf0;
+            transition: background 0.2s;
+        }
+
+        .modal-content {
+            border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.09);
+        }
+
+        .modal-header {
+            background: #f4f7fa;
+            border-bottom: 1px solid #e6eaf0;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            color: #3366ff;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #e0e6ed;
+            font-size: 1rem;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            color: #222;
+        }
+
+        @media (max-width: 600px) {
+            .box {
+                padding: 10px 2px 10px 2px;
+            }
+
+            .table th,
+            .table td {
+                font-size: 0.95rem;
+                padding: 6px 2px;
+            }
+        }
+    </style>
 </head>
 
 <body class="skin-blue">
-    <?php 
-        require_once('../../includes/header.php');
-        require_once('../../includes/head_css.php');
+    <?php
+    require_once('../../includes/header.php');
+    require_once('../../includes/head_css.php');
     ?>
 
     <div class="wrapper row-offcanvas row-offcanvas-left">
@@ -30,26 +149,27 @@ ob_start();
 
         <aside class="right-side">
             <section class="content-header">
-                <h1>Dashboard</h1>
+                <h1>Contact Management</h1>
+                <div style="height:3px;width:100px;background:#3366ff;border-radius:2px;margin:8px 0 16px 0;"></div>
             </section>
 
             <section class="content container-fluid">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-10 col-lg-8">
+                    <div class="col-12">
                         <div class="box p-3 bg-white shadow-sm rounded">
-                            <div class="container mt-4">
+                            <div class="container-fluid mt-3 px-0" style="max-width:100%;">
                                 <h2 class="text-center">Contact Details</h2>
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-primary mb-3" data-toggle="modal"
                                         data-target="#addContactModal">Add Contact</button>
                                 </div>
-                                <div class="contact-container mt-3 table-responsive" id="contactList">
+                                <div class="contact-container mt-3 table-responsive p-0" id="contactList">
                                     <?php
                                     // Fetch the contacts from the database
                                     $query = "SELECT * FROM tbl_contact";
                                     $result = mysqli_query($con, $query);
                                     if (mysqli_num_rows($result) > 0) {
-                                        echo "<table class='table table-bordered table-striped'>";
+                                        echo "<table class='table table-bordered table-striped m-0'>";
                                         echo "<thead class='thead-dark'><tr><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr></thead><tbody>";
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
@@ -119,7 +239,7 @@ ob_start();
         const deleteButtons = document.querySelectorAll('.delete-btn');
 
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const contactId = this.getAttribute('data-id');
                 Swal.fire({
                     title: 'Are you sure?',
