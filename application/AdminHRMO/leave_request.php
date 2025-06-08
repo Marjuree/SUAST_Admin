@@ -13,134 +13,219 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>HRMO | Dash</title>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-
     <style>
- 
-
-    .progress-bar.bg-light {
-        background-color: #e0e0e0 !important;
+    body {
+        background: linear-gradient(120deg, #f4f7fa 60%, #e6eaf0 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .progress-bar {
-        transition: none !important;
+    .content-header p {
+        color: #3366ff;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 18px;
     }
 
-    .modal-header {
-        background-color: #343A40;
-        color: white;
+    .box {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(51, 102, 255, 0.07), 0 1.5px 6px rgba(0, 0, 0, 0.04);
+        padding: 32px 24px 24px 24px;
+        margin-bottom: 32px;
+        border: none;
     }
 
-    /* Style for the date input field */
-    #submitDateInput,
-    #receiveDateInput {
-        font-size: 1rem;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
+    .box-title {
+        color: #3366ff;
+        font-weight: 700;
+        letter-spacing: 1px;
+        font-size: 1.4rem;
+    }
+
+    .table-responsive {
         width: 100%;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.3s ease;
+        overflow-x: auto;
     }
 
-    #submitDateInput:focus,
-    #receiveDateInput:focus {
-        border-color: #5cb85c;
-        box-shadow: 0 0 8px rgba(92, 184, 92, 0.5);
-    }
-
-    /* Style for the modal buttons */
-    .modal-footer .btn {
-        font-size: 1rem;
-        padding: 10px 20px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    /* Button styles for the 'Save' buttons */
-    #submitDateSave,
-    #receiveDateSave {
-        background-color: #5cb85c;
-        color: white;
-        border: none;
-    }
-
-    #submitDateSave:hover,
-    #receiveDateSave:hover {
-        background-color: #4cae4c;
-        transform: translateY(-2px);
-    }
-
-    /* Style for the 'Close' button */
-    .modal-footer .btn-secondary {
-        background-color: #d9534f;
-        color: white;
-        border: none;
-    }
-
-    .modal-footer .btn-secondary:hover {
-        background-color: #c9302c;
-        transform: translateY(-2px);
-    }
-
-    /* Add some padding to the modal body for better spacing */
-    .modal-body {
-        padding: 20px;
-    }
-
-    /* Enhance the progress bar appearance */
-    .progress {
-        height: 10px;
-        border-radius: 5px;
+    .table {
+        background: #fff;
+        border-radius: 12px;
         overflow: hidden;
+        box-shadow: 0 2px 8px rgba(51, 102, 255, 0.04);
+        margin-bottom: 0;
     }
 
-    .progress-bar {
-        transition: none;
-        height: 100%;
-        border-radius: 5px;
-    }
-
-    /* Style for the table buttons to make them more intuitive */
-    .btn-secondary {
-        font-size: 1rem;
-        padding: 8px 15px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .btn-secondary:hover {
-        background-color: #5bc0de;
-        transform: translateY(-2px);
+    .table th,
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+        border: none !important;
     }
 
     .table thead th {
-        background-color: #343a40 !important;
+        background:rgb(34, 34, 34) !important;
         color: #fff;
-        text-align: center;
+        font-weight: 600;
+        font-size: 1.05rem;
+        border-bottom: 2px solid #d1d8e6 !important;
     }
 
-    .table tbody tr td {
-        text-align: center;
+    .table-striped tbody tr:nth-of-type(odd) {
+        background: #f8fafc;
+    }
+
+    .table-striped tbody tr:hover {
+        background: #e6eaf0;
+        transition: background 0.2s;
+    }
+
+    .btn-info,
+    .btn-primary,
+    .btn-success,
+    .btn-warning,
+    .btn-danger,
+    .btn-secondary {
+        border-radius: 7px !important;
+        font-weight: 500;
+        box-shadow: 0 2px 8px rgba(51, 102, 255, 0.07);
+        transition: background 0.2s, color 0.2s;
+        border: none !important;
+    }
+
+    .btn-info {
+        background: #17a2b8 !important;
+        color: #fff !important;
+    }
+
+    .btn-primary {
+        background: #3366ff !important;
+        color: #fff !important;
+    }
+
+    .btn-success {
+        background: #28a745 !important;
+        color: #fff !important;
+    }
+
+    .btn-warning {
+        background: #ffc107 !important;
+        color: #222 !important;
+    }
+
+    .btn-danger {
+        background: #cc0000 !important;
+        color: #fff !important;
+    }
+
+    .btn-secondary {
+        background: #6c757d !important;
+        color: #fff !important;
+    }
+
+    .progress {
+        height: 16px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #e6eaf0;
+        margin-bottom: 6px;
+    }
+
+    .progress-bar.bg-success {
+        background-color: #28a745 !important;
+    }
+
+    .progress-bar.bg-warning {
+        background-color: #ffc107 !important;
+    }
+
+    .progress-bar.bg-light {
+        background-color: #e0e6ed !important;
+    }
+
+    .modal-content {
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.09);
+    }
+
+    .modal-header {
+        background: #f4f7fa;
+        border-bottom: 1px solid #e6eaf0;
+        border-radius: 16px 16px 0 0;
+        color: #3366ff;
+    }
+
+    .modal-title {
+        font-weight: 700;
+        color: #3366ff;
+    }
+
+    .form-group label {
+        font-weight: 500;
+    }
+
+    .form-control {
+        border-radius: 7px;
+        border: 1px solid #e0e6ed;
+        font-size: 1rem;
+    }
+
+    .close {
+        font-size: 1.5rem;
+        color: #222;
+    }
+
+    .file-name {
+        display: inline-block;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media (max-width: 900px) {
+        .box {
+            padding: 16px 4px 16px 4px;
+        }
+
+        .table th,
+        .table td {
+            font-size: 0.97rem;
+            padding: 8px 2px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .box {
+            padding: 8px 0 8px 0;
+        }
+
+        .table th,
+        .table td {
+            font-size: 0.95rem;
+            padding: 6px 2px;
+        }
+
+        .btn {
+            font-size: 0.93rem !important;
+            padding: 5px 8px !important;
+        }
     }
     </style>
 </head>
 
 <body class="skin-blue">
-    <?php 
+    <?php
     require_once "../../configuration/config.php";
     require_once('../../includes/header.php');
-    require_once('../../includes/head_css.php'); 
+    require_once('../../includes/head_css.php');
     ?>
 
     <!-- Keep your HTML <head> and includes above this line -->
@@ -228,13 +313,25 @@
                                                     </td>
 
 
-                                                    <!-- Progress Bar -->
+                                                    <!-- Progress Bar (Status Tracker) -->
                                                     <td>
                                                         <div class="progress" style="height: 20px;">
-                                                            <?php foreach ($stages as $index => $label): 
-                                                                $progressClass = ($index <= $currentStageIndex) ? 'bg-success' : 'bg-light'; ?>
+                                                            <?php
+                                                            $progressWidth = 100 / count($stages);
+                                                            foreach ($stages as $index => $label):
+                                                                $progressClass = '';
+                                                                if ($index < $currentStageIndex) {
+                                                                    $progressClass = 'bg-success'; // Completed
+                                                                } elseif ($index == $currentStageIndex) {
+                                                                    $progressClass = 'bg-warning'; // Current stage
+                                                                } else {
+                                                                    $progressClass = 'bg-light'; // Pending
+                                                                }
+                                                            ?>
                                                             <div class="progress-bar <?= $progressClass ?>"
-                                                                style="width: 25%;" title="<?= $label ?>"></div>
+                                                                style="width: <?= $progressWidth ?>%;"
+                                                                title="<?= $label ?>">
+                                                            </div>
                                                             <?php endforeach; ?>
                                                         </div>
                                                         <small><strong><?= $currentStage ?></strong></small>
@@ -277,7 +374,7 @@
                                                         </form>
                                                     </td>
 
-                                                    <!-- Approval Status Form -->
+                                                    <!-- Approval Status Form (Icon Only) -->
                                                     <td>
                                                         <form method="POST" action="update_status.php">
                                                             <input type="hidden" name="request_id"
@@ -287,8 +384,15 @@
 
                                                             <button type="submit"
                                                                 class="btn btn-sm 
-                                                               <?= empty($row['approval_status']) ? 'btn-warning' : ($row['approval_status'] === 'Approved' ? 'btn-success' : 'btn-danger') ?>">
-                                                                <?= empty($row['approval_status']) ? 'Pending' : ucfirst($row['approval_status']) ?>
+                                                                    <?= empty($row['approval_status']) ? 'btn-warning' : ($row['approval_status'] === 'Approved' ? 'btn-success' : 'btn-danger') ?>"
+                                                                title="<?= empty($row['approval_status']) ? 'Pending' : ($row['approval_status'] === 'Approved' ? 'Approved' : 'Disapproved') ?>">
+                                                                <?php if (empty($row['approval_status'])): ?>
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                <?php elseif ($row['approval_status'] === 'Approved'): ?>
+                                                                    <i class="fa fa-check"></i>
+                                                                <?php else: ?>
+                                                                    <i class="fa fa-times"></i>
+                                                                <?php endif; ?>
                                                             </button>
                                                         </form>
                                                     </td>
