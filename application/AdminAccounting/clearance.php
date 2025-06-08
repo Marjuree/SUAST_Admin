@@ -307,7 +307,7 @@ require_once('../../includes/head_css.php');
                 </div>
                 <div class="form-group">
                     <label for="balance">New Balance</label>
-                    <input type="number" class="form-control" name="balance" id="balance" required>
+                    <input type="number" class="form-control" name="balance" id="newBalance" required>
                 </div>
             </div>
             <div class="modal-footer">
