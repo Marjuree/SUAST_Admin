@@ -20,85 +20,85 @@ ob_start();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
 </head>
 <style>
-/* Default: Hide header */
-.school-header {
-    display: none;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.school-header img {
-    width: 120px;
-    height: 120px;
-}
-
-.school-header h2 {
-    color: #002f6c;
-    font-size: 24px;
-    font-weight: bold;
-    margin: 5px 0;
-}
-
-.school-header h4 {
-    color: #333;
-    font-size: 14px;
-    font-style: italic;
-    margin: 5px 0;
-}
-
-.line-break {
-    width: 100%;
-    height: 3px;
-    background: #002f6c;
-    margin: 10px 0;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-@media print {
-    body * {
-        visibility: hidden;
-    }
-
-    #printSection,
-    #printSection * {
-        visibility: visible;
-    }
-
-    #printSection {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        text-align: center;
-    }
-
+    /* Default: Hide header */
     .school-header {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
+        display: none;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    .header-left {
-        text-align: left;
-    }
-
-    .header-right img {
+    .school-header img {
         width: 120px;
         height: 120px;
     }
 
-    /* Hide the Action column */
-    #printSection th:last-child,
-    #printSection td:last-child {
-        display: none;
+    .school-header h2 {
+        color: #002f6c;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 5px 0;
     }
-}
+
+    .school-header h4 {
+        color: #333;
+        font-size: 14px;
+        font-style: italic;
+        margin: 5px 0;
+    }
+
+    .line-break {
+        width: 100%;
+        height: 3px;
+        background: #002f6c;
+        margin: 10px 0;
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printSection,
+        #printSection * {
+            visibility: visible;
+        }
+
+        #printSection {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .school-header {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .header-left {
+            text-align: left;
+        }
+
+        .header-right img {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* Hide the Action column */
+        #printSection th:last-child,
+        #printSection td:last-child {
+            display: none;
+        }
+    }
 </style>
 
 <body class="skin-blue">
@@ -143,6 +143,11 @@ ob_start();
                         </form>
                     </div>
 
+                    <!-- DELETE SELECTED BUTTON -->
+                    <div class="mb-3">
+                        <button type="button" id="deleteSelectedBtn" class="btn btn-danger">Delete Selected</button>
+                    </div>
+
                     <?php
                     if (isset($_GET['msg'])) {
                         echo "<div class='alert alert-success text-center'>{$_GET['msg']}</div>";
@@ -169,6 +174,8 @@ ob_start();
                             <table id="examTable" class="table table-bordered table-striped">
                                 <thead class="thead-dark">
                                     <tr class="text-center">
+                                        <!-- Checkbox column -->
+                                        <th><input type="checkbox" id="selectAll"></th>
                                         <th>Full Name</th>
                                         <th>Exam Date</th>
                                         <th>Exam Time</th>
@@ -177,59 +184,63 @@ ob_start();
                                         <th>Status</th>
                                         <th>User Update</th>
                                         <th>Details</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $query = "SELECT * FROM tbl_reservation WHERE 1";
-                                        if (isset($_GET['nameFilter']) && !empty($_GET['nameFilter'])) {
-                                            $nameFilter = mysqli_real_escape_string($con, $_GET['nameFilter']);
-                                            $query .= " AND name LIKE '%$nameFilter%'";
-                                        }
-                                        if (isset($_GET['roomFilter']) && !empty($_GET['roomFilter'])) {
-                                            $roomFilter = mysqli_real_escape_string($con, $_GET['roomFilter']);
-                                            $query .= " AND room = '$roomFilter'";
-                                        }
-                                        $query .= " ORDER BY exam_time ASC";
+                                    $query = "SELECT * FROM tbl_reservation WHERE 1";
+                                    if (isset($_GET['nameFilter']) && !empty($_GET['nameFilter'])) {
+                                        $nameFilter = mysqli_real_escape_string($con, $_GET['nameFilter']);
+                                        $query .= " AND name LIKE '%$nameFilter%'";
+                                    }
+                                    if (isset($_GET['roomFilter']) && !empty($_GET['roomFilter'])) {
+                                        $roomFilter = mysqli_real_escape_string($con, $_GET['roomFilter']);
+                                        $query .= " AND room = '$roomFilter'";
+                                    }
+                                    $query .= " ORDER BY exam_time ASC";
 
-                                        $result = mysqli_query($con, $query);
-                                        if ($result && mysqli_num_rows($result) > 0) {
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                $userUpdateLabel = $row['user_requested_update'] == 1 ? 'Updated' : 'Pending';
-                                                $userUpdateClass = $row['user_requested_update'] == 1 ? 'label label-success' : 'label label-warning';
+                                    $result = mysqli_query($con, $query);
+                                    if ($result && mysqli_num_rows($result) > 0) {
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            $userUpdateLabel = $row['user_requested_update'] == 1 ? 'Updated' : 'Pending';
+                                            $userUpdateClass = $row['user_requested_update'] == 1 ? 'label label-success' : 'label label-warning';
 
-                                                echo "<tr>
-                                                    <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
-                                                    <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
-                                                    <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
-                                                    <td>" . htmlspecialchars($row['room']) . "</td>
-                                                    <td>" . htmlspecialchars($row['venue']) . "</td>
-                                                    <td class='text-center'>
-                                                        <form action='update_status.php' method='POST' style='display:inline-block; margin-bottom: 5px;'>
-                                                            <input type='hidden' name='id' value='{$row['id']}'>
-                                                            <input type='hidden' name='status' value='approved'>
-                                                            <button type='submit' class='btn btn-success btn-sm'>Approve</button>
-                                                        </form>
-                                                        <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
-                                                        <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
-                                                    </td>
-                                                    <td class='text-center'>
-                                                        <span class='$userUpdateClass'>$userUpdateLabel</span>
-                                                    </td>
-                                                    <td class='text-center'>
-                                                        <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm'>View</a>
-                                                    </td>
-                                                </tr>";
-                                            }
-                                        } else {
-                                            echo "<tr><td colspan='8' class='text-center'>No reservations found</td></tr>";
+                                            echo "<tr>
+                                                <td class='text-center'>
+                                                    <input type='checkbox' class='selectItem' value='{$row['id']}'>
+                                                </td>
+                                                <td>" . htmlspecialchars($row['name'] ?? '') . "</td>
+                                                <td>" . htmlspecialchars($row['exam_date'] ?? '') . "</td>
+                                                <td>" . htmlspecialchars($row['exam_time'] ?? '') . "</td>
+                                                <td>" . htmlspecialchars($row['room']) . "</td>
+                                                <td>" . htmlspecialchars($row['venue']) . "</td>
+                                                <td class='text-center'>
+                                                    <form action='update_status.php' method='POST' style='display:inline-block; margin-bottom: 5px;'>
+                                                        <input type='hidden' name='id' value='{$row['id']}'>
+                                                        <input type='hidden' name='status' value='approved'>
+                                                        <button type='submit' class='btn btn-success btn-sm'>Approve</button>
+                                                    </form>
+                                                    <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
+                                                    <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
+                                                </td>
+                                                <td class='text-center'>
+                                                    <span class='$userUpdateClass'>$userUpdateLabel</span>
+                                                </td>
+                                                <td class='text-center'>
+                                                    <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm'>View</a>
+                                                </td>
+                                                <td class='text-center'>
+                                                    <button class='btn btn-danger btn-sm' onclick='deleteReservation({$row['id']})'>Delete</button>
+                                                </td>
+                                            </tr>";
                                         }
+                                    } else {
+                                        echo "<tr><td colspan='10' class='text-center'>No reservations found</td></tr>";
+                                    }
                                     ?>
                                 </tbody>
                             </table>
-
-
-
                         </div>
                     </div>
                     <?php require_once "../../includes/footer.php"; ?>
@@ -237,7 +248,8 @@ ob_start();
             </section>
         </aside>
     </div>
-    <!-- Reject Reason Modal -->
+
+    <!-- Reject Reason Modal (kept unchanged) -->
     <div class="modal fade" id="rejectReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectReasonModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -265,70 +277,165 @@ ob_start();
         </div>
     </div>
 
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-    function openRejectModal(id) {
-        $('#rejectReservationId').val(id);
-        $('#rejectReason').val('');
-        $('#rejectReasonModal').modal('show');
-    }
 
-    function printReservations() {
-        window.print();
-    }
 
-    // Open Modal and Fill Data Dynamically
-    $('#setScheduleModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var reservationId = button.data('id');
-
-        // Set the modal fields with the selected reservation's data
-        $('#reservationId').val(reservationId);
-
-        // Fetch available exam times from the server
-        $.ajax({
-            url: 'get_exam_times.php',
-            type: 'GET',
-            success: function(response) {
-                var examTimes = JSON.parse(response);
-                $('#examTime').empty();
-                examTimes.forEach(function(examTime) {
-                    $('#examTime').append('<option value="' + examTime + '">' + examTime +
-                        '</option>');
-                });
-            }
+        // Select/Deselect All checkboxes
+        $('#selectAll').click(function () {
+            $('.selectItem').prop('checked', this.checked);
         });
-    });
 
-    // Handle the Form Submission via AJAX
-    $(document).ready(function() {
-        $('#setScheduleForm').on('submit', function(e) {
-            e.preventDefault();
+        // Delete Selected Reservations with SweetAlert2
+        $('#deleteSelectedBtn').click(function () {
+            var selected = $('.selectItem:checked').map(function () {
+                return this.value;
+            }).get();
 
-            var formData = $(this).serialize();
+            if (selected.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No selection',
+                    text: 'Please select at least one reservation to delete.'
+                });
+                return;
+            }
 
-            $.ajax({
-                url: 'set_schedule.php',
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response,
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function() {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Error updating the schedule.',
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You are about to delete ${selected.length} reservation(s). This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'ajax_delete_reservation.php',
+                        type: 'POST',
+                        data: { ids: selected },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response
+                            }).then(() => location.reload());
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'An error occurred while deleting reservations.'
+                            });
+                        }
                     });
                 }
             });
         });
-    });
+
+        // Delete single reservation with SweetAlert2
+        function deleteReservation(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to delete this reservation. This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'ajax_delete_reservation.php',
+                        type: 'POST',
+                        data: { ids: [id] },
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response
+                            }).then(() => location.reload());
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Error deleting reservation.'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function openRejectModal(id) {
+            $('#rejectReservationId').val(id);
+            $('#rejectReason').val('');
+            $('#rejectReasonModal').modal('show');
+        }
+
+        function printReservations() {
+            window.print();
+        }
+
+        // Open Modal and Fill Data Dynamically
+        $('#setScheduleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var reservationId = button.data('id');
+
+            // Set the modal fields with the selected reservation's data
+            $('#reservationId').val(reservationId);
+
+            // Fetch available exam times from the server
+            $.ajax({
+                url: 'get_exam_times.php',
+                type: 'GET',
+                success: function (response) {
+                    var examTimes = JSON.parse(response);
+                    $('#examTime').empty();
+                    examTimes.forEach(function (examTime) {
+                        $('#examTime').append('<option value="' + examTime + '">' + examTime +
+                            '</option>');
+                    });
+                }
+            });
+        });
+
+        // Handle the Form Submission via AJAX
+        $(document).ready(function () {
+            $('#setScheduleForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: 'set_schedule.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: response,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Error updating the schedule.',
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
