@@ -699,8 +699,8 @@ ob_start();
                             url: 'ajax_update_room_status.php',
                             type: 'POST',
                             data: {
-                                room: selectedRoom,
-                                status: 'disabled'
+                                rooms: selectedRoom, // <-- use 'rooms' not 'room'
+                                status: 'disabled'   // or 'enabled'
                             },
                             success: function (response) {
                                 Swal.fire({
@@ -746,7 +746,7 @@ ob_start();
                             url: 'ajax_update_room_status.php',
                             type: 'POST',
                             data: {
-                                room: selectedRoom,
+                                rooms: selectedRoom, // <-- use 'rooms' not 'room'
                                 status: 'enabled'
                             },
                             success: function (response) {
