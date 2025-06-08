@@ -17,6 +17,8 @@ ob_start();
     <link rel="stylesheet" href="../../css/exam_schedule.css">
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
 </head>
 <style>
@@ -99,6 +101,7 @@ ob_start();
             display: none;
         }
     }
+    
 </style>
 
 <body class="skin-blue">
@@ -138,15 +141,33 @@ ob_start();
                                 ?>
                             </select>
                             <button type="submit" class="btn btn-primary">Search</button>
-                            <button class="btn btn-success" onclick="printReservations()"><i
-                                    class="fa fa-chart-bar"></i> Print Reports</button>
+                            <!-- <button class="btn btn-success" onclick="printReservations()"><i
+                                    class="fa fa-chart-bar"></i> Print Reports</button> -->
                         </form>
+                        <!-- Room Disable/Enable Section -->
+                        <div class="mb-3" style="margin-bottom: 15px; margin-top: 30px;">
+                            <label for="roomStatusSelect"><strong>Room:</strong></label>
+                            <select id="roomStatusSelect" class="form-control"
+                                style="width: 200px; display: inline-block; margin: 0 10px;">
+                                <option value="">Select Room</option>
+                                <?php
+                                $roomQuery2 = mysqli_query($con, "SELECT DISTINCT room FROM tbl_reservation ORDER BY room ASC");
+                                while ($roomRow2 = mysqli_fetch_assoc($roomQuery2)) {
+                                    echo "<option value='{$roomRow2['room']}'>{$roomRow2['room']}</option>";
+                                }
+                                ?>
+                            </select>
+                            <button type="button" class="btn btn-danger" id="disableRoomBtn">Disable Room</button>
+                            <button type="button" class="btn btn-success" id="enableRoomBtn">Enable Room</button>
+                        </div>
+
+                        <!-- DELETE SELECTED BUTTON -->
+                        <div class="mb-3">
+                            <button type="button" id="deleteSelectedBtn" class="btn btn-danger">Delete Selected</button>
+                        </div>
                     </div>
 
-                    <!-- DELETE SELECTED BUTTON -->
-                    <div class="mb-3">
-                        <button type="button" id="deleteSelectedBtn" class="btn btn-danger">Delete Selected</button>
-                    </div>
+
 
                     <?php
                     if (isset($_GET['msg'])) {
@@ -184,7 +205,7 @@ ob_start();
                                         <th>Status</th>
                                         <th>User Update</th>
                                         <th>Details</th>
-                                        <th>Delete</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -434,6 +455,137 @@ ob_start();
                         });
                     }
                 });
+            });
+        });
+
+        // Disable/Enable Room buttons functionality
+        $(document).ready(function () {
+            $('#disableRoomBtn').click(function () {
+                var selectedRoom = $('#roomStatusSelect').val();
+                if (!selectedRoom) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No room selected',
+                        text: 'Please select a room to disable.'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to disable the selected room. This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Yes, disable!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'ajax_update_room_status.php',
+                            type: 'POST',
+                            data: {
+                                room: selectedRoom,
+                                status: 'disabled'
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Room disabled',
+                                    text: response
+                                }).then(() => location.reload());
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Error disabling the room.'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            $('#enableRoomBtn').click(function () {
+                var selectedRoom = $('#roomStatusSelect').val();
+                if (!selectedRoom) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No room selected',
+                        text: 'Please select a room to enable.'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to enable the selected room.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: 'Yes, enable!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'ajax_update_room_status.php',
+                            type: 'POST',
+                            data: {
+                                room: selectedRoom,
+                                status: 'enabled'
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Room enabled',
+                                    text: response
+                                }).then(() => location.reload());
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Error enabling the room.'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        $('#disableRoomBtn, #enableRoomBtn').click(function () {
+            var room = $('#roomStatusSelect').val();
+            if (!room) {
+                Swal.fire('Please select a room.');
+                return;
+            }
+            var action = $(this).attr('id') === 'disableRoomBtn' ? 'disable' : 'enable';
+            var confirmText = action === 'disable'
+                ? 'You are about to disable all reservations for this room. They will not be shown in lists.'
+                : 'You are about to enable all reservations for this room. They will be shown in lists.';
+            Swal.fire({
+                title: 'Are you sure?',
+                text: confirmText,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, proceed!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'ajax_toggle_room_status.php',
+                        type: 'POST',
+                        data: { room: room, action: action },
+                        success: function (response) {
+                            Swal.fire('Success', response, 'success').then(() => location.reload());
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Could not update room status.', 'error');
+                        }
+                    });
+                }
             });
         });
     </script>
