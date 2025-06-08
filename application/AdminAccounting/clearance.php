@@ -306,8 +306,8 @@ require_once('../../includes/head_css.php');
                     <input type="text" class="form-control" id="currentBalance" disabled>
                 </div>
                 <div class="form-group">
-                    <label for="newBalance">New Balance</label>
-                    <input type="number" class="form-control" name="new_balance" id="newBalance" required>
+                    <label for="balance">New Balance</label>
+                    <input type="number" class="form-control" name="balance" id="balance" required>
                 </div>
             </div>
             <div class="modal-footer">
