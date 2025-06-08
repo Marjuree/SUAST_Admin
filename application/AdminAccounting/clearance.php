@@ -253,7 +253,7 @@ require_once('../../includes/head_css.php');
                                         <button class="btn btn-primary btn-xs update-status" title="Cleared" data-id="<?= $row['id'] ?>" data-status="Cleared">
                                             <span class="glyphicon glyphicon-ok"></span>
                                         </button>
-                                        <button class="btn btn-warning btn-xs open-balance-modal"
+                                        <button type="button" class="btn btn-warning btn-xs open-balance-modal"
                                             title="Edit Balance"
                                             data-toggle="modal" data-target="#balanceModal"
                                             data-id="<?= htmlspecialchars($row['id']) ?>"
@@ -318,73 +318,104 @@ require_once('../../includes/head_css.php');
     </form>
 </div>
 </div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    $(document).ready(function() {
-        // Select/Deselect all checkboxes
-        $('#selectAll').click(function() {
-            var checked = $(this).prop('checked');
-            $('input[name="ids[]"]').prop('checked', checked);
-        });
+$(document).ready(function () {
+    $('#selectAll').click(function () {
+        $('input[name="ids[]"]').prop('checked', this.checked);
+    });
 
-        // Enable selected
-        $('#enableBtn').click(function() {
-            var ids = $('input[name="ids[]"]:checked').map(function() {
-                return $(this).val();
-            }).get();
-            if (ids.length === 0) {
-                alert('Please select at least one record to enable.');
-                return;
-            }
-            if (confirm('Are you sure you want to enable the selected records?')) {
-                $.post('bulk_toggle.php', { ids: ids, action: 'enable' }, function(response) {
-                    location.reload();
-                });
-            }
-        });
+    // Open balance modal and fill fields
+    $('.open-balance-modal').on('click', function () {
+        $('#modalClearanceId').val($(this).data('id'));
+        $('#studentName').val($(this).data('name'));
+        $('#currentBalance').val($(this).data('balance'));
+    });
 
-        // Disable selected
-        $('#disableBtn').click(function() {
-            var ids = $('input[name="ids[]"]:checked').map(function() {
-                return $(this).val();
-            }).get();
-            if (ids.length === 0) {
-                alert('Please select at least one record to disable.');
-                return;
-            }
-            if (confirm('Are you sure you want to disable the selected records?')) {
-                $.post('bulk_toggle.php', { ids: ids, action: 'disable' }, function(response) {
-                    location.reload();
-                });
-            }
-        });
-
-        // Open balance modal
-        $('.open-balance-modal').click(function() {
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            var balance = $(this).data('balance');
-
-            $('#modalClearanceId').val(id);
-            $('#studentName').val(name);
-            $('#currentBalance').val(balance);
-        });
-
-        // Update status buttons
-        $('.update-status').click(function() {
-            var button = $(this);
-            var id = button.data('id');
-            var status = button.data('status');
-
-            if (confirm('Are you sure you want to update the status to "' + status + '"?')) {
-                $.post('update_status.php', { id: id, status: status }, function(response) {
-                    location.reload();
+    // Status update with SweetAlert and auto reload
+    $('.update-status').on('click', function () {
+        const id = $(this).data('id');
+        const status = $(this).data('status');
+        Swal.fire({
+            title: `Are you sure?`,
+            text: `You are about to update the status to "${status}"`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'process_clearance.php',
+                    type: 'POST',
+                    data: { id: id, status: status },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Status Updated',
+                            text: 'The status has been updated successfully.',
+                            timer: 1200,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1500); // reload again after 1.5 seconds
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred: ' + error
+                        });
+                    }
                 });
             }
         });
     });
+
+    // Bulk enable/disable with SweetAlert and auto reload
+    function handleBulkAction(actionName) {
+        const selected = $('input[name="ids[]"]:checked');
+        if (selected.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No records selected',
+                text: 'Please select at least one record to proceed.',
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: `Are you sure you want to ${actionName} selected?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, do it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = $('#bulkForm');
+                const hidden = $('<input>').attr({
+                    type: 'hidden',
+                    name: actionName === 'enable' ? 'bulk_enable' : 'bulk_disable',
+                    value: '1'
+                });
+                form.append(hidden);
+                form.submit();
+            }
+        });
+    }
+
+    $('#enableBtn').on('click', function () { handleBulkAction('enable'); });
+    $('#disableBtn').on('click', function () { handleBulkAction('disable'); });
+});
 </script>
 </body>
 </html>
