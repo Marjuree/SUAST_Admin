@@ -217,7 +217,7 @@ ob_start();
 
                     <!-- Print Button -->
                     <div class="text-right no-print" style="margin-bottom: 10px;">
-                        <button onclick="printSelectedRoom()" class="btn btn-primary">
+                        <button onclick="window.print()" class="btn btn-primary">
                             <span class="glyphicon glyphicon-print"></span> Print
                         </button>
                     </div>
@@ -256,25 +256,16 @@ ob_start();
                         $rooms = [];
                         while ($row = $result->fetch_assoc()) {
                             $room = $row['room'];
+                            // Skip this room if room_disabled is 1
+                            if (isset($row['room_disabled']) && $row['room_disabled'] == 1) {
+                                continue;
+                            }
                             if (!isset($rooms[$room])) {
                                 $rooms[$room] = [];
                             }
                             $rooms[$room][] = $row;
                         }
                         ?>
-
-                        <!-- Room Filter Dropdown -->
-                        <div class="form-group no-print" style="margin-bottom: 20px;">
-                            <label for="roomFilter">Select Room to Display:</label>
-                            <select id="roomFilter" class="form-control" style="width: 250px;">
-                                <option value="all">Show All Rooms</option>
-                                <?php foreach (array_keys($rooms) as $roomOption): ?>
-                                    <option value="<?= htmlspecialchars($roomOption) ?>">
-                                        <?= htmlspecialchars($roomOption) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
 
                         <div class="horizontal-scroll" style="padding: 15px 0; border: none;">
                             <?php foreach ($rooms as $room => $students): ?>
@@ -319,11 +310,7 @@ ob_start();
 
                                         <!-- Right side: room/date + reminders -->
                                         <div class="col-sm-5">
-                                            <!-- Room -->
-                                            <div class="text-center"
-                                                style="border: 1px solid #000; padding: 10px; margin-bottom: 15px;">
-                                                <h5><strong><?= htmlspecialchars($room) ?></strong></h5>
-                                            </div>
+                                            <!-- Room box removed -->
 
                                             <!-- Date & Time -->
                                             <div class="text-center"
@@ -370,51 +357,6 @@ ob_start();
 
 
     </div>
-
-    <!-- Room Filter Script -->
-    <script>
-        document.getElementById('roomFilter').addEventListener('change', function () {
-            const selectedRoom = this.value;
-            const roomBoxes = document.querySelectorAll('.room-box');
-
-            roomBoxes.forEach(box => {
-                const boxRoom = box.dataset.room;
-                if (selectedRoom === 'all' || boxRoom === selectedRoom) {
-                    box.style.display = '';
-                } else {
-                    box.style.display = 'none';
-                }
-            });
-        });
-    </script>
-    <script>
-    function printSelectedRoom() {
-        const selectedRoom = document.getElementById('roomFilter').value;
-        const roomBoxes = document.querySelectorAll('.room-box');
-
-        // Remove print-visible from all
-        roomBoxes.forEach(box => {
-            box.classList.remove('print-visible');
-        });
-
-        // Add print-visible only to selected
-        roomBoxes.forEach(box => {
-            if (selectedRoom === 'all' || box.dataset.room === selectedRoom) {
-                box.classList.add('print-visible');
-            }
-        });
-
-        // Print
-        window.print();
-
-        // Reset after print
-        setTimeout(() => {
-            roomBoxes.forEach(box => {
-                box.classList.remove('print-visible');
-            });
-        }, 500);
-    }
-    </script>
 
     <?php require_once "../../includes/footer.php"; ?>
 
