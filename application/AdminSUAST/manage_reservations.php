@@ -19,6 +19,7 @@ ob_start();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
 </head>
 <style>
@@ -101,7 +102,200 @@ ob_start();
             display: none;
         }
     }
-    
+
+    .box {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+        padding: 24px 18px 18px 18px;
+        margin-bottom: 32px;
+    }
+
+    .box-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+
+    .box-header form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .box-header label {
+        font-weight: 600;
+        margin-right: 6px;
+    }
+
+    .box-header .btn {
+        border-radius: 6px;
+        font-weight: 500;
+        margin-left: 6px;
+    }
+
+    .bulk-action-buttons {
+        margin-top: 0;
+        padding: 10px 18px;
+        background: linear-gradient(135deg, #f8fafc 80%, #e6eaf0 100%);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        display: flex;
+        gap: 10px;
+    }
+
+    .bulk-action-buttons .btn {
+        min-width: 120px;
+        font-size: 1rem;
+    }
+
+    .table {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle !important;
+        text-align: center;
+    }
+
+    .table th {
+        background: #e6eaf0 !important;
+        color: #222;
+        font-weight: 600;
+        font-size: 1.05rem;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background: #f8fafc;
+    }
+
+    .table-striped tbody tr:hover {
+        background: #e6eaf0;
+        transition: background 0.2s;
+    }
+
+    .badge-success {
+        background: #28a745;
+        color: #fff;
+        border-radius: 8px;
+        padding: 4px 12px;
+        font-size: 0.95rem;
+    }
+
+    .badge-danger {
+        background: #cc0000;
+        color: #fff;
+        border-radius: 8px;
+        padding: 4px 12px;
+        font-size: 0.95rem;
+    }
+
+    .btn {
+        border-radius: 6px !important;
+        font-size: 0.98rem !important;
+        padding: 6px 16px !important;
+    }
+
+    .btn-warning {
+        background: #ffc107 !important;
+        color: #222 !important;
+        border: none !important;
+    }
+
+    .btn-danger {
+        background: #cc0000 !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+    .btn-success {
+        background: #28a745 !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+    .btn-secondary {
+        background: #6c757d !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+    .btn-primary {
+        background: #3366ff !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+    .modal-content {
+        border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.09);
+    }
+
+    .modal-header {
+        background: #f4f7fa;
+        border-bottom: 1px solid #e6eaf0;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        color: #3366ff;
+    }
+
+    .form-group label {
+        font-weight: 500;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #e0e6ed;
+        font-size: 1rem;
+    }
+
+    .close {
+        font-size: 1.5rem;
+        color: #222;
+    }
+
+    #date-warning {
+        font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+        .box-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .bulk-action-buttons {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .box {
+            padding: 10px 2px 10px 2px;
+        }
+
+        .table th,
+        .table td {
+            font-size: 0.95rem;
+            padding: 6px 2px;
+        }
+
+        .bulk-action-buttons {
+            flex-direction: column;
+            gap: 8px;
+        }
+    }
 </style>
 
 <body class="skin-blue">
@@ -121,34 +315,41 @@ ob_start();
 
             <section class="content">
                 <div class="box">
-                    <div class="box-header d-flex justify-content-between align-items-center">
+                    <div class="box-header">
                         <form action="" method="GET">
-                            <label for="nameFilter">Find by Name:</label>
-                            <input type="text" name="nameFilter" id="nameFilter" class="form-control"
-                                style="width: 200px; display: inline-block;" placeholder="Enter Name"
-                                value="<?php echo isset($_GET['nameFilter']) ? htmlspecialchars($_GET['nameFilter']) : ''; ?>">
+                            <div class="mb-3">
+                                <label for="nameFilter" class="form-label">Find by Name:</label>
+                                <input type="text" name="nameFilter" id="nameFilter" class="form-control"
+                                    placeholder="Enter Name"
+                                    value="<?php echo isset($_GET['nameFilter']) ? htmlspecialchars($_GET['nameFilter']) : ''; ?>"
+                                    style="max-width: 300px;">
+                            </div>
 
-                            <label for="roomFilter">Find by Room:</label>
-                            <select name="roomFilter" id="roomFilter" class="form-control"
-                                style="width: 200px; display: inline-block;">
-                                <option value="">All Rooms</option>
-                                <?php
-                                $roomQuery = mysqli_query($con, "SELECT DISTINCT room FROM tbl_reservation ORDER BY room ASC");
-                                while ($roomRow = mysqli_fetch_assoc($roomQuery)) {
-                                    $selected = (isset($_GET['roomFilter']) && $_GET['roomFilter'] == $roomRow['room']) ? "selected" : "";
-                                    echo "<option value='{$roomRow['room']}' $selected>{$roomRow['room']}</option>";
-                                }
-                                ?>
-                            </select>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                            <!-- <button class="btn btn-success" onclick="printReservations()"><i
-                                    class="fa fa-chart-bar"></i> Print Reports</button> -->
+                            <div class="mb-3">
+                                <label for="roomFilter" class="form-label">Find by Room:</label>
+                                <select name="roomFilter" id="roomFilter" class="form-control"
+                                    style="max-width: 300px;">
+                                    <option value="">All Rooms</option>
+                                    <?php
+                                    $roomQuery = mysqli_query($con, "SELECT DISTINCT room FROM tbl_reservation ORDER BY room ASC");
+                                    while ($roomRow = mysqli_fetch_assoc($roomQuery)) {
+                                        $selected = (isset($_GET['roomFilter']) && $_GET['roomFilter'] == $roomRow['room']) ? "selected" : "";
+                                        echo "<option value='{$roomRow['room']}' $selected>{$roomRow['room']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
                         </form>
+
                         <!-- Room Disable/Enable Section -->
-                        <div class="mb-3" style="margin-bottom: 15px; margin-top: 30px;">
-                            <label for="roomStatusSelect"><strong>Room:</strong></label>
+                        <div class="mb-3" style="margin-top: 20px;">
+                            <label for="roomStatusSelect" class="form-label"><strong>Room:</strong></label>
                             <select id="roomStatusSelect" class="form-control"
-                                style="width: 200px; display: inline-block; margin: 0 10px;">
+                                style="max-width: 300px; margin-bottom: 10px;">
                                 <option value="">Select Room</option>
                                 <?php
                                 $roomQuery2 = mysqli_query($con, "SELECT DISTINCT room FROM tbl_reservation ORDER BY room ASC");
@@ -157,16 +358,18 @@ ob_start();
                                 }
                                 ?>
                             </select>
-                            <button type="button" class="btn btn-danger" id="disableRoomBtn">Disable Room</button>
-                            <button type="button" class="btn btn-success" id="enableRoomBtn">Enable Room</button>
+                            <div>
+                                <button type="button" class="btn btn-danger" id="disableRoomBtn">Disable Room</button>
+                                <button type="button" class="btn btn-success" id="enableRoomBtn">Enable Room</button>
+                            </div>
                         </div>
 
-                        <!-- DELETE SELECTED BUTTON -->
-                        <div class="mb-3">
-                            <button type="button" id="deleteSelectedBtn" class="btn btn-danger">Delete Selected</button>
-                        </div>
                     </div>
 
+                    <!-- Delete Selected Button -->
+                    <div class="mb-3">
+                        <button type="button" id="deleteSelectedBtn" class="btn btn-danger">Delete Selected</button>
+                    </div>
 
 
                     <?php
@@ -190,10 +393,9 @@ ob_start();
                             </div>
 
                             <div class="line-break"></div>
-                            <h3><u>EXAM RESERVATION LIST</u></h3>
-
-                            <table id="examTable" class="table table-bordered table-striped">
-                                <thead class="thead-dark">
+                            <h3 class="mb-3"><u>EXAM RESERVATION LIST</u></h3>
+                            <table id="examTable" class="table table-bordered table-striped table-hover shadow-sm">
+                                <thead>
                                     <tr class="text-center">
                                         <!-- Checkbox column -->
                                         <th><input type="checkbox" id="selectAll"></th>
@@ -225,8 +427,20 @@ ob_start();
                                     if ($result && mysqli_num_rows($result) > 0) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             $userUpdateLabel = $row['user_requested_update'] == 1 ? 'Updated' : 'Pending';
-                                            $userUpdateClass = $row['user_requested_update'] == 1 ? 'label label-success' : 'label label-warning';
-
+                                            $userUpdateClass = $row['user_requested_update'] == 1 ? 'badge badge-success badge-status' : 'badge badge-warning badge-status';
+                                            $statusClass = '';
+                                            switch (strtolower($row['status'])) {
+                                                case 'approved':
+                                                    $statusClass = 'badge badge-success badge-status';
+                                                    break;
+                                                case 'rejected':
+                                                    $statusClass = 'badge badge-danger badge-status';
+                                                    break;
+                                                case 'pending':
+                                                default:
+                                                    $statusClass = 'badge badge-secondary badge-status';
+                                                    break;
+                                            }
                                             echo "<tr>
                                                 <td class='text-center'>
                                                     <input type='checkbox' class='selectItem' value='{$row['id']}'>
@@ -237,22 +451,22 @@ ob_start();
                                                 <td>" . htmlspecialchars($row['room']) . "</td>
                                                 <td>" . htmlspecialchars($row['venue']) . "</td>
                                                 <td class='text-center'>
-                                                    <form action='update_status.php' method='POST' style='display:inline-block; margin-bottom: 5px;'>
-                                                        <input type='hidden' name='id' value='{$row['id']}'>
-                                                        <input type='hidden' name='status' value='approved'>
-                                                        <button type='submit' class='btn btn-success btn-sm'>Approve</button>
-                                                    </form>
-                                                    <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})'>Reject</button>
-                                                    <div style='margin-top:5px;'><small><strong>Current:</strong> " . htmlspecialchars($row['status'] ?? '') . "</small></div>
+                                                    <span class='$statusClass'>" . htmlspecialchars(ucfirst($row['status'] ?? '')) . "</span>
                                                 </td>
                                                 <td class='text-center'>
                                                     <span class='$userUpdateClass'>$userUpdateLabel</span>
                                                 </td>
                                                 <td class='text-center'>
-                                                    <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm'>View</a>
+                                                    <a href='view_applicant.php?id={$row['applicant_id']}' class='btn btn-info btn-sm' title='View Details'><i class='fa fa-eye'></i></a>
                                                 </td>
                                                 <td class='text-center'>
-                                                    <button class='btn btn-danger btn-sm' onclick='deleteReservation({$row['id']})'>Delete</button>
+                                                    <form action='update_status.php' method='POST' style='display:inline-block; margin-bottom: 5px;'>
+                                                        <input type='hidden' name='id' value='{$row['id']}'>
+                                                        <input type='hidden' name='status' value='approved'>
+                                                        <button type='submit' class='btn btn-success btn-sm' title='Approve'><i class='fa fa-check'></i></button>
+                                                    </form>
+                                                    <button type='button' class='btn btn-warning btn-sm' onclick='openRejectModal({$row['id']})' title='Reject'><i class='fa fa-times'></i></button>
+                                                    <button class='btn btn-danger btn-sm' onclick='deleteReservation({$row['id']})' title='Delete'><i class='fa fa-trash'></i></button>
                                                 </td>
                                             </tr>";
                                         }
