@@ -78,67 +78,81 @@ ob_start();
         }
 
 
-        @media print {
+     @media print {
+    /* Hide everything by default */
+    body * {
+        visibility: hidden !important;
+    }
 
-            /* Hide everything by default */
-            body * {
-                visibility: hidden !important;
-            }
+    .no-print,
+    .room-box {
+        display: none !important;
+    }
 
-            .print-only {
-                display: block !important;
-            }
+    .print-only {
+        display: block !important;
+    }
 
-            .no-print {
-                display: none !important;
-            }
+    /* Show only the selected room-box */
+    .room-box.print-visible,
+    .room-box.print-visible * {
+        display: block !important;
+        visibility: visible !important;
+        position: static !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
 
-            /* Show only the print area */
-            aside.right-side,
-            aside.right-side * {
-                visibility: visible !important;
-            }
+    /* Keep structure clean */
+    .horizontal-scroll {
+        overflow: visible !important;
+        white-space: normal !important;
+        margin-top: 0 !important;
+    }
 
-            /* Full width print layout */
-            aside.right-side {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 60%;
-            }
+    .scroll-box {
+        width: 100% !important;
+        margin: 0 auto !important;
+        display: block !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 
-            .modal-content {
-                border: none;
-            }
+    .scroll-box table {
+        width: 100% !important;
+        visibility: visible !important;
+    }
 
-            /* Hide print button */
-            .btn-primary {
-                display: none !important;
-            }
+    aside.right-side,
+    aside.right-side * {
+        visibility: visible !important;
+    }
 
-            .scroll-box table {
-                width: 100% !important;
-                /* or any desired value like 80% */
-            }
+    aside.right-side {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
 
-            /* Fix scroll-box layout 11*/
-            .scroll-box {
-                display: block !important;
-                width: 60% !important;
-                page-break-inside: avoid;
-                margin-top: -800px !important;
-            }
+    .btn-primary,
+    .form-group,
+    #roomFilter {
+        display: none !important;
+    }
 
-            .horizontal-scroll {
-                overflow: visible !important;
-                white-space: normal !important;
-                margin-top: -120px
-            }
+    .red {
+        color: red !important;
+    }
 
-            .red {
-                color: red !important;
-            }
-        }
+    /* Optional: force page break between rooms when printing "all" */
+    .room-box.print-visible + .room-box.print-visible {
+        page-break-before: always;
+        break-before: page;
+    }
+}
+
+
 
 
 
@@ -202,9 +216,8 @@ ob_start();
                     style="padding: 20px; border-radius: 15px; font-family: Arial, sans-serif; border: none;">
 
                     <!-- Print Button -->
-                    <!-- Print Button -->
                     <div class="text-right no-print" style="margin-bottom: 10px;">
-                        <button onclick="window.print()" class="btn btn-primary">
+                        <button onclick="printSelectedRoom()" class="btn btn-primary">
                             <span class="glyphicon glyphicon-print"></span> Print
                         </button>
                     </div>
@@ -250,16 +263,35 @@ ob_start();
                         }
                         ?>
 
+                        <!-- Room Filter Dropdown -->
+                        <div class="form-group no-print" style="margin-bottom: 20px;">
+                            <label for="roomFilter">Select Room to Display:</label>
+                            <select id="roomFilter" class="form-control" style="width: 250px;">
+                                <option value="all">Show All Rooms</option>
+                                <?php foreach (array_keys($rooms) as $roomOption): ?>
+                                    <option value="<?= htmlspecialchars($roomOption) ?>">
+                                        <?= htmlspecialchars($roomOption) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
                         <div class="horizontal-scroll" style="padding: 15px 0; border: none;">
                             <?php foreach ($rooms as $room => $students): ?>
-                                <div class="scroll-box">
+                                <?php
+                                $approvedStudents = array_filter($students, function ($s) {
+                                    return $s['status'] === 'approved';
+                                });
+                                if (empty($approvedStudents))
+                                    continue;
+                                ?>
+                                <div class="scroll-box room-box" data-room="<?= htmlspecialchars($room) ?>">
                                     <div class="row">
                                         <!-- Left side: student table -->
                                         <div class="col-sm-7">
                                             <h5 style="font-weight: bold;"><?= htmlspecialchars($students[0]['venue']) ?>
                                             </h5>
                                             <h5>Date and Venue</h5>
-
                                             <table class="table table-bordered table-striped mb-0">
                                                 <thead class="thead-dark">
                                                     <tr>
@@ -267,7 +299,7 @@ ob_start();
                                                         <th>NAME</th>
                                                     </tr>
                                                 </thead>
-                                                 <tbody>
+                                                <tbody>
                                                     <?php
                                                     $counter = 1;
                                                     foreach ($students as $student):
@@ -277,7 +309,7 @@ ob_start();
                                                                 <td><?= $counter++ ?></td>
                                                                 <td><?= htmlspecialchars($student['name']) ?></td>
                                                             </tr>
-                                                        <?php
+                                                            <?php
                                                         endif;
                                                     endforeach;
                                                     ?>
@@ -319,7 +351,7 @@ ob_start();
                                             <div class="print-only" style="border: 1px solid #000; padding: 10px;">
                                                 <strong class="red"
                                                     style="color: red; font-size: 20px; display: block; text-align: center;">Reminders:</strong>
-                                                <ul style="padding-left: 20px; margin: 10px 0 0; ">
+                                                <ul style="padding-left: 20px; margin: 10px 0 0;">
                                                     <li>Arrive 30 minutes before schedule.</li>
                                                     <li>Bring valid school/government ID.</li>
                                                     <li>No electronic gadgets inside.</li>
@@ -332,12 +364,57 @@ ob_start();
                             <?php endforeach; ?>
                         </div>
                     </div>
-
                 </div>
             </div>
         </aside>
 
+
     </div>
+
+    <!-- Room Filter Script -->
+    <script>
+        document.getElementById('roomFilter').addEventListener('change', function () {
+            const selectedRoom = this.value;
+            const roomBoxes = document.querySelectorAll('.room-box');
+
+            roomBoxes.forEach(box => {
+                const boxRoom = box.dataset.room;
+                if (selectedRoom === 'all' || boxRoom === selectedRoom) {
+                    box.style.display = '';
+                } else {
+                    box.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script>
+    function printSelectedRoom() {
+        const selectedRoom = document.getElementById('roomFilter').value;
+        const roomBoxes = document.querySelectorAll('.room-box');
+
+        // Remove print-visible from all
+        roomBoxes.forEach(box => {
+            box.classList.remove('print-visible');
+        });
+
+        // Add print-visible only to selected
+        roomBoxes.forEach(box => {
+            if (selectedRoom === 'all' || box.dataset.room === selectedRoom) {
+                box.classList.add('print-visible');
+            }
+        });
+
+        // Print
+        window.print();
+
+        // Reset after print
+        setTimeout(() => {
+            roomBoxes.forEach(box => {
+                box.classList.remove('print-visible');
+            });
+        }, 500);
+    }
+    </script>
 
     <?php require_once "../../includes/footer.php"; ?>
 
