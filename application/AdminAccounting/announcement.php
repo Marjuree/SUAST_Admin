@@ -15,67 +15,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Announcement | Dash</title>
     <link rel="shortcut icon" href="../../img/favicon.png" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <style>
         body {
             background: linear-gradient(to right, #eef2f3, #ffffff);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .announcement-container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            border-radius: 20px;
+        .box {
             background: #fff;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(51,102,255,0.07), 0 1.5px 6px rgba(0,0,0,0.04);
+            padding: 32px 24px 24px 24px;
+            margin-bottom: 32px;
+            border: none;
         }
 
-        .announcement-container img {
-            width: 80px;
-            margin-bottom: 15px;
+        .container {
+            max-width: 700px;
         }
 
-        .announcement-container h1 {
-            font-size: 36px;
-            color: #1a1a1a;
-            margin-bottom: 10px;
+        h2.text-center {
+            color: #3366ff;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
         }
 
-        .announcement-container p {
-            font-size: 16px;
-            color: #444;
-            margin: 10px 0 20px;
+        .btn-primary {
+            background: #3366ff !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 600;
+            padding: 10px 28px;
+            box-shadow: 0 2px 8px rgba(51,102,255,0.07);
+            transition: background 0.2s;
         }
 
-        .notice-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: #2196f3;
-            color: #fff;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s ease;
+        .btn-primary:hover {
+            background: #254edb !important;
         }
 
-        .notice-btn:hover {
-            background: #1769aa;
+        .announcement-card {
+            background: #f8fafc;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(51,102,255,0.04);
+            padding: 18px 20px 14px 20px;
+            margin-bottom: 18px;
+            text-align: left;
+            position: relative;
+            transition: box-shadow 0.2s;
         }
 
-        .announcement-footer {
+        .announcement-card:hover {
+            box-shadow: 0 4px 16px rgba(51,102,255,0.11);
+        }
+
+        .announcement-header {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #777;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
-        .announcement-footer strong {
-            display: block;
-            color: #111;
+        .announcement-header .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #3366ff;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 1px 4px rgba(51,102,255,0.09);
+        }
+
+        .announcement-meta {
+            font-size: 0.95rem;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .announcement-message {
+            font-size: 1.08rem;
+            color: #222;
+            margin-bottom: 8px;
+            white-space: pre-line;
+        }
+
+        .announcement-actions {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+        }
+
+        .announcement-actions .btn {
+            padding: 4px 12px;
+            font-size: 0.95rem;
+            border-radius: 6px;
+        }
+
+        .modal-content {
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+        }
+
+        .modal-header {
+            background: #f4f7fa;
+            border-bottom: 1px solid #e6eaf0;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            color: #3366ff;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            border-radius: 7px;
+            border: 1px solid #e0e6ed;
+            font-size: 1rem;
+        }
+
+        .btn-success {
+            background: #28a745 !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 600;
+            padding: 8px 22px;
+        }
+
+        .btn-outline-danger {
+            border-radius: 8px !important;
+            font-weight: 600;
+            padding: 8px 22px;
+        }
+
+        @media (max-width: 900px) {
+            .box, .container {
+                padding: 16px 4px 16px 4px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .box, .container {
+                padding: 8px 0 8px 0;
+            }
+
+            .announcement-card {
+                padding: 12px 6px 10px 10px;
+            }
         }
     </style>
 </head>
