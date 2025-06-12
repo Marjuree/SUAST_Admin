@@ -74,7 +74,7 @@ require_once "../configuration/config.php";
         }
 
         .logo {
-            height: 100px;
+            height: 150px;
             margin-bottom: 20px;
             filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.6));
             /* Shadow behind logo */
@@ -82,7 +82,7 @@ require_once "../configuration/config.php";
 
         .button {
             font-size: 1.1em;
-            background-color: #002B5B;
+            background-color: #002B5B !important;
             color: white;
             padding: 14px 28px;
             border: 2px solid white;
@@ -134,6 +134,9 @@ require_once "../configuration/config.php";
         .form-control {
             border-radius: 30px !important;
         }
+        .btn{
+            background-color: #002B5B !important;
+        }
     </style>
 
 </head>
@@ -143,7 +146,7 @@ require_once "../configuration/config.php";
 
         <!-- Welcome Section -->
         <div class="welcome-container">
-            <img src="../img/logo1.png" alt="SUAST Logo" class="logo">
+            <img src="../img/uni.png" alt="SUAST Logo" class="logo">
             <p class="title"><strong>WELCOME TO THE ADMIN OFFICE SITE</strong></p>
         </div>
 
@@ -170,7 +173,7 @@ require_once "../configuration/config.php";
                     <p class="text-danger"><strong>Note:</strong> This Login is for Official Use only.</p>
                     <p class="text-muted"><strong>Republic Act No. 10173:</strong> Data Privacy Act of 2012 -
                         Unauthorized access is strictly prohibited.</p>
-                    <img src="../img/ken.png" style="height:100px;" />
+                    <img src="../img/uni.png" style="height:150px;" />
                 </div>
                 <div class="modal-body">
                     <form role="form" method="post">
