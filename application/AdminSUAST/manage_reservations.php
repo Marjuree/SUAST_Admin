@@ -296,6 +296,42 @@ ob_start();
             gap: 8px;
         }
     }
+
+    .badge-pending {
+        background: #ffc107;
+        color: #222;
+        border-radius: 8px;
+        padding: 4px 12px;
+        font-size: 0.95rem;
+    }
+
+    .badge-status {
+        padding: 5px 10px;
+        font-size: 0.85em;
+        border-radius: 12px;
+    }
+
+    .badge-pending {
+        background-color: #ffc107 !important;
+        /* yellow */
+        color: black;
+    }
+
+    .badge-success {
+        background-color: #28a745 !important;
+        color: white;
+    }
+
+    .badge-danger {
+        background-color: #dc3545 !important;
+        color: white;
+    }
+  
+
+  .badge-warning {
+    background-color: #ffc107 !important;
+    color: black;
+  }
 </style>
 
 <body class="skin-blue">
@@ -438,7 +474,7 @@ ob_start();
                                                     break;
                                                 case 'pending':
                                                 default:
-                                                    $statusClass = 'badge badge-secondary badge-status';
+                                                    $statusClass = 'badge badge-pending badge-status'; // changed from badge-secondary
                                                     break;
                                             }
                                             echo "<tr>
