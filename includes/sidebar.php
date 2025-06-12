@@ -42,7 +42,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     ["link" => "../AdminSUAST/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
                 ],
                 "Accounting" => [
-                    ["link" => "../AdminAccounting/AccountingDashboard.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
+                    ["link" => "../AdminAccounting/Accountingdashboard.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
                     ["link" => "../AdminAccounting/clearance.php", "icon" => "fa-clipboard-check", "label" => "Clearance Request"],
                     ["link" => "../AdminAccounting/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
                 ],
