@@ -25,6 +25,9 @@ require_once "../configuration/config.php";
     <link href="../css/landing_page.css" rel="stylesheet">
     <link href="../css/button.css" rel="stylesheet">
 
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
+
     <script src="../js/jquery-1.12.3.js"></script>
 
     <style>
@@ -34,10 +37,13 @@ require_once "../configuration/config.php";
             margin: 0;
             display: flex;
             flex-direction: column;
+            font-family: 'Poppins', Arial, sans-serif;
+            /* Use Poppins */
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
+            /* Use Poppins */
             background: url('../img/logo4.jpg') no-repeat center center fixed;
             background-size: cover;
         }
@@ -77,7 +83,6 @@ require_once "../configuration/config.php";
             height: 150px;
             margin-bottom: 20px;
             filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.6));
-            /* Shadow behind logo */
         }
 
         .button {
@@ -134,7 +139,8 @@ require_once "../configuration/config.php";
         .form-control {
             border-radius: 30px !important;
         }
-        .btn{
+
+        .btn {
             background-color: #002B5B !important;
         }
     </style>
@@ -162,19 +168,34 @@ require_once "../configuration/config.php";
 
 
     <!-- Modal for Administrator Login -->
-    <div id="administrator" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div id="administrator" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false"
+        style="margin-top: 70px;">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header flex-column align-items-center text-center"
+                    style="outline: none !important; box-shadow: none !important; border: none;">
+
+                    <img src="../img/uni.png" alt="Logo"
+                        style="width: 200px; height: auto; margin-bottom: 10px; margin-top: -40px;"
+                        class="mx-auto d-block">
+
+                    <h4 class="modal-title font-weight-bold" style="margin-top: -50px;">WELCOME TO ADMIN OFFICE</h4>
+
+                    <h4 class="modal-title" style="font-size: 10px; color: #dc3545;">
+                        <strong>Note:</strong> This Login is for Official Use only.
+                    </h4>
+
+                    <p class="text-muted text-center" style="font-size: 10px;">
+                        <strong>Republic Act No. 10173:</strong> Data Privacy Act of 2012 - Unauthorized access is
+                        strictly prohibited.
+                    </p>
+
+                    <button type="button" class="close position-absolute" style="right: 10px; top: 10px;"
+                        data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title"><strong>WELCOME TO ADMIN OFFICE</strong></h4>
-                    <p class="text-danger"><strong>Note:</strong> This Login is for Official Use only.</p>
-                    <p class="text-muted"><strong>Republic Act No. 10173:</strong> Data Privacy Act of 2012 -
-                        Unauthorized access is strictly prohibited.</p>
-                    <img src="../img/uni.png" style="height:150px;" />
                 </div>
+
                 <div class="modal-body">
                     <form role="form" method="post">
                         <div class="form-group">
@@ -182,11 +203,23 @@ require_once "../configuration/config.php";
                             <input type="text" class="form-control" name="txt_username" placeholder="Enter Username"
                                 required>
                         </div>
+
                         <div class="form-group">
                             <label for="txt_password">Password</label>
-                            <input type="password" class="form-control" name="txt_password" placeholder="Enter Password"
-                                required>
+                            <div class="d-flex align-items-center position-relative">
+                                <input type="password" class="form-control pr-5" id="admin_password" name="txt_password"
+                                    placeholder="Enter Password" required>
+                                <span id="toggleAdminPassword"
+                                    style="position: absolute; top: -30px; right: 25px; cursor: pointer; user-select: none; display: flex; align-items: center; height: 100%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black"
+                                        stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                                        <circle cx="12" cy="12" r="3.5" />
+                                    </svg>
+                                </span>
+                            </div>
                         </div>
+
                         <div class="form-group">
                             <label for="select_role">Office</label>
                             <select class="form-control" name="select_role" required>
@@ -196,10 +229,20 @@ require_once "../configuration/config.php";
                                 <option value="Accounting">Accounting</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-info" name="btn_login">Log in</button>
-                        <button type="button" class="btn btn-info" data-toggle="modal"
-                            data-target="#regadministrator">Signup</button>
-                        <div id="error" class="text-danger text-center">
+
+                        <button type="submit" class="btn btn-block" style="background-color: #02457A; color: white;"
+                            name="btn_login">Log in</button>
+
+
+
+                        <p class="mt-2 text-center">
+                            <span style="color: black;">New User?</span>
+                            <a href="#" data-toggle="modal" data-target="#regadministrator" class="text-warning " style="color: orange;">
+                                Register
+                            </a>
+                        </p>
+
+                        <div id="error" class="text-danger text-center mt-2">
                             <?php echo isset($login_error) ? $login_error : ''; ?>
                         </div>
                     </form>
@@ -208,14 +251,37 @@ require_once "../configuration/config.php";
         </div>
     </div>
 
+   <script>
+  const togglePassword = document.querySelector('#toggleAdminPassword');
+  const passwordInput = document.querySelector('#admin_password');
+
+  togglePassword.addEventListener('click', () => {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+
+    togglePassword.innerHTML = type === 'password'
+      ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+            <circle cx="12" cy="12" r="3.5"/>
+         </svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+            <path d="M17.94 17.94C16.12 19.25 14.13 20 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.06M22.54 6.42A21.77 21.77 0 0 1 23 12s-4 8-11 8a10.94 10.94 0 0 1-4.24-.88M1 1l22 22"/>
+            <circle cx="12" cy="12" r="3.5"/>
+         </svg>`;
+  });
+</script>
+
     <!-- Registration Modal for Administrator -->
     <div id="regadministrator" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="text-align:center;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                    <!-- Centered Logo -->
+                    <img src="../img/uni.png" alt="SUAST Logo"
+                        style="display:block; margin:0 auto 10px auto; height:150px;">
                     <h4 class="modal-title text-center"><strong>PLEASE REGISTER</strong></h4>
                 </div>
                 <div class="modal-body">
@@ -234,15 +300,37 @@ require_once "../configuration/config.php";
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" class="form-control" id="reg_password" name="reg_password" required
-                                required minlength="8">
+                            <div style="position:relative;">
+                                <input type="password" class="form-control" id="reg_password" name="reg_password"
+                                    required minlength="8" style="padding-right:40px;">
+                                <span id="toggleRegPassword"
+                                    style="position:absolute; top:50%; right:12px; transform:translateY(-50%); cursor:pointer;">
+                                    <!-- Eye icon SVG -->
+                                    <svg id="regPasswordIcon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                                        <circle cx="12" cy="12" r="3.5" />
+                                    </svg>
+                                </span>
+                            </div>
                             <small id="passwordHelp" class="text-muted"></small>
 
                         </div>
                         <div class="form-group">
                             <label>Confirm Password</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                                required minlength="8">
+                            <div style="position:relative;">
+                                <input type="password" class="form-control" id="confirm_password"
+                                    name="confirm_password" required minlength="8" style="padding-right:40px;">
+                                <span id="toggleConfirmPassword"
+                                    style="position:absolute; top:50%; right:12px; transform:translateY(-50%); cursor:pointer;">
+                                    <!-- Eye icon SVG -->
+                                    <svg id="confirmPasswordIcon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                                        <circle cx="12" cy="12" r="3.5" />
+                                    </svg>
+                                </span>
+                            </div>
                             <small id="confirmPasswordHelp" class="text-muted"></small>
                         </div>
                         <div class="form-group">
@@ -266,6 +354,8 @@ require_once "../configuration/config.php";
             const confirmInput = document.getElementById('confirm_password');
             const passwordHelp = document.getElementById('passwordHelp');
             const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
+            const toggleRegPassword = document.getElementById('toggleRegPassword');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 
             const strongPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
 
@@ -304,6 +394,31 @@ require_once "../configuration/config.php";
                     confirmPasswordHelp.style.color = 'red';
                 }
             }
+
+            // Eye icon SVGs
+            const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5"
+                    viewBox="0 0 24 24" width="22" height="22">
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                    <circle cx="12" cy="12" r="3.5"/>
+                </svg>`;
+            const eyeClosed = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5"
+                    viewBox="0 0 24 24" width="22" height="22">
+                    <path d="M17.94 17.94C16.12 19.25 14.13 20 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.06M22.54 6.42A21.77 21.77 0 0 1 23 12s-4 8-11 8a10.94 10.94 0 0 1-4.24-.88M1 1l22 22"/>
+                    <circle cx="12" cy="12" r="3.5"/>
+                </svg>`;
+
+            // Eye icon toggle for password
+            toggleRegPassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? eyeOpen : eyeClosed;
+            });
+
+            toggleConfirmPassword.addEventListener('click', function () {
+                const type = confirmInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? eyeOpen : eyeClosed;
+            });
         });
     </script>
 
