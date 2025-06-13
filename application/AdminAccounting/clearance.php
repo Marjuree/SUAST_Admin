@@ -17,10 +17,12 @@ ob_start();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clearance Requests | Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Add Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(120deg, #f4f7fa 60%, #e6eaf0 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif; /* Use Poppins */
         }
 
         .content-header h1 {
@@ -28,6 +30,7 @@ ob_start();
             font-weight: 700;
             letter-spacing: 1px;
             margin-bottom: 10px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .box {
