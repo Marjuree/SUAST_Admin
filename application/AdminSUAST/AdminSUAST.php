@@ -25,13 +25,52 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
     <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css" />
 
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }
+
+        .scrollable-container,
+        .chart-container,
+        .chart-wrapper,
+        .card,
+        .card h4,
+        .info-box,
+        .info-box-content,
+        .info-box-text,
+        .info-box-number,
+        .btn,
+        .modal-content,
+        .modal-header,
+        .modal-title,
+        .form-group label,
+        .form-control {
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }
+
         .scrollable-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
             margin-bottom: 30px;
+        }
+
+        /* ...existing styles... */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        .info-box-text,
+        .info-box-number,
+        .card h4,
+        .content-header h1 {
+            font-family: 'Poppins', Arial, sans-serif !important;
         }
 
 
@@ -57,7 +96,6 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
 
         .card h4 {
             margin-bottom: 10px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
         }
 
@@ -182,7 +220,9 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
             chart: {
                 type: 'bar',
                 height: 300,
-                toolbar: { show: false }
+                toolbar: { show: false },
+                fontFamily: 'Poppins, Arial, sans-serif'
+
             },
             series: [{
                 name: 'Count',
@@ -226,7 +266,9 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
             chart: {
                 type: 'line',
                 height: 300,
-                toolbar: { show: false }
+                toolbar: { show: false },
+                fontFamily: 'Poppins, Arial, sans-serif'
+
             },
             series: [{
                 name: 'Count',
@@ -259,6 +301,8 @@ $registeredTakers = mysqli_num_rows(mysqli_query($con, "SELECT * FROM tbl_applic
             chart: {
                 type: 'pie',
                 height: 300,
+                fontFamily: 'Poppins, Arial, sans-serif',
+
             },
             series: data,
             labels: labels,
