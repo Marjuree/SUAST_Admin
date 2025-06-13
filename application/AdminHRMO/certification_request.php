@@ -17,10 +17,29 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
     body {
         background: linear-gradient(120deg, #f4f7fa 60%, #e6eaf0 100%);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Poppins', Arial, sans-serif !important;
+    }
+
+    .content-header p,
+    .box,
+    .box-title,
+    .btn,
+    .modal-content,
+    .modal-header,
+    .modal-title,
+    .form-group label,
+    .form-control,
+    .table,
+    .table th,
+    .table td,
+    h1, h2, h3, h4, h5, h6,
+    label {
+        font-family: 'Poppins', Arial, sans-serif !important;
     }
 
     .content-header p {
