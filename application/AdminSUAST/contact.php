@@ -17,10 +17,33 @@ ob_start();
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif !important;
             background: #f4f7fa;
+        }
+
+        .box,
+        .box h2,
+        .btn,
+        .modal-content,
+        .modal-header,
+        .modal-title,
+        .form-group label,
+        .form-control,
+        .table,
+        .table th,
+        .table td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label {
+            font-family: 'Poppins', Arial, sans-serif !important;
         }
 
         .box {
