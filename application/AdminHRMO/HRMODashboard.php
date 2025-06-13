@@ -71,8 +71,34 @@ $overallCounts = [$leaveTotal, $serviceTotal, $certificationTotal];
         <link rel="shortcut icon" href="../../img/favicon.png" />
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+        <!-- Google Fonts: Poppins -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
         <style>
-
+            body {
+                font-family: 'Poppins', Arial, sans-serif !important;
+                background: #f4f7fa;
+            }
+            .scrollable-container,
+            .card,
+            .card-title,
+            .info-box,
+            .info-box-content,
+            .info-box-text,
+            .info-box-number,
+            .btn,
+            .modal-content,
+            .modal-header,
+            .modal-title,
+            .form-group label,
+            .form-control,
+            .table,
+            .table th,
+            .table td,
+            h1, h2, h3, h4, h5, h6,
+            label,
+            p {
+                font-family: 'Poppins', Arial, sans-serif !important;
+            }
         </style>
     </head>
 
@@ -203,66 +229,82 @@ $overallCounts = [$leaveTotal, $serviceTotal, $certificationTotal];
         <script>
             // Overall combined pie chart
             new ApexCharts(document.querySelector("#overallRequestsPieChart"), {
-                chart: { type: 'pie', height: 300 },
+                chart: { type: 'pie', height: 300, fontFamily: 'Poppins, Arial, sans-serif' },
                 series: <?= json_encode($overallCounts); ?>,
                 labels: <?= json_encode($overallLabels); ?>,
                 colors: ['#1abc9c', '#3498db', '#e74c3c'],
-                legend: { position: 'bottom' },
+                legend: { 
+                    position: 'bottom',
+                    fontFamily: 'Poppins, Arial, sans-serif'
+                },
                 title: {
                     text: 'Overall Requests Breakdown',
                     align: 'center',
-                    style: { fontSize: '16px', fontWeight: 'bold' }
+                    style: { fontSize: '16px', fontWeight: 'bold', fontFamily: 'Poppins, Arial, sans-serif' }
                 }
             }).render();
 
             new ApexCharts(document.querySelector("#leaveLineChart"), {
-                chart: { type: 'line', height: 250 },
+                chart: { type: 'line', height: 250, fontFamily: 'Poppins, Arial, sans-serif' },
                 series: [{
                     name: 'Leave Requests',
                     data: <?= json_encode($leaveCounts); ?>
                 }],
-                xaxis: { categories: <?= json_encode($leaveMonths); ?> },
-                colors: ['#ff5733']
+                xaxis: { 
+                    categories: <?= json_encode($leaveMonths); ?>,
+                    labels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
+                },
+                colors: ['#ff5733'],
+                dataLabels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
             }).render();
 
             new ApexCharts(document.querySelector("#leaveBarChart"), {
-                chart: { type: 'bar', height: 250 },
+                chart: { type: 'bar', height: 250, fontFamily: 'Poppins, Arial, sans-serif' },
                 series: [{
                     name: 'Requests',
                     data: <?= json_encode($facultyCounts); ?>
                 }],
-                xaxis: { categories: <?= json_encode($facultyNames); ?> },
+                xaxis: { 
+                    categories: <?= json_encode($facultyNames); ?>,
+                    labels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
+                },
                 colors: ['#f39c12', '#8e44ad', '#3498db', '#2ecc71', '#e74c3c', '#95a5a6'],
                 plotOptions: {
                     bar: {
-                        distributed: true  // This enables different color per bar
+                        distributed: true
                     }
-                }
+                },
+                dataLabels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
             }).render();
 
-
-           
-
             new ApexCharts(document.querySelector("#serviceBarChart"), {
-                chart: { type: 'bar', height: 250 },
+                chart: { type: 'bar', height: 250, fontFamily: 'Poppins, Arial, sans-serif' },
                 series: [{
                     name: 'Service Requests',
                     data: <?= json_encode($serviceCounts); ?>
                 }],
-                xaxis: { categories: <?= json_encode($serviceFaculties); ?> },
+                xaxis: { 
+                    categories: <?= json_encode($serviceFaculties); ?>,
+                    labels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
+                },
                 colors: ['#f39c12', '#8e44ad', '#3498db', '#2ecc71', '#e74c3c'],
                 plotOptions: {
                     bar: {
                         distributed: true
                     }
-                }
+                },
+                dataLabels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
             }).render();
 
             new ApexCharts(document.querySelector("#certificationPieChart"), {
-                chart: { type: 'donut', height: 250 },
+                chart: { type: 'donut', height: 250, fontFamily: 'Poppins, Arial, sans-serif' },
                 series: <?= json_encode($certificationCounts); ?>,
                 labels: <?= json_encode($certificationStatuses); ?>,
-                colors: ['#ff6347', '#00bcd4', '#ffa500', '#28a745']
+                colors: ['#ff6347', '#00bcd4', '#ffa500', '#28a745'],
+                legend: { 
+                    fontFamily: 'Poppins, Arial, sans-serif'
+                },
+                dataLabels: { style: { fontFamily: 'Poppins, Arial, sans-serif' } }
             }).render();
         </script>
 
