@@ -22,13 +22,35 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
 
 
     <style>
     body {
-        background: linear-gradient(120deg, #f4f7fa 60%, #e6eaf0 100%);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+                font-family: 'Poppins', Arial, sans-serif !important;
+                background: #f4f7fa;
+            }
+            .scrollable-container,
+            .card,
+            .card-title,
+            .info-box,
+            .info-box-content,
+            .info-box-text,
+            .info-box-number,
+            .btn,
+            .modal-content,
+            .modal-header,
+            .modal-title,
+            .form-group label,
+            .form-control,
+            .table,
+            .table th,
+            .table td,
+            h1, h2, h3, h4, h5, h6,
+            label,
+            p {
+                font-family: 'Poppins', Arial, sans-serif !important;
+            }   
 
     .content-header p {
         color: #3366ff;
