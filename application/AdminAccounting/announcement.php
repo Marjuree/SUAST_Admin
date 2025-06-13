@@ -249,13 +249,13 @@
                         <label for="messageInput">Announcement:</label>
                         <textarea id="messageInput" class="form-control" rows="4" placeholder="Type your message here..." required></textarea>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="statusInput">Status:</label>
                         <select id="statusInput" class="form-control">
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="roleInput">Office of:</label>
                         <select id="roleInput" class="form-control">
@@ -293,14 +293,14 @@
         function sendMessage() {
         let adminName = document.getElementById("adminName").value.trim();
         let messageText = document.getElementById("messageInput").value.trim();
-        let status = document.getElementById("statusInput").value;
+        // let status = document.getElementById("statusInput").value;
         let role = document.getElementById("roleInput").value;
 
         if (adminName !== "" && messageText !== "") {
             let formData = new URLSearchParams();
             formData.append("admin_name", adminName);
             formData.append("message", messageText);
-            formData.append("status", status);
+            // formData.append("status", status);
             formData.append("role", role);
 
             fetch("announcement_post.php", {
