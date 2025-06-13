@@ -18,10 +18,34 @@ ob_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif !important;
             background: #f4f7fa;
+        }
+
+        .box,
+        .box-header,
+        .box-header label,
+        .bulk-action-buttons,
+        .btn,
+        .modal-content,
+        .modal-header,
+        .modal-title,
+        .form-group label,
+        .form-control,
+        .table,
+        .table th,
+        .table td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', Arial, sans-serif !important;
         }
 
         .box {
@@ -86,7 +110,7 @@ ob_start();
         }
 
         .table th {
-            background:rgb(29, 29, 29);
+            background: rgb(29, 29, 29);
             color: #fff;
             font-weight: 600;
             font-size: 1.05rem;
