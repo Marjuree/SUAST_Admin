@@ -221,7 +221,7 @@
                             <hr>
 
 
-                            <div class="chat-container mt-3" id="announcementList">
+                            <div class="chat-container mt-3 text-left" style="text-align: left !important;" id="announcementList">
                                 <!-- Messages will be loaded here -->
                             </div>
                         </div>
@@ -233,51 +233,57 @@
 
     <!-- Enhanced Announcement Modal -->
     <div id="announcementModal" class="modal fade" tabindex="-1" role="dialog">
-        <form method="post">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title">📢 Post Announcement</h5>
-                        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="adminName">Name From:</label>
-                            <input type="text" id="adminName" class="form-control" placeholder="Enter your name"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="messageInput">Announcement:</label>
-                            <textarea id="messageInput" class="form-control" rows="4"
-                                placeholder="Type your message here..." required></textarea>
-                        </div>
-                        <div class="form-group" style="display: none;">
-                            <label for="statusInput">Status:</label>
-                            <select id="statusInput" class="form-control">
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="roleInput">OSCD:</label>
-                            <select id="roleInput" class="form-control">
-                                <option value="SUAST">SUAST</option>
-                            </select>
-                        </div>
+    <form method="post" class="w-100">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" style="color: white;">📢 Post Announcement</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
 
+                <!-- Modal Body -->
+                <div class="modal-body px-4">
+                    <div class="mb-3">
+                        <label for="adminName" class="form-label fw-semibold">Name From:</label>
+                        <input type="text" id="adminName" name="adminName" class="form-control" placeholder="Enter your name" required>
                     </div>
-                    <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-outline-danger px-4 py-2" data-dismiss="modal">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                        <button type="button" class="btn btn-success px-4 py-2" onclick="sendMessage()">
-                            <i class="fas fa-paper-plane"></i> Post Announcement
-                        </button>
+
+                    <div class="mb-3">
+                        <label for="messageInput" class="form-label fw-semibold">Announcement:</label>
+                        <textarea id="messageInput" name="messageInput" class="form-control" rows="4" placeholder="Type your message here..." required></textarea>
+                    </div>
+
+                    <!-- <div class="mb-3 d-none">
+                        <label for="statusInput" class="form-label fw-semibold">Status:</label>
+                        <select id="statusInput" name="statusInput" class="form-control">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div> -->
+
+                    <div class="mb-0">
+                        <label for="roleInput" class="form-label fw-semibold">OSCD:</label>
+                        <select id="roleInput" name="roleInput" class="form-control">
+                            <option value="SUAST">SUAST</option>
+                        </select>
                     </div>
                 </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer d-flex justify-content-between px-4">
+                    <button type="button" class="btn btn-outline-danger px-4 py-2" data-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-success px-4 py-2" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i> Post Announcement
+                    </button>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
+
 
 
 
@@ -296,14 +302,14 @@
     function sendMessage() {
         let adminName = document.getElementById("adminName").value.trim();
         let messageText = document.getElementById("messageInput").value.trim();
-        let status = document.getElementById("statusInput").value;
+        // let status = document.getElementById("statusInput").value;
         let role = document.getElementById("roleInput").value;
 
         if (adminName !== "" && messageText !== "") {
             let formData = new URLSearchParams();
             formData.append("admin_name", adminName);
             formData.append("message", messageText);
-            formData.append("status", status);
+            // formData.append("status", status);
             formData.append("role", role);
 
             fetch("announcement_post.php", {
