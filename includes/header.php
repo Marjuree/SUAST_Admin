@@ -21,7 +21,7 @@ $username = $_SESSION['username'] ?? 'Guest';
 
 <header class="header custom-header">
 <a href="#" class="logo">
-    <img src="../../img/logo1.png" alt="Logo">
+    <img src="../../img/uni.png" alt="Logo" style="height: 90px; width: 90px;">
 </a>
     <nav class="navbar navbar-static-top">
         <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas">
