@@ -26,21 +26,25 @@ $username = $_SESSION['first_name'] ?? 'User';
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(120deg, #f4f7fa 60%, #e6eaf0 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .content-header h1 {
             color: #3366ff;
             font-weight: 700;
             letter-spacing: 1px;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .content-header p {
             color: #222;
             font-size: 1.1rem;
+            font-family: 'Poppins', Arial, sans-serif;
         }
 
         .info-box {
