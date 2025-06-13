@@ -21,7 +21,38 @@ ob_start();
     <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
+
     <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }
+
+        .scroll-box,
+        .horizontal-scroll,
+        .container-fluid,
+        .modal-content,
+        .modal-header,
+        .modal-title,
+        .form-group label,
+        .form-control,
+        .table,
+        .table th,
+        .table td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        .btn,
+        .responsive-divider,
+        .print-only {
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }
+
         .horizontal-scroll {
             overflow-x: auto;
             white-space: nowrap;
@@ -78,79 +109,79 @@ ob_start();
         }
 
 
-     @media print {
-    /* Hide everything by default */
-    body * {
-        visibility: hidden !important;
-    }
+        @media print {
+            /* Hide everything by default */
+            body * {
+                visibility: hidden !important;
+            }
 
-    .no-print,
-    .room-box {
-        display: none !important;
-    }
+            .no-print,
+            .room-box {
+                display: none !important;
+            }
 
-    .print-only {
-        display: block !important;
-    }
+            .print-only {
+                display: block !important;
+            }
 
-    /* Show only the selected room-box */
-    .room-box.print-visible,
-    .room-box.print-visible * {
-        display: block !important;
-        visibility: visible !important;
-        position: static !important;
-        overflow: visible !important;
-        height: auto !important;
-    }
+            /* Show only the selected room-box */
+            .room-box.print-visible,
+            .room-box.print-visible * {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
+                overflow: visible !important;
+                height: auto !important;
+            }
 
-    /* Keep structure clean */
-    .horizontal-scroll {
-        overflow: visible !important;
-        white-space: normal !important;
-        margin-top: 0 !important;
-    }
+            /* Keep structure clean */
+            .horizontal-scroll {
+                overflow: visible !important;
+                white-space: normal !important;
+                margin-top: 0 !important;
+            }
 
-    .scroll-box {
-        width: 100% !important;
-        margin: 0 auto !important;
-        display: block !important;
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
+            .scroll-box {
+                width: 100% !important;
+                margin: 0 auto !important;
+                display: block !important;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
 
-    .scroll-box table {
-        width: 100% !important;
-        visibility: visible !important;
-    }
+            .scroll-box table {
+                width: 100% !important;
+                visibility: visible !important;
+            }
 
-    aside.right-side,
-    aside.right-side * {
-        visibility: visible !important;
-    }
+            aside.right-side,
+            aside.right-side * {
+                visibility: visible !important;
+            }
 
-    aside.right-side {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
+            aside.right-side {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
 
-    .btn-primary,
-    .form-group,
-    #roomFilter {
-        display: none !important;
-    }
+            .btn-primary,
+            .form-group,
+            #roomFilter {
+                display: none !important;
+            }
 
-    .red {
-        color: red !important;
-    }
+            .red {
+                color: red !important;
+            }
 
-    /* Optional: force page break between rooms when printing "all" */
-    .room-box.print-visible + .room-box.print-visible {
-        page-break-before: always;
-        break-before: page;
-    }
-}
+            /* Optional: force page break between rooms when printing "all" */
+            .room-box.print-visible + .room-box.print-visible {
+                page-break-before: always;
+                break-before: page;
+            }
+        }
 
 
 
@@ -229,7 +260,8 @@ ob_start();
                             <div class="col-xs-9">
                                 <h6>Republic of the Philippines</h6>
                                 <div class="responsive-divider"></div>
-                                <h3 style="color: #003399; font-weight: bold;">DAVAO ORIENTAL <br> STATE UNIVERSITY</h3>
+                                <h3 style="color: #003399; font-weight: bold;">DAVAO ORIENTAL <br> STATE UNIVERSITY
+                                </h3>
                                 <p style="font-style: italic; font-size: 14px;">"A university of excellence, innovation,
                                     and inclusion"</p>
                                 <div class="responsive-divider"></div>
@@ -310,7 +342,11 @@ ob_start();
 
                                         <!-- Right side: room/date + reminders -->
                                         <div class="col-sm-5">
-                                            <!-- Room box removed -->
+                                            <!-- Room Display -->
+                                            <div class="text-center"
+                                                style="border: 1px solid #000; padding: 10px; margin-bottom: 10px; background: #f8f9fa;">
+                                                <h4 style="margin:0; font-weight:bold;"> <?= htmlspecialchars($room) ?></h4>
+                                            </div>
 
                                             <!-- Date & Time -->
                                             <div class="text-center"
