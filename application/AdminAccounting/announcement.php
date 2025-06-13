@@ -16,10 +16,29 @@
     <title>Announcement | Dash</title>
     <link rel="shortcut icon" href="../../img/favicon.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(to right, #eef2f3, #ffffff);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif; /* Use Poppins */
+        }
+
+        .box,
+        .container,
+        h2.text-center,
+        .btn,
+        .announcement-card,
+        .announcement-header,
+        .announcement-meta,
+        .announcement-message,
+        .announcement-actions,
+        .modal-content,
+        .modal-header,
+        .modal-title,
+        .form-group label,
+        .form-control {
+            font-family: 'Poppins', Arial, sans-serif !important;
         }
 
         .box {
@@ -187,7 +206,7 @@
         
         <aside class="right-side">
             <section class="content-header">
-                <h1>Dashboard</h1>
+                <h1>Announcement</h1>
             </section>
             
             <section class="content">
