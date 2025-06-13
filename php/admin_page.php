@@ -80,7 +80,8 @@ require_once "../configuration/config.php";
         }
 
         .logo {
-            height: 150px;
+            height: 200px;
+            width: auto;
             margin-bottom: 20px;
             filter: drop-shadow(1px 1px 4px rgba(0, 0, 0, 0.6));
         }
@@ -100,13 +101,24 @@ require_once "../configuration/config.php";
             text-align: center;
             display: inline-block;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
+            cursor: pointer;
         }
 
         .button:hover {
-            background-color: #002B5B;
+            background-color: #003366;
             transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 6px 12px rgba(0, 0, 0, 0.2);
         }
+
+        .button:active {
+            transform: translateY(1px);
+            box-shadow:
+                0 0 15px rgba(255, 255, 255, 0.7),
+                0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
 
         .buttons-container {
             display: flex;
@@ -172,6 +184,10 @@ require_once "../configuration/config.php";
         style="margin-top: 70px;">
         <div class="modal-dialog">
             <div class="modal-content">
+                <button type="button" class="close position-absolute" style="right: 20px; top: 10px;"
+                    data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div class="modal-header flex-column align-items-center text-center"
                     style="outline: none !important; box-shadow: none !important; border: none;">
 
@@ -190,10 +206,7 @@ require_once "../configuration/config.php";
                         strictly prohibited.
                     </p>
 
-                    <button type="button" class="close position-absolute" style="right: 10px; top: 10px;"
-                        data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+
                 </div>
 
                 <div class="modal-body">
@@ -237,7 +250,8 @@ require_once "../configuration/config.php";
 
                         <p class="mt-2 text-center">
                             <span style="color: black;">New User?</span>
-                            <a href="#" data-toggle="modal" data-target="#regadministrator" class="text-warning " style="color: orange;">
+                            <a href="#" data-toggle="modal" data-target="#regadministrator" class="text-warning "
+                                style="color: orange;">
                                 Register
                             </a>
                         </p>
@@ -251,25 +265,25 @@ require_once "../configuration/config.php";
         </div>
     </div>
 
-   <script>
-  const togglePassword = document.querySelector('#toggleAdminPassword');
-  const passwordInput = document.querySelector('#admin_password');
+    <script>
+        const togglePassword = document.querySelector('#toggleAdminPassword');
+        const passwordInput = document.querySelector('#admin_password');
 
-  togglePassword.addEventListener('click', () => {
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
 
-    togglePassword.innerHTML = type === 'password'
-      ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+            togglePassword.innerHTML = type === 'password'
+                ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
             <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
             <circle cx="12" cy="12" r="3.5"/>
          </svg>`
-      : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
+                : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="1.5" viewBox="0 0 24 24" width="22" height="22">
             <path d="M17.94 17.94C16.12 19.25 14.13 20 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.06M22.54 6.42A21.77 21.77 0 0 1 23 12s-4 8-11 8a10.94 10.94 0 0 1-4.24-.88M1 1l22 22"/>
             <circle cx="12" cy="12" r="3.5"/>
          </svg>`;
-  });
-</script>
+        });
+    </script>
 
     <!-- Registration Modal for Administrator -->
     <div id="regadministrator" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
