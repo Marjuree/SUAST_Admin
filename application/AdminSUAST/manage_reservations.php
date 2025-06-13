@@ -21,318 +21,348 @@ ob_start();
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is loaded -->
-</head>
-<style>
-    /* Default: Hide header */
-    .school-header {
-        display: none;
-        text-align: center;
-        margin-bottom: 20px;
-    }
 
-    .school-header img {
-        width: 120px;
-        height: 120px;
-    }
-
-    .school-header h2 {
-        color: #002f6c;
-        font-size: 24px;
-        font-weight: bold;
-        margin: 5px 0;
-    }
-
-    .school-header h4 {
-        color: #333;
-        font-size: 14px;
-        font-style: italic;
-        margin: 5px 0;
-    }
-
-    .line-break {
-        width: 100%;
-        height: 3px;
-        background: #002f6c;
-        margin: 10px 0;
-    }
-
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    @media print {
-        body * {
-            visibility: hidden;
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif !important;
         }
 
-        #printSection,
-        #printSection * {
-            visibility: visible;
+        .box,
+        .box-header,
+        .box-header label,
+        .bulk-action-buttons,
+        .btn,
+        .modal-content,
+        .modal-header,
+        .modal-title,
+        .form-group label,
+        .form-control,
+        .table,
+        .table th,
+        .table td,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label {
+            font-family: 'Poppins', Arial, sans-serif !important;
         }
 
-        #printSection {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            text-align: center;
-        }
-
+        /* Default: Hide header */
         .school-header {
-            display: flex !important;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
+            display: none;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .header-left {
-            text-align: left;
-        }
-
-        .header-right img {
+        .school-header img {
             width: 120px;
             height: 120px;
         }
 
-        /* Hide the Action column */
-        #printSection th:last-child,
-        #printSection td:last-child {
-            display: none;
+        .school-header h2 {
+            color: #002f6c;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
         }
-    }
 
-    .box {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
-        padding: 24px 18px 18px 18px;
-        margin-bottom: 32px;
-    }
+        .school-header h4 {
+            color: #333;
+            font-size: 14px;
+            font-style: italic;
+            margin: 5px 0;
+        }
 
-    .box-header {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-    }
+        .line-break {
+            width: 100%;
+            height: 3px;
+            background: #002f6c;
+            margin: 10px 0;
+        }
 
-    .box-header form {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .box-header label {
-        font-weight: 600;
-        margin-right: 6px;
-    }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
 
-    .box-header .btn {
-        border-radius: 6px;
-        font-weight: 500;
-        margin-left: 6px;
-    }
+            #printSection,
+            #printSection * {
+                visibility: visible;
+            }
 
-    .bulk-action-buttons {
-        margin-top: 0;
-        padding: 10px 18px;
-        background: linear-gradient(135deg, #f8fafc 80%, #e6eaf0 100%);
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-        display: flex;
-        gap: 10px;
-    }
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                text-align: center;
+            }
 
-    .bulk-action-buttons .btn {
-        min-width: 120px;
-        font-size: 1rem;
-    }
+            .school-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+            }
 
-    .table {
-        background: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
+            .header-left {
+                text-align: left;
+            }
 
-    .table th,
-    .table td {
-        vertical-align: middle !important;
-        text-align: center;
-    }
+            .header-right img {
+                width: 120px;
+                height: 120px;
+            }
 
-    .table th {
-        background: #e6eaf0 !important;
-        color: #222;
-        font-weight: 600;
-        font-size: 1.05rem;
-    }
+            /* Hide the Action column */
+            #printSection th:last-child,
+            #printSection td:last-child {
+                display: none;
+            }
+        }
 
-    .table-striped tbody tr:nth-of-type(odd) {
-        background: #f8fafc;
-    }
+        .box {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+            padding: 24px 18px 18px 18px;
+            margin-bottom: 32px;
+        }
 
-    .table-striped tbody tr:hover {
-        background: #e6eaf0;
-        transition: background 0.2s;
-    }
-
-    .badge-success {
-        background: #28a745;
-        color: #fff;
-        border-radius: 8px;
-        padding: 4px 12px;
-        font-size: 0.95rem;
-    }
-
-    .badge-danger {
-        background: #cc0000;
-        color: #fff;
-        border-radius: 8px;
-        padding: 4px 12px;
-        font-size: 0.95rem;
-    }
-
-    .btn {
-        border-radius: 6px !important;
-        font-size: 0.98rem !important;
-        padding: 6px 16px !important;
-    }
-
-    .btn-warning {
-        background: #ffc107 !important;
-        color: #222 !important;
-        border: none !important;
-    }
-
-    .btn-danger {
-        background: #cc0000 !important;
-        color: #fff !important;
-        border: none !important;
-    }
-
-    .btn-success {
-        background: #28a745 !important;
-        color: #fff !important;
-        border: none !important;
-    }
-
-    .btn-secondary {
-        background: #6c757d !important;
-        color: #fff !important;
-        border: none !important;
-    }
-
-    .btn-primary {
-        background: #3366ff !important;
-        color: #fff !important;
-        border: none !important;
-    }
-
-    .modal-content {
-        border-radius: 14px;
-        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.09);
-    }
-
-    .modal-header {
-        background: #f4f7fa;
-        border-bottom: 1px solid #e6eaf0;
-        border-radius: 14px 14px 0 0;
-    }
-
-    .modal-title {
-        font-weight: 600;
-        color: #3366ff;
-    }
-
-    .form-group label {
-        font-weight: 500;
-    }
-
-    .form-control {
-        border-radius: 6px;
-        border: 1px solid #e0e6ed;
-        font-size: 1rem;
-    }
-
-    .close {
-        font-size: 1.5rem;
-        color: #222;
-    }
-
-    #date-warning {
-        font-size: 0.95rem;
-    }
-
-    @media (max-width: 900px) {
         .box-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .box-header form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .box-header label {
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .box-header .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            margin-left: 6px;
         }
 
         .bulk-action-buttons {
-            width: 100%;
-            justify-content: flex-start;
+            margin-top: 0;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #f8fafc 80%, #e6eaf0 100%);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            display: flex;
+            gap: 10px;
         }
-    }
 
-    @media (max-width: 600px) {
-        .box {
-            padding: 10px 2px 10px 2px;
+        .bulk-action-buttons .btn {
+            min-width: 120px;
+            font-size: 1rem;
+        }
+
+        .table {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .table th,
         .table td {
+            vertical-align: middle !important;
+            text-align: center;
+        }
+
+        .table th {
+            background: #e6eaf0 !important;
+            color: #222;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background: #f8fafc;
+        }
+
+        .table-striped tbody tr:hover {
+            background: #e6eaf0;
+            transition: background 0.2s;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: #fff;
+            border-radius: 8px;
+            padding: 4px 12px;
             font-size: 0.95rem;
-            padding: 6px 2px;
         }
 
-        .bulk-action-buttons {
-            flex-direction: column;
-            gap: 8px;
+        .badge-danger {
+            background: #cc0000;
+            color: #fff;
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 0.95rem;
         }
-    }
 
-    .badge-pending {
-        background: #ffc107;
-        color: #222;
-        border-radius: 8px;
-        padding: 4px 12px;
-        font-size: 0.95rem;
-    }
+        .btn {
+            border-radius: 6px !important;
+            font-size: 0.98rem !important;
+            padding: 6px 16px !important;
+        }
 
-    .badge-status {
-        padding: 5px 10px;
-        font-size: 0.85em;
-        border-radius: 12px;
-    }
+        .btn-warning {
+            background: #ffc107 !important;
+            color: #222 !important;
+            border: none !important;
+        }
 
-    .badge-pending {
-        background-color: #ffc107 !important;
-        /* yellow */
-        color: black;
-    }
+        .btn-danger {
+            background: #cc0000 !important;
+            color: #fff !important;
+            border: none !important;
+        }
 
-    .badge-success {
-        background-color: #28a745 !important;
-        color: white;
-    }
+        .btn-success {
+            background: #28a745 !important;
+            color: #fff !important;
+            border: none !important;
+        }
 
-    .badge-danger {
-        background-color: #dc3545 !important;
-        color: white;
-    }
-  
+        .btn-secondary {
+            background: #6c757d !important;
+            color: #fff !important;
+            border: none !important;
+        }
 
-  .badge-warning {
-    background-color: #ffc107 !important;
-    color: black;
-  }
-</style>
+        .btn-primary {
+            background: #3366ff !important;
+            color: #fff !important;
+            border: none !important;
+        }
+
+        .modal-content {
+            border-radius: 14px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.09);
+        }
+
+        .modal-header {
+            background: #f4f7fa;
+            border-bottom: 1px solid #e6eaf0;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            color: #3366ff;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #e0e6ed;
+            font-size: 1rem;
+        }
+
+        .close {
+            font-size: 1.5rem;
+            color: #222;
+        }
+
+        #date-warning {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 900px) {
+            .box-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .bulk-action-buttons {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .box {
+                padding: 10px 2px 10px 2px;
+            }
+
+            .table th,
+            .table td {
+                font-size: 0.95rem;
+                padding: 6px 2px;
+            }
+
+            .bulk-action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        .badge-pending {
+            background: #ffc107;
+            color: #222;
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 0.95rem;
+        }
+
+        .badge-status {
+            padding: 5px 10px;
+            font-size: 0.85em;
+            border-radius: 12px;
+        }
+
+        .badge-pending {
+            background-color: #ffc107 !important;
+            /* yellow */
+            color: black;
+        }
+
+        .badge-success {
+            background-color: #28a745 !important;
+            color: white;
+        }
+
+        .badge-danger {
+            background-color: #dc3545 !important;
+            color: white;
+        }
+
+
+        .badge-warning {
+            background-color: #ffc107 !important;
+            color: black;
+        }
+    </style>
+</head>
 
 <body class="skin-blue">
     <?php
