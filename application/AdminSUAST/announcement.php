@@ -16,10 +16,33 @@
     <title>Announcement | Dash</title>
     <link rel="shortcut icon" href="../../img/favicon.png" />
 
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap" rel="stylesheet">
     <style>
     body {
         background: linear-gradient(to right, #eef2f3, #ffffff);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Poppins', Arial, sans-serif !important;
+    }
+
+    .box,
+    .box h2,
+    .btn,
+    .announcement-card,
+    .announcement-header,
+    .announcement-meta,
+    .announcement-message,
+    .announcement-actions,
+    .modal-content,
+    .modal-header,
+    .modal-title,
+    .form-group label,
+    .form-control,
+    .table,
+    .table th,
+    .table td,
+    h1, h2, h3, h4, h5, h6,
+    label {
+        font-family: 'Poppins', Arial, sans-serif !important;
     }
 
     .box {
