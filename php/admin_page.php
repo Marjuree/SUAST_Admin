@@ -117,8 +117,36 @@ require_once "../configuration/config.php";
             box-shadow:
                 0 0 15px rgba(255, 255, 255, 0.7),
                 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color:rgb(58, 144, 229);
+            transform: translateY(1px);
         }
 
+
+        .login-button {
+            background-color: #02457A;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-button:hover {
+            background-color: #03518F;
+            box-shadow:
+                0 0 10px rgba(255, 255, 255, 0.4),
+                0 6px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .login-button:active {
+            transform: translateY(1px);
+            box-shadow:
+                0 0 15px rgba(255, 255, 255, 0.6),
+                0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
 
         .buttons-container {
             display: flex;
