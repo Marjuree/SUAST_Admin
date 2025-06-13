@@ -236,14 +236,24 @@ ob_start();
                             <hr>
                             <h3>Clearance Requests</h3>
 
+                            <!-- Search Table -->
+                            <div class="row" style="margin-bottom:20px;">
+                                <div class="col-md-6">
+                                    <input type="text" id="searchInput" class="form-control"
+                                        placeholder="Search by Student Name, ID, Faculty, Year Level...">
+                                </div>
+                            </div>
+
                             <form method="POST" action="bulk_toggle.php" id="bulkForm">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped">
+                                    <table id="clearanceTable" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th><input type="checkbox" id="selectAll"></th>
                                                 <th>Student ID</th>
                                                 <th>Student Name</th>
+                                                <th>Faculty</th>
+                                                <th>Year Level</th>
                                                 <th>Balance</th>
                                                 <th>Status</th>
                                                 <th>Date Requested</th>
@@ -254,12 +264,13 @@ ob_start();
                                         <tbody>
                                             <?php
                                             $query = "
-                                    SELECT cr.id, cr.student_id, 
-                                           COALESCE(su.full_name, 'Unknown Student') AS full_name, 
-                                           cr.status, cr.date_requested, cr.balance, cr.enabled 
-                                    FROM tbl_clearance_requests cr
-                                    LEFT JOIN tbl_student_users su ON cr.student_id = su.school_id
-                                    ORDER BY cr.date_requested DESC";
+                                            SELECT cr.id, cr.student_id, 
+                                                COALESCE(su.full_name, 'Unknown Student') AS full_name, 
+                                                su.faculty, su.year_level,
+                                                cr.status, cr.date_requested, cr.balance, cr.enabled 
+                                            FROM tbl_clearance_requests cr
+                                            LEFT JOIN tbl_student_users su ON cr.student_id = su.school_id
+                                            ORDER BY cr.date_requested DESC";
                                             $result = $con->query($query);
                                             while ($row = $result->fetch_assoc()):
                                                 $status = !empty($row['status']) ? htmlspecialchars($row['status']) : "Pending";
@@ -278,6 +289,8 @@ ob_start();
                                                             value="<?= htmlspecialchars($row['id']) ?>"></td>
                                                     <td><?= htmlspecialchars($row['student_id']) ?></td>
                                                     <td><?= htmlspecialchars($row['full_name']) ?></td>
+                                                    <td><?= htmlspecialchars($row['faculty']) ?></td>
+                                                    <td><?= htmlspecialchars($row['year_level']) ?></td>
                                                     <td><?= htmlspecialchars($row['balance']) ?></td>
                                                     <td><span class="label <?= $labelClass ?>"><?= $status ?></span></td>
                                                     <td><?= htmlspecialchars($row['date_requested']) ?></td>
@@ -385,7 +398,6 @@ ob_start();
             });
 
             // Status update with SweetAlert and auto reload
-            // ...existing code...
             $('.update-status').on('click', function () {
                 const id = $(this).data('id');
                 const status = $(this).data('status');
@@ -460,6 +472,16 @@ ob_start();
 
             $('#enableBtn').on('click', function () { handleBulkAction('enable'); });
             $('#disableBtn').on('click', function () { handleBulkAction('disable'); });
+
+            // Simple search filter for the table
+            $('#searchInput').on('keyup', function () {
+                var value = $(this).val().toLowerCase();
+                $("#clearanceTable tbody tr").filter(function () {
+                    $(this).toggle(
+                        $(this).text().toLowerCase().indexOf(value) > -1
+                    );
+                });
+            });
         });
     </script>
 </body>
