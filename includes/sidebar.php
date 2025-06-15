@@ -51,7 +51,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     ["link" => "../AdminHRMO/service_request.php", "icon" => "fa-file-alt", "label" => "Issuance of Service Record"],
                     ["link" => "../AdminHRMO/certification_request.php", "icon" => "fa-certificate", "label" => "Issuance of Certification"],
                     ["link" => "../AdminHRMO/leave_request.php", "icon" => "fa-file-signature", "label" => "Application for Leave"],
-                    ["link" => "../AdminHRMO/contact.php", "icon" => "fa-comments", "label" => "Contact Us"],
+                    ["link" => "../AdminHRMO/contact.php", "icon" => "fa-comments", "label" => "Contact"],
                     ["link" => "../AdminHRMO/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
                 ],
                 "Student" => [
@@ -63,7 +63,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     ["link" => "../Applicant Users/dashboard.php", "icon" => "fa-tachometer-alt", "label" => "Dashboard"],
                     ["link" => "../Applicant Users/exam_schedule.php", "icon" => "fa-calendar-check", "label" => "Slot Reservation"],
                     ["link" => "../Applicant Users/announcement.php", "icon" => "fa-bullhorn", "label" => "Announcement"],
-                    ["link" => "../Applicant Users/contact.php", "icon" => "fa-envelope", "label" => "Contact Us"],
+                    ["link" => "../Applicant Users/contact.php", "icon" => "fa-envelope", "label" => "Contact"],
                 ]
             ];
 
